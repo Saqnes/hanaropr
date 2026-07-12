@@ -8,13 +8,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="서울대학교 로켓동아리 하나로 | SNU Rocket Team HANARO">
   <meta property="og:description" content="하늘을 나는 로켓, 하나로. 1995년부터 로켓을 설계하고, 만들고, 쏘아 올립니다.">
-  <meta property="og:image" content="assets/og.png">
+  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
+  <meta property="og:url" content="https://hanaro.snu.ac.kr/">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
   <!-- ============ NAV ============ -->
@@ -42,21 +45,21 @@
 
       <a class="nav-cta" href="recruit.html">지원하기</a>
 
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-menu" aria-label="모바일 메뉴">
-    <a href="index.html">홈 <small>Home</small></a>
+  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+    <a href="index.html" class="active" aria-current="page">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
     <a href="recruit.html">모집 <small>Recruit</small></a>
     <a href="contact.html">연락처 <small>Contact</small></a>
   </nav>
 
-  <main>
+  <main id="main">
     <!-- ============ HERO ============ -->
     <section class="hero">
       <p class="hero-eyebrow"><span class="dot" aria-hidden="true"></span>Seoul National University Rocket Team · Est. 1995</p>
@@ -100,7 +103,7 @@
       <div class="container">
         <div class="sec-head reveal">
           <p class="sec-label">01 · Who We Are</p>
-          <h2 class="sec-title">로켓에 진심인 사람들이<br>30년째 모이는 곳</h2>
+          <h2 class="sec-title">로켓에 진심인 사람들이<br>30년 넘게 모이는 곳</h2>
           <p class="sec-desc">
             하나로는 1995년 창립된 서울대학교 로켓동아리입니다.
             과학로켓의 설계부터 제작, 지상 시험, 발사와 회수까지 —
@@ -122,7 +125,7 @@
           <div class="stat reveal" style="--d:.15s">
             <div class="stat-num"><span data-count="3">3</span><span class="unit">km</span></div>
             <p class="stat-label">최대 도달 고도</p>
-            <p class="stat-sub">하이브리드 과학로켓 SNUKA-Ⅱ</p>
+            <p class="stat-sub">하이브리드 과학로켓 <span style="white-space:nowrap">SNUKA-Ⅱ</span></p>
           </div>
           <div class="stat reveal" style="--d:.2s">
             <div class="stat-num"><span data-count="10000">10,000</span><span class="unit">ft</span></div>
@@ -196,7 +199,7 @@
             <h3>HARANG</h3>
             <p class="ko">하랑 — 국제 대회 무대에 오른 사운딩 로켓</p>
             <p class="desc">
-              목표 고도 10,000 ft. 3U 큐브샛 사출 임무를 안고
+              목표 고도 10,000&nbsp;ft. 3U 큐브샛 사출 임무를 안고
               미국 뉴멕시코의 사막에서 발사된 하나로의 국제대회 도전.
             </p>
             <div class="spec-row">
@@ -213,8 +216,8 @@
             <h3>SNUKA-Ⅱ</h3>
             <p class="ko">하이브리드 과학로켓 — KAIST 공동 개발</p>
             <p class="desc">
-              전장 3.5 m, 중량 58 kg의 친환경 하이브리드 과학로켓.
-              최대 고도 3 km에 도달한 뒤 낙하산으로 무사 귀환했습니다.
+              전장 3.5&nbsp;m, 중량 58&nbsp;kg의 친환경 하이브리드 과학로켓.
+              최대 고도 3&nbsp;km에 도달한 뒤 낙하산으로 무사 귀환했습니다.
             </p>
             <div class="spec-row">
               <span>3.5 m</span>
@@ -305,7 +308,7 @@
             <span class="addr">서울대학교 공과대학 31동 401호</span>
             <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
             <a href="https://www.facebook.com/SNURThanaro/" target="_blank" rel="noopener">Facebook ↗</a>
-            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">YouTube ↗</a>
+            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">홍보영상 (YouTube) ↗</a>
           </div>
         </div>
       </div>

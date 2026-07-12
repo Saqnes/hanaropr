@@ -8,13 +8,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="연락처 | 서울대학교 로켓동아리 하나로">
   <meta property="og:description" content="하나로에 연락하는 방법.">
-  <meta property="og:image" content="assets/og.png">
+  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
+  <meta property="og:url" content="https://hanaro.snu.ac.kr/contact.html">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
   <!-- ============ NAV ============ -->
@@ -42,21 +45,21 @@
 
       <a class="nav-cta" href="recruit.html">지원하기</a>
 
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
     <a href="index.html">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
     <a href="recruit.html">모집 <small>Recruit</small></a>
-    <a href="contact.html" class="active">연락처 <small>Contact</small></a>
+    <a href="contact.html" class="active" aria-current="page">연락처 <small>Contact</small></a>
   </nav>
 
-  <main>
+  <main id="main">
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
       <div class="container">
@@ -185,7 +188,7 @@
             <span class="addr">서울대학교 공과대학 31동 401호</span>
             <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
             <a href="https://www.facebook.com/SNURThanaro/" target="_blank" rel="noopener">Facebook ↗</a>
-            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">YouTube ↗</a>
+            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">홍보영상 (YouTube) ↗</a>
           </div>
         </div>
       </div>

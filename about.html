@@ -8,13 +8,16 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="소개 | 서울대학교 로켓동아리 하나로">
   <meta property="og:description" content="1995년 창립, 30년 넘게 이어온 서울대학교 로켓동아리 하나로의 이야기.">
-  <meta property="og:image" content="assets/og.png">
+  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
+  <meta property="og:url" content="https://hanaro.snu.ac.kr/about.html">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
 </head>
 <body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
   <!-- ============ NAV ============ -->
@@ -42,21 +45,21 @@
 
       <a class="nav-cta" href="recruit.html">지원하기</a>
 
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
 
-  <nav class="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
     <a href="index.html">홈 <small>Home</small></a>
-    <a href="about.html" class="active">소개 <small>About</small></a>
+    <a href="about.html" class="active" aria-current="page">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
     <a href="recruit.html">모집 <small>Recruit</small></a>
     <a href="contact.html">연락처 <small>Contact</small></a>
   </nav>
 
-  <main>
+  <main id="main">
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
       <div class="container">
@@ -137,7 +140,7 @@
             <h3>과학로켓의 시대</h3>
             <p>
               모델 로켓을 넘어 본격적인 과학로켓으로. KAIST와 공동 개발한
-              하이브리드 과학로켓 SNUKA-Ⅱ가 최대 고도 3 km에 도달한 뒤
+              하이브리드 과학로켓 <span style="white-space:nowrap">SNUKA-Ⅱ</span>가 최대 고도 3&nbsp;km에 도달한 뒤
               낙하산으로 무사히 귀환하며, 하이브리드 추진 기술의 가능성을 증명했습니다.
             </p>
           </div>
@@ -146,7 +149,7 @@
             <h3>세계 무대로 — Spaceport America Cup</h3>
             <p>
               세계 최대 대학생 로켓 대회인 Spaceport America Cup에
-              사운딩 로켓 HARANG(하랑)으로 출전했습니다. 목표 고도 10,000 ft,
+              사운딩 로켓 HARANG(하랑)으로 출전했습니다. 목표 고도 10,000&nbsp;ft,
               3U 큐브샛 사출이라는 임무를 안고 미국 뉴멕시코의 발사장에 섰습니다.
             </p>
           </div>
@@ -213,7 +216,7 @@
             <p class="stat-sub">전공을 넘나드는 크루</p>
           </div>
           <div class="stat reveal" style="--d:.15s">
-            <div class="stat-num"><span data-count="30">30</span><span class="unit">년</span></div>
+            <div class="stat-num"><span data-count="30">30</span><span class="unit">+년</span></div>
             <p class="stat-label">이어온 역사</p>
             <p class="stat-sub">1995년부터 지금까지</p>
           </div>
@@ -269,7 +272,7 @@
             <span class="addr">서울대학교 공과대학 31동 401호</span>
             <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
             <a href="https://www.facebook.com/SNURThanaro/" target="_blank" rel="noopener">Facebook ↗</a>
-            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">YouTube ↗</a>
+            <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">홍보영상 (YouTube) ↗</a>
           </div>
         </div>
       </div>

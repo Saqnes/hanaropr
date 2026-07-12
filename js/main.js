@@ -14,7 +14,21 @@
     var h = 0;
     var dpr = Math.min(window.devicePixelRatio || 1, 2);
 
+    var makeStar = function () {
+      return {
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 1.3 + 0.2,
+        a: Math.random() * 0.55 + 0.15,
+        tw: Math.random() * 0.015 + 0.004,
+        ph: Math.random() * Math.PI * 2,
+        vy: Math.random() * 0.03 + 0.01
+      };
+    };
+
     var resize = function () {
+      var pw = w;
+      var ph = h;
       w = window.innerWidth;
       h = window.innerHeight;
       canvas.width = w * dpr;
@@ -22,18 +36,22 @@
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       var count = Math.min(240, Math.floor((w * h) / 6500));
-      stars = [];
-      for (var i = 0; i < count; i++) {
-        stars.push({
-          x: Math.random() * w,
-          y: Math.random() * h,
-          r: Math.random() * 1.3 + 0.2,
-          a: Math.random() * 0.55 + 0.15,
-          tw: Math.random() * 0.015 + 0.004,
-          ph: Math.random() * Math.PI * 2,
-          vy: Math.random() * 0.03 + 0.01
-        });
+      if (!stars.length || !pw || !ph) {
+        stars = [];
+        for (var i = 0; i < count; i++) stars.push(makeStar());
+      } else {
+        // keep existing stars in place (scaled) so mobile URL-bar resizes don't reshuffle the sky
+        var sx = w / pw;
+        var sy = h / ph;
+        for (var j = 0; j < stars.length; j++) {
+          stars[j].x *= sx;
+          stars[j].y *= sy;
+        }
+        while (stars.length < count) stars.push(makeStar());
+        if (stars.length > count) stars.length = count;
       }
+
+      if (reduceMotion) draw(); // repaint the static frame (resizing wipes the canvas)
     };
 
     var spawnShooting = function () {
@@ -119,18 +137,50 @@
   /* ---------- Mobile menu ---------- */
   var toggle = document.querySelector('.nav-toggle');
   if (toggle) {
-    toggle.addEventListener('click', function () {
-      var open = document.body.classList.toggle('menu-open');
+    var setMenu = function (open) {
+      document.body.classList.toggle('menu-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      // keep focus and screen readers inside the overlay while it is open
+      document.querySelectorAll('main, footer').forEach(function (el) {
+        if (open) {
+          el.setAttribute('inert', '');
+          el.setAttribute('aria-hidden', 'true');
+        } else {
+          el.removeAttribute('inert');
+          el.removeAttribute('aria-hidden');
+        }
+      });
+    };
+
+    toggle.addEventListener('click', function () {
+      setMenu(!document.body.classList.contains('menu-open'));
     });
 
     document.querySelectorAll('.mobile-menu a').forEach(function (a) {
       a.addEventListener('click', function () {
-        document.body.classList.remove('menu-open');
-        toggle.setAttribute('aria-expanded', 'false');
+        setMenu(false);
       });
     });
+
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
+        setMenu(false);
+        toggle.focus();
+      }
+    });
+
+    var desktopMq = window.matchMedia('(min-width: 821px)');
+    var onMqChange = function (e) {
+      if (e.matches && document.body.classList.contains('menu-open')) {
+        setMenu(false);
+      }
+    };
+    if (desktopMq.addEventListener) {
+      desktopMq.addEventListener('change', onMqChange);
+    } else if (desktopMq.addListener) {
+      desktopMq.addListener(onMqChange);
+    }
   }
 
   /* ---------- Scroll reveal ---------- */
