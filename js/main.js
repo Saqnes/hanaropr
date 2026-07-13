@@ -251,6 +251,22 @@
     });
   }
 
+  /* ---------- Spotlight hover (liquid-glass surfaces) ---------- */
+  var canHover = window.matchMedia('(hover: hover)').matches;
+  if (canHover && !reduceMotion) {
+    var spotlightEls = document.querySelectorAll(
+      '.card, .team-card, .stat, .project-card, .contact-card, .sponsor, .method, .org-node'
+    );
+    spotlightEls.forEach(function (el) {
+      el.classList.add('fx-spotlight');
+      el.addEventListener('pointermove', function (e) {
+        var r = el.getBoundingClientRect();
+        el.style.setProperty('--mx', ((e.clientX - r.left) / r.width) * 100 + '%');
+        el.style.setProperty('--my', ((e.clientY - r.top) / r.height) * 100 + '%');
+      });
+    });
+  }
+
   /* ---------- Footer year ---------- */
   var year = document.getElementById('year');
   if (year) {
