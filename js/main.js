@@ -2,17 +2,25 @@
 (function () {
   'use strict';
 
+  document.documentElement.classList.add('js-ready');
+
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- Starfield ---------- */
   var canvas = document.getElementById('starfield');
-  if (canvas && canvas.getContext) {
+  if (canvas && canvas.getContext && document.body.classList.contains('home')) {
     var ctx = canvas.getContext('2d');
+    if (!ctx) {
+      canvas.remove();
+    } else {
     var stars = [];
     var shooting = null;
     var w = 0;
     var h = 0;
-    var dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.25);
+    var resizeRaf = null;
+    var drawRaf = null;
+    var lastFrame = 0;
 
     var makeStar = function () {
       return {
@@ -31,11 +39,12 @@
       var ph = h;
       w = window.innerWidth;
       h = window.innerHeight;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.25);
       canvas.width = w * dpr;
       canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      var count = Math.min(240, Math.floor((w * h) / 6500));
+      var count = Math.min(w < 821 ? 120 : 200, Math.floor((w * h) / 6500));
       if (!stars.length || !pw || !ph) {
         stars = [];
         for (var i = 0; i < count; i++) stars.push(makeStar());
@@ -65,7 +74,12 @@
     };
 
     var t = 0;
-    var draw = function () {
+    var draw = function (ts) {
+      if (!reduceMotion && ts && ts - lastFrame < 32) {
+        drawRaf = requestAnimationFrame(draw);
+        return;
+      }
+      if (ts) lastFrame = ts;
       ctx.clearRect(0, 0, w, h);
       t += 1;
 
@@ -74,7 +88,7 @@
         var alpha = s.a + Math.sin(t * s.tw + s.ph) * 0.18;
         if (alpha < 0.03) alpha = 0.03;
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = i % 9 === 0 ? '#ffd9c4' : i % 7 === 0 ? '#c9d6ff' : '#ffffff';
+        ctx.fillStyle = i % 9 === 0 ? '#fe9c9c' : i % 7 === 0 ? '#f8b62b' : '#ffffff';
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
@@ -110,17 +124,35 @@
       }
 
       ctx.globalAlpha = 1;
-      if (!reduceMotion) {
-        requestAnimationFrame(draw);
+      if (!reduceMotion && !document.hidden) {
+        drawRaf = requestAnimationFrame(draw);
+      } else {
+        drawRaf = null;
       }
     };
 
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', function () {
+      if (resizeRaf) cancelAnimationFrame(resizeRaf);
+      resizeRaf = requestAnimationFrame(function () {
+        resizeRaf = null;
+        resize();
+      });
+    });
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden && drawRaf) {
+        cancelAnimationFrame(drawRaf);
+        drawRaf = null;
+      } else if (!document.hidden && !reduceMotion && !drawRaf) {
+        lastFrame = 0;
+        drawRaf = requestAnimationFrame(draw);
+      }
+    });
     if (reduceMotion) {
       draw(); // static single frame
     } else {
-      requestAnimationFrame(draw);
+      drawRaf = requestAnimationFrame(draw);
+    }
     }
   }
 
@@ -137,12 +169,15 @@
   /* ---------- Mobile menu ---------- */
   var toggle = document.querySelector('.nav-toggle');
   if (toggle) {
-    var setMenu = function (open) {
+    var mobileMenu = document.querySelector('.mobile-menu');
+    var previousFocus = null;
+    var setMenu = function (open, restoreFocus) {
       document.body.classList.toggle('menu-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.setAttribute('aria-label', open ? '메뉴 닫기' : '메뉴 열기');
+      if (mobileMenu) mobileMenu.setAttribute('aria-hidden', open ? 'false' : 'true');
       // keep focus and screen readers inside the overlay while it is open
-      document.querySelectorAll('main, footer').forEach(function (el) {
+      document.querySelectorAll('main, footer, .skip-link, .nav .brand').forEach(function (el) {
         if (open) {
           el.setAttribute('inert', '');
           el.setAttribute('aria-hidden', 'true');
@@ -151,29 +186,50 @@
           el.removeAttribute('aria-hidden');
         }
       });
+      if (open) {
+        previousFocus = document.activeElement;
+        requestAnimationFrame(function () {
+          var firstLink = mobileMenu && mobileMenu.querySelector('a');
+          if (firstLink) firstLink.focus();
+        });
+      } else if (restoreFocus && previousFocus && previousFocus.focus) {
+        previousFocus.focus();
+      }
     };
 
     toggle.addEventListener('click', function () {
-      setMenu(!document.body.classList.contains('menu-open'));
+      var isOpen = document.body.classList.contains('menu-open');
+      setMenu(!isOpen, isOpen);
     });
 
     document.querySelectorAll('.mobile-menu a').forEach(function (a) {
       a.addEventListener('click', function () {
-        setMenu(false);
+        setMenu(false, false);
       });
     });
 
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.body.classList.contains('menu-open')) {
-        setMenu(false);
-        toggle.focus();
+        setMenu(false, true);
+      }
+      if (e.key === 'Tab' && document.body.classList.contains('menu-open') && mobileMenu) {
+        var focusables = [toggle].concat(Array.prototype.slice.call(mobileMenu.querySelectorAll('a')));
+        var first = focusables[0];
+        var last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     });
 
     var desktopMq = window.matchMedia('(min-width: 821px)');
     var onMqChange = function (e) {
       if (e.matches && document.body.classList.contains('menu-open')) {
-        setMenu(false);
+        setMenu(false, false);
       }
     };
     if (desktopMq.addEventListener) {

@@ -4,19 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>프로젝트 | 서울대학교 로켓동아리 하나로</title>
-  <meta name="description" content="하나로가 쏘아 올린 로켓들 — Spaceport America Cup 2023 출전 로켓 HARANG, 하이브리드 과학로켓 SNUKA-Ⅱ.">
+  <meta name="description" content="HARANG, 2024 NURA 이중 회수 로켓, SNUKA-Ⅱ의 목표와 실제 결과를 구분해 정리한 HANARO 비행 기록입니다.">
+  <link rel="canonical" href="https://hanaro.snu.ac.kr/projects.html">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SNU Rocket Team HANARO"><meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="프로젝트 | 서울대학교 로켓동아리 하나로">
-  <meta property="og:description" content="하나로가 쏘아 올린 로켓들의 기록.">
-  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
+  <meta property="og:description" content="목표와 실제 결과를 구분해 정리한 HANARO의 비행 기록.">
+  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og-2026.png">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="SNU Rocket Team HANARO">
   <meta property="og:url" content="https://hanaro.snu.ac.kr/projects.html">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="프로젝트 | SNU Rocket Team HANARO"><meta name="twitter:description" content="목표와 실제 결과를 구분해 정리한 HANARO의 비행 기록."><meta name="twitter:image" content="https://hanaro.snu.ac.kr/assets/og-2026.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
 </head>
-<body>
+<body class="subpage">
   <a class="skip-link" href="#main">본문 바로가기</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
@@ -40,10 +43,10 @@
         <a href="about.html">소개</a>
         <a href="projects.html" class="active" aria-current="page">프로젝트</a>
         <a href="recruit.html">모집</a>
-        <a href="contact.html">연락처</a>
+        <a href="contact.html">후원·문의</a>
       </nav>
 
-      <a class="nav-cta" href="recruit.html">지원하기</a>
+      <a class="nav-cta" href="recruit.html">모집 안내</a>
 
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
@@ -51,24 +54,24 @@
     </div>
   </header>
 
-  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴" aria-hidden="true">
     <a href="index.html">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html" class="active" aria-current="page">프로젝트 <small>Projects</small></a>
     <a href="recruit.html">모집 <small>Recruit</small></a>
-    <a href="contact.html">연락처 <small>Contact</small></a>
+    <a href="contact.html">후원·문의 <small>Support</small></a>
   </nav>
 
   <main id="main">
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
-      <div class="container">
-        <p class="sec-label reveal">Projects</p>
-        <h1 class="reveal" style="--d:.05s">우리가 쏘아 올린<br><em>기록</em>들</h1>
-        <p class="lead reveal" style="--d:.1s">
-          도면에서 발사대까지, 하나로의 손을 거쳐 하늘로 향한
-          로켓들입니다. 모든 비행은 다음 비행의 밑거름이 됩니다.
-        </p>
+      <div class="container page-hero-grid">
+        <div>
+          <p class="sec-label reveal">Projects &amp; Flight Records</p>
+          <h1 class="reveal" style="--d:.05s">목표와 결과를<br><em>같이 남기는 기록</em></h1>
+          <p class="lead reveal" style="--d:.1s">임무 목표, 제작 방식, 실제 비행 결과와 배운 점을 분리해 기록합니다. 성공한 수치만이 아니라 다음 설계를 바꾼 근거까지 보여드립니다.</p>
+        </div>
+        <figure class="page-hero-visual reveal"><img src="assets/images/airframe.webp" alt="발사를 앞두고 지상에 놓인 하나로 로켓 기체" width="1280" height="960"><figcaption>Build the evidence, then fly</figcaption></figure>
       </div>
     </section>
 
@@ -76,93 +79,100 @@
     <section class="section">
       <div class="container">
 
-        <article class="project-panel reveal">
-          <div>
+        <article class="project-panel reveal" id="harang">
+          <figure class="project-panel-media"><img src="assets/images/hero-team.webp" alt="Spaceport America의 로켓과 하나로 팀원들" width="820" height="462" loading="lazy"><figcaption>HANARO 공식 아카이브</figcaption></figure>
+          <div class="project-panel-copy">
             <span class="project-chip">Spaceport America Cup 2023</span>
-            <h3>HARANG</h3>
+            <h2>HARANG</h2>
             <p class="ko">하랑 · 사운딩 로켓</p>
-            <p>
-              세계 최대 대학생 로켓 대회인 Spaceport America Cup에
-              출전한 하나로의 사운딩 로켓입니다. 목표 고도 10,000&nbsp;ft까지
-              상승해 3U 큐브샛 페이로드를 사출하는 임무를 수행하도록
-              설계되었습니다.
-            </p>
-            <p>
-              노즈콘과 핀은 진공 수지 주입(VARI) 공법으로 복합재를
-              직접 성형해 제작했습니다. 설계·해석·제작·시험의 전 과정을
-              부원들의 손으로 완성한 프로젝트입니다.
-            </p>
+            <p>10,000&nbsp;ft 비행과 3U CubeSat 규격 페이로드 분리를 목표로 개발했습니다. 2023년 6월 실제 비행에서 최고 고도 2,009&nbsp;m를 기록했고 비행 데이터를 지상국으로 실시간 전송했습니다.</p>
+            <p>GFRP 노즈콘과 커플러는 진공 보조 수지 주입(VARI) 공법으로 자체 제작했고, CFRP 핀은 평판을 워터젯 가공해 완성했습니다. 목표 고도에는 미치지 못했으며 사후 비행 분석 결과를 IAC 2023에서 발표했습니다.</p>
+            <div class="result-grid">
+              <div class="result-item"><span class="label">Target Altitude</span><strong>3,048 m</strong></div>
+              <div class="result-item"><span class="label">Achieved Apogee</span><strong>2,009 m</strong></div>
+            </div>
             <ul class="mission-list">
-              <li>목표 고도 10,000&nbsp;ft 도달 후 3U 큐브샛 사출</li>
-              <li>복합재 노즈콘·핀 자체 설계 및 제작 (VARI 공법)</li>
-              <li>미국 뉴멕시코 Spaceport America 발사장에서 발사</li>
+              <li>실시간 비행 데이터 텔레메트리 성공</li>
+              <li>GFRP 노즈콘·커플러 VARI 제작, CFRP 핀 워터젯 가공</li>
+              <li>개발 및 비행 분석 결과 IAC 2023 발표</li>
             </ul>
+            <div class="source-links"><a href="https://www.snu.ac.kr/snunow/press?bbsidx=143816&amp;md=v" target="_blank" rel="noopener">서울대 보도자료 ↗</a><a href="https://snu.elsevierpure.com/en/publications/harang-student-researched-and-developed-sounding-rocket-capable-o/" target="_blank" rel="noopener">IAC 연구 기록 ↗</a></div>
           </div>
           <dl class="spec-table">
             <div><dt>임무</dt><dd>Sounding Rocket</dd></div>
-            <div><dt>목표 고도</dt><dd>10,000 ft</dd></div>
-            <div><dt>페이로드</dt><dd>3U CubeSat</dd></div>
-            <div><dt>기체 제작</dt><dd>복합재 (VARI)</dd></div>
+            <div><dt>목표 고도</dt><dd>10,000 ft / 3,048 m</dd></div>
+            <div><dt>실제 최고 고도</dt><dd>2,009 m</dd></div>
+            <div><dt>페이로드 목표</dt><dd>3U CubeSat 규격</dd></div>
+            <div><dt>통신 결과</dt><dd>실시간 전송 성공</dd></div>
             <div><dt>무대</dt><dd>Spaceport America Cup 2023</dd></div>
           </dl>
           <span class="ghost" aria-hidden="true">HARANG</span>
         </article>
 
-        <article class="project-panel reveal">
-          <div>
-            <span class="project-chip">Hybrid Sounding Rocket</span>
-            <h3>SNUKA-Ⅱ</h3>
-            <p class="ko">하이브리드 과학로켓 · KAIST 공동 개발</p>
-            <p>
-              과산화수소를 산화제로 사용하는 친환경 하이브리드 과학로켓입니다.
-              KAIST 연구팀과 공동으로 개발해 발사에 성공했으며, 엔진 연소
-              10초 후 관성 비행으로 최대 고도 3&nbsp;km에 도달한 뒤 낙하산을
-              펼치고 지상으로 무사히 귀환했습니다.
-            </p>
-            <p>
-              비행 중의 모든 데이터는 실시간으로 지상국에 전송되는 동시에
-              온보드 저장 장치에 기록되어, 이후 프로젝트의 소중한
-              설계 자산이 되었습니다.
-            </p>
+        <article class="project-panel reveal" id="nura-2024">
+          <figure class="project-panel-media"><img src="assets/images/team.webp" alt="발사대의 로켓과 함께한 하나로 팀원들" width="1280" height="810" loading="lazy"><figcaption>HANARO 공식 아카이브</figcaption></figure>
+          <div class="project-panel-copy">
+            <span class="project-chip">NURA 2024</span>
+            <h2>DOUBLE RECOVERY</h2>
+            <p class="ko">400 m급 이중 회수 구조 로켓</p>
+            <p>2024 NURA 대회를 위해 400&nbsp;m급 이중 회수 구조 로켓을 개발했습니다. 설계와 제작 내용을 발표한 학술대회에서 대상(우주항공청장상), 실제 비행을 겨룬 발사대회에서 은상(한국과학창의재단 이사장상)을 수상했습니다.</p>
+            <p>같은 해 대한항공과 ‘항전장비 실험용 1&nbsp;km급 발사체 개발’을 연구해 X-Corps 전국대회 최우수상도 받았습니다.</p>
             <ul class="mission-list">
-              <li>하이브리드 추진 — 과산화수소 산화제 기반 친환경 로켓</li>
-              <li>최대 고도 3&nbsp;km 도달 후 낙하산 회수 성공</li>
-              <li>비행 데이터 실시간 텔레메트리 + 온보드 기록</li>
+              <li>400 m급 이중 회수 구조 설계·제작</li>
+              <li>NURA 학술대회 대상, 발사대회 은상</li>
+              <li>대한항공 협력 X-Corps 전국대회 최우수상</li>
             </ul>
+            <div class="source-links"><a href="https://eng.snu.ac.kr/communication/promotion/news?bbsidx=5561&amp;md=v" target="_blank" rel="noopener">서울공대 성과 보도 ↗</a></div>
+          </div>
+          <dl class="spec-table">
+            <div><dt>목표 등급</dt><dd>400 m급</dd></div>
+            <div><dt>회수 구조</dt><dd>Double Recovery</dd></div>
+            <div><dt>학술대회</dt><dd>대상</dd></div>
+            <div><dt>발사대회</dt><dd>은상</dd></div>
+            <div><dt>연도</dt><dd>2024</dd></div>
+          </dl>
+          <span class="ghost" aria-hidden="true">NURA</span>
+        </article>
+
+        <article class="project-panel reveal" id="snuka-ii">
+          <figure class="project-panel-media brand-project-media"><img src="assets/brand/hanaro-emblem.png" alt="SNU Rocket Team HANARO 엠블럼" width="640" height="640" loading="lazy"><figcaption>Historical design record</figcaption></figure>
+          <div class="project-panel-copy">
+            <span class="project-chip">IREC 2017 · Design Record</span>
+            <h2>SNUKA-Ⅱ</h2>
+            <p class="ko">KAIST 연구팀과 공동 개발한 하이브리드 과학로켓</p>
+            <p>SNUKA-Ⅱ는 길이 3.5&nbsp;m, 직경 0.2&nbsp;m, 질량 58&nbsp;kg으로 설계됐으며 10초 연소와 최대 고도 3&nbsp;km를 목표로 했습니다.</p>
+            <p>공개된 서울대 기록에 따르면 2017년 국제대회 비행은 실패했습니다. 설계 목표를 실제 달성 수치로 오인하지 않도록 목표와 결과를 분리해 남깁니다.</p>
+            <ul class="mission-list">
+              <li>하나로: 낙하산을 포함한 상단부 담당</li>
+              <li>KAIST 연구팀: 하이브리드 엔진 담당</li>
+              <li>국제 규정 대응과 시스템 통합의 초기 경험</li>
+            </ul>
+            <div class="source-links"><a href="https://www.snu.ac.kr/snunow/snu_story?bbsidx=124684&amp;md=v" target="_blank" rel="noopener">서울대 2017 기록 ↗</a></div>
           </div>
           <dl class="spec-table">
             <div><dt>추진 방식</dt><dd>Hybrid</dd></div>
             <div><dt>전장</dt><dd>3.5 m</dd></div>
             <div><dt>직경</dt><dd>0.2 m</dd></div>
-            <div><dt>중량</dt><dd>58 kg</dd></div>
-            <div><dt>연소 시간</dt><dd>10 s</dd></div>
-            <div><dt>최대 고도</dt><dd>3 km</dd></div>
+            <div><dt>질량</dt><dd>58 kg</dd></div>
+            <div><dt>설계 연소 시간</dt><dd>10 s</dd></div>
+            <div><dt>설계 목표 고도</dt><dd>3 km</dd></div>
+            <div><dt>2017 비행 결과</dt><dd>발사 실패</dd></div>
           </dl>
           <span class="ghost" aria-hidden="true">SNUKA</span>
         </article>
 
-        <article class="project-panel reveal">
-          <div>
-            <span class="project-chip">In Progress</span>
-            <h3>NEXT</h3>
-            <p class="ko">다음 로켓 · 준비 중</p>
-            <p>
-              하나로의 작업실에서는 언제나 다음 로켓이 자라고 있습니다.
-              지난 비행에서 배운 것들을 모아, 더 높이 더 정확하게
-              날아오를 기체를 설계하는 중입니다.
-            </p>
-            <p>
-              다음 기록의 주인공은 지금 이 페이지를 보고 있는
-              당신일지도 모릅니다.
-            </p>
-            <ul class="mission-list">
-              <li>최신 소식은 인스타그램 @snu_hanaro에서 만나보세요</li>
-            </ul>
+        <article class="project-panel reveal" id="current">
+          <figure class="project-panel-media"><img src="assets/images/launch.webp" alt="발사대에서 이륙하는 하나로의 학생 로켓" width="600" height="600" loading="lazy"><figcaption>HANARO 공식 아카이브</figcaption></figure>
+          <div class="project-panel-copy">
+            <span class="project-chip">Current &amp; Next</span>
+            <h2>HARANG 2</h2>
+            <p class="ko">IREC 2025 출전 기록</p>
+            <p>팀 공식 연혁에는 IREC 2025 출전과 HARANG 2 발사가 기록되어 있습니다. 세부 비행 결과와 제원은 검증 가능한 자료가 공개되는 순서대로 업데이트합니다.</p>
+            <p>실시간 제작·시험 소식은 공식 Instagram에서 확인할 수 있습니다.</p>
+            <div class="source-links"><a href="https://hanaro.snu.ac.kr/" target="_blank" rel="noopener">팀 공식 연혁 ↗</a><a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a></div>
           </div>
-          <div style="align-self:center">
-            <a class="btn btn-primary" href="recruit.html">이 프로젝트에 합류하기 <span class="arrow" aria-hidden="true">→</span></a>
-          </div>
-          <span class="ghost" aria-hidden="true">NEXT</span>
+          <dl class="spec-table"><div><dt>공개 상태</dt><dd>검증 자료 순차 업데이트</dd></div><div><dt>무대</dt><dd>IREC 2025</dd></div><div><dt>프로젝트</dt><dd>HARANG 2</dd></div></dl>
+          <span class="ghost" aria-hidden="true">H2</span>
         </article>
 
       </div>
@@ -180,8 +190,10 @@
   <footer class="footer">
     <p class="footer-word" aria-hidden="true">HANARO</p>
     <div class="container">
+      <h2 class="sr-only">사이트 정보</h2>
       <div class="footer-grid">
         <div class="footer-brand">
+          <img class="brand-emblem" src="assets/brand/hanaro-emblem.png" alt="SNU Rocket Team HANARO 엠블럼" width="640" height="640" loading="lazy">
           <a class="brand" href="index.html">
             <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
@@ -194,21 +206,21 @@
               <span class="brand-sub">SNU Rocket Team</span>
             </span>
           </a>
-          <p>하늘을 나는 로켓, 하나로.<br>1995년부터 서울대학교에서 로켓을 만들어 쏘아 올립니다.</p>
+          <p>학생이 설계하고, 제작하고, 시험해 증명하는 서울대학교 학생 로켓 팀.</p>
         </div>
         <div>
-          <h4>Menu</h4>
+          <h3>Menu</h3>
           <div class="footer-links">
             <a href="about.html">소개</a>
             <a href="projects.html">프로젝트</a>
             <a href="recruit.html">모집</a>
-            <a href="contact.html">연락처</a>
+            <a href="contact.html">후원·문의</a>
           </div>
         </div>
         <div>
-          <h4>Contact</h4>
+          <h3>Contact</h3>
           <div class="footer-links">
-            <span class="addr">서울대학교 공과대학 31동 401호</span>
+            <address class="addr">서울대학교 공과대학 31동 401호</address>
             <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
             <a href="https://www.facebook.com/SNURThanaro/" target="_blank" rel="noopener">Facebook ↗</a>
             <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">홍보영상 (YouTube) ↗</a>
