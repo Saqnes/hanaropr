@@ -1453,6 +1453,324 @@ body.menu-open .nav-toggle span:nth-child(3) {
   font-size: 0.6875rem;
 }
 
+/* ---------- Hero with photo backdrop ---------- */
+.hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+}
+
+.hero-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 0.42;
+}
+
+.hero-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(120% 90% at 50% 8%, transparent 30%, rgba(4, 6, 13, 0.55) 100%),
+    linear-gradient(180deg, rgba(4, 6, 13, 0.7) 0%, rgba(4, 6, 13, 0.35) 38%, var(--bg-0) 100%);
+}
+
+/* ---------- Split (text + media) ---------- */
+.split {
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  gap: clamp(28px, 5vw, 64px);
+  align-items: center;
+}
+
+.split.reverse {
+  direction: rtl;
+}
+
+.split.reverse > * {
+  direction: ltr;
+}
+
+.split-media {
+  position: relative;
+  border-radius: calc(var(--radius) + 6px);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  aspect-ratio: 4 / 3;
+  background: var(--bg-2);
+}
+
+.split-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out);
+}
+
+.split-media:hover img {
+  transform: scale(1.04);
+}
+
+.split-media figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 26px 20px 14px;
+  font-size: 0.8125rem;
+  color: var(--text-2);
+  background: linear-gradient(180deg, transparent, rgba(4, 6, 13, 0.82));
+}
+
+/* ---------- Team photo cards ---------- */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.team-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  transition: transform 0.4s var(--ease-out), border-color 0.4s, box-shadow 0.4s;
+}
+
+.team-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255, 93, 46, 0.4);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5);
+}
+
+.team-card .photo {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+}
+
+.team-card .photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.team-card:hover .photo img {
+  transform: scale(1.06);
+}
+
+.team-card .body {
+  padding: clamp(20px, 2.4vw, 26px);
+}
+
+.team-card .en {
+  font-family: var(--font-display);
+  font-size: 0.71875rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--flame-soft);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.team-card h3 {
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+.team-card p {
+  color: var(--text-2);
+  font-size: 0.9063rem;
+  word-break: keep-all;
+}
+
+/* ---------- Sponsors ---------- */
+.sponsors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.sponsor {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  text-align: center;
+  padding: clamp(32px, 5vw, 52px);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  transition: transform 0.4s var(--ease-out), border-color 0.4s;
+}
+
+.sponsor:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 93, 46, 0.35);
+}
+
+.sponsor .name {
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.sponsor .kind {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- Org chart (members) ---------- */
+.org {
+  display: grid;
+  gap: 20px;
+  justify-items: center;
+}
+
+.org-lead {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+
+.org-node {
+  min-width: 180px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 20px 24px;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.01));
+}
+
+.org-node.head {
+  border-color: rgba(255, 93, 46, 0.4);
+  background: linear-gradient(180deg, rgba(255, 93, 46, 0.12), rgba(255, 93, 46, 0.02));
+}
+
+.org-node .role {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--flame-soft);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.org-node .person {
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+
+.org-node .person small {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-3);
+}
+
+.org-connector {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, rgba(255, 93, 46, 0.6), rgba(255, 255, 255, 0.12));
+}
+
+.org-teams {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  width: 100%;
+}
+
+/* ---------- Info / method cards (support) ---------- */
+.method {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: clamp(26px, 3vw, 36px);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
+  counter-increment: method;
+}
+
+.method .step-num {
+  margin-bottom: 18px;
+}
+
+.method h3 {
+  font-size: 1.1875rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+
+.method p {
+  color: var(--text-2);
+  font-size: 0.9375rem;
+  word-break: keep-all;
+}
+
+.account {
+  margin-top: 16px;
+  padding: 16px 18px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.account .label {
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+
+.account .no {
+  font-family: var(--font-display);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.account .holder {
+  font-size: 0.8125rem;
+  color: var(--text-3);
+  margin-top: 4px;
+}
+
+/* ---------- Map embed ---------- */
+.map-frame {
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) + 6px);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-2);
+}
+
+.map-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  filter: grayscale(0.2) contrast(1.05);
+}
+
 /* ---------- Reveal animation ---------- */
 /* hidden state is opt-in via html.js so content stays visible without JS */
 html.js .reveal {
@@ -1471,7 +1789,8 @@ html.js .reveal.in {
 @media (max-width: 1024px) {
   .stats,
   .grid-4,
-  .steps {
+  .steps,
+  .team-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1481,6 +1800,22 @@ html.js .reveal.in {
 
   .project-panel {
     grid-template-columns: 1fr;
+  }
+
+  .org-teams {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .split {
+    grid-template-columns: 1fr;
+  }
+
+  .split.reverse {
+    direction: ltr;
+  }
+
+  .split-media {
+    aspect-ratio: 16 / 10;
   }
 
   .footer-grid {
@@ -1541,7 +1876,10 @@ html.js .reveal.in {
   .grid-3,
   .grid-2,
   .steps,
-  .contact-grid {
+  .contact-grid,
+  .team-grid,
+  .org-teams,
+  .sponsors {
     grid-template-columns: 1fr;
   }
 
