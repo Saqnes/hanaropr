@@ -159,23 +159,15 @@ button {
 }
 
 body::before {
-  /* aurora backdrop — slow-drifting brand blobs behind the starfield */
+  /* static brand wash behind the starfield (no motion) */
   content: '';
   position: fixed;
-  inset: -25%;
+  inset: 0;
   z-index: -3;
   background:
-    radial-gradient(34% 40% at 22% 16%, rgba(248, 182, 43, 0.1), transparent 62%),
-    radial-gradient(38% 42% at 84% 24%, rgba(247, 125, 144, 0.11), transparent 62%),
-    radial-gradient(46% 46% at 50% 104%, rgba(111, 139, 214, 0.1), transparent 62%);
-  filter: blur(26px);
-  animation: aurora-drift 26s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@keyframes aurora-drift {
-  0% { transform: translate3d(-2%, -1%, 0) scale(1.02); }
-  100% { transform: translate3d(3%, 2%, 0) scale(1.09); }
+    radial-gradient(1100px 720px at 84% -12%, rgba(248, 182, 43, 0.06), transparent 60%),
+    radial-gradient(1000px 700px at 8% 112%, rgba(247, 125, 144, 0.07), transparent 60%),
+    radial-gradient(900px 620px at 50% 118%, rgba(111, 139, 214, 0.06), transparent 62%);
 }
 
 body::after {
@@ -1882,14 +1874,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
   inset: 0;
   border-radius: inherit;
   padding: 1.5px;
-  background: conic-gradient(
-    from var(--hip-angle),
-    var(--gold),
-    var(--pink),
-    var(--ion),
-    var(--gold-soft),
-    var(--gold)
-  );
+  background: linear-gradient(135deg, var(--gold), var(--pink) 55%, var(--gold-soft));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
   mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -1909,11 +1894,6 @@ body.menu-open .nav-toggle span:nth-child(3) {
 .project-card:hover::before,
 .org-node.head:hover::before {
   opacity: 1;
-  animation: hip-spin 4.5s linear infinite;
-}
-
-@keyframes hip-spin {
-  to { --hip-angle: 360deg; }
 }
 
 /* ---- Hip editorial / aerospace-HUD accents ---- */
