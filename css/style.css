@@ -1851,27 +1851,207 @@ body.menu-open .nav-toggle span:nth-child(3) {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-/* Spotlight hover — surfaces respond to the cursor like lit glass (JS adds class) */
-.fx-spotlight::after {
+/* Animated gradient border that lights up on hover (replaces cursor spotlight) */
+@property --hip-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.card,
+.team-card,
+.stat,
+.method,
+.sponsor,
+.contact-card,
+.project-card,
+.org-node.head {
+  position: relative;
+}
+
+.card::before,
+.team-card::before,
+.stat::before,
+.method::before,
+.sponsor::before,
+.contact-card::before,
+.project-card::before,
+.org-node.head::before {
   content: '';
   position: absolute;
   inset: 0;
   border-radius: inherit;
-  pointer-events: none;
-  z-index: 3;
-  background: radial-gradient(
-    220px circle at var(--mx, 50%) var(--my, 120%),
-    rgba(255, 206, 106, 0.16),
-    rgba(247, 125, 144, 0.07) 42%,
-    transparent 66%
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--hip-angle),
+    var(--gold),
+    var(--pink),
+    var(--ion),
+    var(--gold-soft),
+    var(--gold)
   );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
   opacity: 0;
-  transition: opacity 0.4s var(--ease-out);
-  mix-blend-mode: screen;
+  transition: opacity 0.45s var(--ease-out);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.fx-spotlight:hover::after {
+.card:hover::before,
+.team-card:hover::before,
+.stat:hover::before,
+.method:hover::before,
+.sponsor:hover::before,
+.contact-card:hover::before,
+.project-card:hover::before,
+.org-node.head:hover::before {
   opacity: 1;
+  animation: hip-spin 4.5s linear infinite;
+}
+
+@keyframes hip-spin {
+  to { --hip-angle: 360deg; }
+}
+
+/* ---- Hip editorial / aerospace-HUD accents ---- */
+
+/* Terminal-style section labels with a blinking cursor square */
+.sec-label::before {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  animation: hud-blink 1.6s steps(1) infinite;
+}
+
+@keyframes hud-blink {
+  0%, 60% { opacity: 1; }
+  61%, 100% { opacity: 0.25; }
+}
+
+/* Hero HUD crosshair corners */
+.hero-hud {
+  position: absolute;
+  inset: calc(var(--nav-h) + 24px) clamp(16px, 4vw, 46px) 32px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-hud i {
+  position: absolute;
+  width: 26px;
+  height: 26px;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+}
+
+.hero-hud i.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; }
+.hero-hud i.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; }
+.hero-hud i.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; }
+.hero-hud i.br { bottom: 0; right: 0; border-left: 0; border-top: 0; }
+
+/* Rotated motto sticker (from the emblem: PER ARDUA AD ASTRA) */
+.hero-sticker {
+  position: absolute;
+  top: calc(var(--nav-h) + 22px);
+  right: clamp(18px, 6vw, 82px);
+  z-index: 3;
+  transform: rotate(7deg);
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.35;
+  text-align: center;
+  color: #141d2e;
+  background: var(--grad-flame);
+  padding: 9px 13px;
+  border-radius: 7px;
+  box-shadow: 0 10px 26px rgba(247, 125, 144, 0.35);
+}
+
+.hero-sticker::before {
+  content: '★';
+  display: block;
+  font-size: 0.75rem;
+  margin-bottom: 1px;
+}
+
+/* Monospace telemetry strip */
+.telemetry {
+  margin-top: 22px;
+  font-family: var(--font-display);
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  color: var(--text-3);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.telemetry b {
+  color: var(--gold-soft);
+  font-weight: 600;
+}
+
+/* Bolder, mixed fill/outline marquee */
+.marquee {
+  border-block: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.marquee-track span {
+  font-size: clamp(1.05rem, 2.4vw, 1.6rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--text-2);
+}
+
+.marquee-track span:nth-child(even) {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--text-3);
+}
+
+.marquee-track span::after {
+  color: var(--pink);
+}
+
+/* Photo grading + film grain for a cooler, editorial look */
+.hero-media img {
+  filter: contrast(1.05) saturate(0.94);
+}
+
+.split-media img,
+.team-card .photo img {
+  filter: contrast(1.06) saturate(0.9);
+  transition: transform 0.7s var(--ease-out), filter 0.5s var(--ease-out);
+}
+
+.split-media:hover img,
+.team-card:hover .photo img {
+  filter: contrast(1.08) saturate(1.08);
+}
+
+.team-card .photo,
+.split-media {
+  position: relative;
+}
+
+.team-card .photo::after,
+.split-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.7'/%3E%3C/svg%3E");
+}
+
+.split-media figcaption {
+  z-index: 1;
 }
 
 /* Scroll-driven enhancements (only where the browser supports them) */
@@ -2051,6 +2231,15 @@ html.js .reveal.in {
   .scroll-cue {
     display: none;
   }
+
+  .hero-sticker {
+    display: none;
+  }
+
+  .telemetry {
+    font-size: 0.625rem;
+    letter-spacing: 0.12em;
+  }
 }
 
 @media (max-width: 400px) {
@@ -2079,7 +2268,16 @@ html.js .reveal.in {
   .scroll-cue::after,
   body::before,
   .hero-title,
-  .hero-media img {
+  .hero-media img,
+  .sec-label::before,
+  .card:hover::before,
+  .team-card:hover::before,
+  .stat:hover::before,
+  .method:hover::before,
+  .sponsor:hover::before,
+  .contact-card:hover::before,
+  .project-card:hover::before,
+  .org-node.head:hover::before {
     animation: none;
   }
 
