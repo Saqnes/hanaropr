@@ -251,6 +251,183 @@
     });
   }
 
+  /* ======================================================================
+     MZ interactions — word reveal · scramble · magnetic · cursor · marquee
+     All progressive + motion-safe. Content stays intact without JS.
+     ====================================================================== */
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  /* --- Word-by-word blur-fade-up on big headings --- */
+  function splitWords(el) {
+    var walk = function (node) {
+      var out = [];
+      Array.prototype.forEach.call(node.childNodes, function (child) {
+        if (child.nodeType === 3) {
+          child.textContent.split(/(\s+)/).forEach(function (tok) {
+            if (tok === '') return;
+            if (/^\s+$/.test(tok)) {
+              out.push(document.createTextNode(tok));
+            } else {
+              var s = document.createElement('span');
+              s.className = 'w';
+              s.textContent = tok;
+              out.push(s);
+            }
+          });
+        } else if (child.nodeName === 'BR') {
+          out.push(child.cloneNode());
+        } else {
+          /* wrap whole element (e.g. gradient <em>) as one word to keep its styling */
+          var s = document.createElement('span');
+          s.className = 'w';
+          s.appendChild(child.cloneNode(true));
+          out.push(s);
+        }
+      });
+      return out;
+    };
+    var nodes = walk(el);
+    el.innerHTML = '';
+    nodes.forEach(function (n) { el.appendChild(n); });
+    Array.prototype.forEach.call(el.querySelectorAll('.w'), function (w, i) {
+      w.style.setProperty('--wi', i);
+    });
+  }
+
+  if (!reduceMotion) {
+    var wordIO = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            e.target.classList.add('in');
+            wordIO.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+    document.querySelectorAll('.hero-tagline, .page-hero h1, .cta-band h2').forEach(function (el) {
+      el.classList.remove('reveal');
+      splitWords(el);
+      el.classList.add('words-ready');
+      wordIO.observe(el);
+    });
+  }
+
+  /* --- Text scramble / decode on section labels --- */
+  if (!reduceMotion) {
+    var GLYPHS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789·/#<>@%';
+    var scramble = function (el) {
+      var text = el.getAttribute('data-final');
+      var len = text.length;
+      var revealed = 0;
+      var run = function () {
+        revealed += 0.6;
+        var out = '';
+        for (var i = 0; i < len; i++) {
+          if (text[i] === ' ' || i < revealed) out += text[i];
+          else out += GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        }
+        el.textContent = out;
+        if (revealed < len) requestAnimationFrame(run);
+        else el.textContent = text;
+      };
+      run();
+    };
+    var scrIO = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) {
+            scramble(e.target);
+            scrIO.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 1 }
+    );
+    document.querySelectorAll('.sec-label').forEach(function (el) {
+      el.setAttribute('data-final', el.textContent);
+      scrIO.observe(el);
+    });
+  }
+
+  /* --- Magnetic buttons --- */
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll('.btn-primary, .nav-cta').forEach(function (btn) {
+      btn.addEventListener('pointermove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var mx = e.clientX - (r.left + r.width / 2);
+        var my = e.clientY - (r.top + r.height / 2);
+        btn.style.transform = 'translate(' + mx * 0.25 + 'px,' + my * 0.35 + 'px)';
+      });
+      btn.addEventListener('pointerleave', function () {
+        btn.style.transform = '';
+      });
+    });
+  }
+
+  /* --- Custom cursor (dot + trailing ring, monochrome) --- */
+  if (finePointer && !reduceMotion) {
+    var dot = document.createElement('div');
+    var ring = document.createElement('div');
+    dot.className = 'cursor-dot';
+    ring.className = 'cursor-ring';
+    document.body.appendChild(dot);
+    document.body.appendChild(ring);
+    document.documentElement.classList.add('cursor-on');
+
+    var mx = window.innerWidth / 2;
+    var my = window.innerHeight / 2;
+    var rx = mx;
+    var ry = my;
+    window.addEventListener('pointermove', function (e) {
+      mx = e.clientX;
+      my = e.clientY;
+      dot.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+    });
+    var ringLoop = function () {
+      rx += (mx - rx) * 0.2;
+      ry += (my - ry) * 0.2;
+      ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+      requestAnimationFrame(ringLoop);
+    };
+    requestAnimationFrame(ringLoop);
+
+    var HOT = 'a, button, .btn, [role="button"], summary, input, .card, .team-card, .contact-card, .nav-toggle';
+    document.addEventListener('pointerover', function (e) {
+      if (e.target.closest && e.target.closest(HOT)) ring.classList.add('hot');
+    });
+    document.addEventListener('pointerout', function (e) {
+      if (e.target.closest && e.target.closest(HOT)) ring.classList.remove('hot');
+    });
+  }
+
+  /* --- Scroll-reactive marquee skew --- */
+  if (!reduceMotion) {
+    var marquees = document.querySelectorAll('.marquee');
+    if (marquees.length) {
+      var lastY = window.scrollY;
+      window.addEventListener(
+        'scroll',
+        function () {
+          var y = window.scrollY;
+          var skew = Math.max(-4, Math.min(4, (y - lastY) * 0.35));
+          lastY = y;
+          marquees.forEach(function (m) { m.style.setProperty('--mq-skew', skew + 'deg'); });
+        },
+        { passive: true }
+      );
+      var decay = function () {
+        marquees.forEach(function (m) {
+          var cur = parseFloat(m.style.getPropertyValue('--mq-skew')) || 0;
+          if (Math.abs(cur) > 0.05) m.style.setProperty('--mq-skew', cur * 0.88 + 'deg');
+        });
+        requestAnimationFrame(decay);
+      };
+      requestAnimationFrame(decay);
+    }
+  }
+
   /* ---------- Footer year ---------- */
   var year = document.getElementById('year');
   if (year) {

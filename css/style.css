@@ -2075,18 +2075,114 @@ body.menu-open .nav-toggle span:nth-child(3) {
   }
 }
 
-/* ---------- Reveal animation ---------- */
+/* ---------- Reveal animation (blur-fade-up) ---------- */
 /* hidden state is opt-in via html.js so content stays visible without JS */
 html.js .reveal {
   opacity: 0;
-  transform: translateY(26px);
-  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
+  transform: translateY(30px);
+  filter: blur(7px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out),
+    filter 0.9s var(--ease-out);
   transition-delay: var(--d, 0s);
 }
 
 html.js .reveal.in {
   opacity: 1;
   transform: none;
+  filter: blur(0);
+}
+
+/* ---------- MZ interactions ---------- */
+
+/* Word-by-word blur-fade-up (JS splits headings into .w spans) */
+.w {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+.words-ready .w {
+  opacity: 0;
+  transform: translateY(0.62em);
+  filter: blur(11px);
+  transition: opacity 0.6s var(--ease-out), transform 0.6s var(--ease-out),
+    filter 0.6s var(--ease-out);
+  transition-delay: calc(var(--wi) * 0.045s);
+}
+
+.words-ready.in .w {
+  opacity: 1;
+  transform: none;
+  filter: blur(0);
+}
+
+/* Cinematic clip-path wipe on media */
+@media (prefers-reduced-motion: no-preference) {
+  html.js .split-media img,
+  html.js .team-card .photo img {
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.9s var(--ease-out), transform 0.7s var(--ease-out),
+      filter 0.5s var(--ease-out);
+  }
+
+  html.js .split-media.in img,
+  html.js .team-card.in .photo img {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Scroll-reactive marquee skew */
+.marquee {
+  transform: skewX(var(--mq-skew, 0deg));
+  transition: transform 0.12s linear;
+}
+
+/* Magnetic buttons ease back on release */
+.btn-primary,
+.nav-cta {
+  transition: transform 0.25s var(--ease-out), box-shadow 0.35s var(--ease-out);
+}
+
+/* Custom cursor (fine pointers only) */
+@media (hover: hover) and (pointer: fine) {
+  html.cursor-on,
+  html.cursor-on * {
+    cursor: none;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 300;
+    pointer-events: none;
+    border-radius: 50%;
+    mix-blend-mode: difference;
+    will-change: transform;
+  }
+
+  .cursor-dot {
+    width: 7px;
+    height: 7px;
+    margin: -3.5px 0 0 -3.5px;
+    background: #fff;
+  }
+
+  .cursor-ring {
+    width: 34px;
+    height: 34px;
+    margin: -17px 0 0 -17px;
+    border: 1.5px solid #fff;
+    transition: width 0.22s var(--ease-out), height 0.22s var(--ease-out),
+      margin 0.22s var(--ease-out), background-color 0.22s;
+  }
+
+  .cursor-ring.hot {
+    width: 56px;
+    height: 56px;
+    margin: -28px 0 0 -28px;
+    background: rgba(255, 255, 255, 0.14);
+  }
 }
 
 /* ---------- Responsive ---------- */
@@ -2234,10 +2330,16 @@ html.js .reveal.in {
     scroll-behavior: auto;
   }
 
-  html.js .reveal {
+  html.js .reveal,
+  html.js .words-ready .w {
     opacity: 1;
     transform: none;
+    filter: none;
     transition: none;
+  }
+
+  .marquee {
+    transform: none;
   }
 
   .marquee-track {
