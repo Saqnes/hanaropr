@@ -4,19 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>소개 | 서울대학교 로켓동아리 하나로</title>
-  <meta name="description" content="1995년 창립된 서울대학교 로켓동아리 하나로. 과학로켓의 설계·제작·발사 전 주기를 학생의 손으로 경험합니다.">
+  <meta name="description" content="설계·제작·시험·비행 데이터를 다음 프로젝트로 이어가는 서울대학교 학생 로켓 팀 HANARO를 소개합니다.">
+  <link rel="canonical" href="https://hanaro.snu.ac.kr/about.html">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="SNU Rocket Team HANARO">
+  <meta property="og:locale" content="ko_KR">
   <meta property="og:title" content="소개 | 서울대학교 로켓동아리 하나로">
-  <meta property="og:description" content="1995년 창립, 30년 넘게 이어온 서울대학교 로켓동아리 하나로의 이야기.">
-  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
+  <meta property="og:description" content="설계·제작·시험·비행 데이터를 다음 프로젝트로 이어가는 학생 로켓 팀.">
+  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og-2026.png">
+  <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="SNU Rocket Team HANARO">
   <meta property="og:url" content="https://hanaro.snu.ac.kr/about.html">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="소개 | SNU Rocket Team HANARO"><meta name="twitter:description" content="설계·제작·시험·비행 데이터를 다음 프로젝트로 이어가는 학생 로켓 팀."><meta name="twitter:image" content="https://hanaro.snu.ac.kr/assets/og-2026.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script defer src="js/main.js"></script>
 </head>
-<body>
+<body class="subpage">
   <a class="skip-link" href="#main">본문 바로가기</a>
   <canvas id="starfield" aria-hidden="true"></canvas>
 
@@ -40,10 +44,10 @@
         <a href="about.html" class="active" aria-current="page">소개</a>
         <a href="projects.html">프로젝트</a>
         <a href="recruit.html">모집</a>
-        <a href="contact.html">연락처</a>
+        <a href="contact.html">후원·문의</a>
       </nav>
 
-      <a class="nav-cta" href="recruit.html">지원하기</a>
+      <a class="nav-cta" href="recruit.html">모집 안내</a>
 
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
         <span></span><span></span><span></span>
@@ -51,25 +55,30 @@
     </div>
   </header>
 
-  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴" aria-hidden="true">
     <a href="index.html">홈 <small>Home</small></a>
     <a href="about.html" class="active" aria-current="page">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
     <a href="recruit.html">모집 <small>Recruit</small></a>
-    <a href="contact.html">연락처 <small>Contact</small></a>
+    <a href="contact.html">후원·문의 <small>Support</small></a>
   </nav>
 
   <main id="main">
     <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
-      <div class="container">
-        <p class="sec-label reveal">About Us</p>
-        <h1 class="reveal" style="--d:.05s">하늘을 향한 진심이<br><em>하나로</em> 모이는 곳</h1>
-        <p class="lead reveal" style="--d:.1s">
-          하나로는 1995년 창립된 서울대학교 로켓동아리입니다.
-          이름 그대로 "하늘을 나는 로켓"을 꿈꾸며, 30년 넘게
-          과학로켓을 연구하고 비행 시험을 이어오고 있습니다.
-        </p>
+      <div class="container page-hero-grid">
+        <div>
+          <p class="sec-label reveal">About Us</p>
+          <h1 class="reveal" style="--d:.05s">서로 다른 전공이<br><em>하나의 비행체</em>가 되는 곳</h1>
+          <p class="lead reveal" style="--d:.1s">
+            HANARO는 서울대학교 학생 로켓 팀입니다. 각 파트가 만든 시스템을 통합하고,
+            설계 검토와 반복 시험을 거쳐 실제 비행으로 연결합니다.
+          </p>
+        </div>
+        <figure class="page-hero-visual reveal">
+          <img src="assets/images/team.webp" alt="발사 현장에서 로켓과 함께한 하나로 팀원들" width="1280" height="810">
+          <figcaption>한 대의 로켓, 하나의 팀</figcaption>
+        </figure>
       </div>
     </section>
 
@@ -77,8 +86,8 @@
     <section class="section">
       <div class="container">
         <div class="sec-head reveal">
-          <p class="sec-label">01 · Mission</p>
-          <h2 class="sec-title">우리가 로켓을 만드는 이유</h2>
+          <p class="sec-label">01 · Principles</p>
+          <h2 class="sec-title">우리가 지키는 <em>개발 원칙</em></h2>
         </div>
 
         <div class="grid-4">
@@ -86,33 +95,33 @@
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.4 6.2L21 9l-5 4.3L17.5 20 12 16.4 6.5 20 8 13.3 3 9l6.6-.8z"/></svg>
             </div>
-            <h3>신뢰성 있는 로켓</h3>
-            <span class="en">Reliability</span>
-            <p>매년 축적되는 설계와 시험 데이터 위에서, 더 안전하고 신뢰성 있는 과학로켓 기술을 만들어 갑니다.</p>
+            <h3>근거로 설계합니다</h3>
+            <span class="en">Evidence</span>
+            <p>요구조건과 해석, 시험 결과를 문서화하고 다음 설계 판단의 근거로 사용합니다.</p>
           </div>
           <div class="card reveal" style="--d:.1s">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 4.5a3 3 0 1 1 5 3L8 19l-5 1.5L4.5 15 16 3.5"/><path d="M13 6l5 5"/></svg>
             </div>
-            <h3>실전 엔지니어링</h3>
-            <span class="en">Hands-on</span>
-            <p>강의실의 이론을 도면과 실물로 옮기는 훈련. 손으로 만들고 실패하며 배우는 진짜 엔지니어링입니다.</p>
+            <h3>작게 시험하고 확장합니다</h3>
+            <span class="en">Test Early</span>
+            <p>부품과 하위 시스템부터 검증하고, 통합 시험을 거쳐 비행 위험을 단계적으로 낮춥니다.</p>
           </div>
           <div class="card reveal" style="--d:.15s">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9S14.5 18.4 12 21c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3z"/></svg>
             </div>
-            <h3>시스템 엔지니어링</h3>
+            <h3>인터페이스를 맞춥니다</h3>
             <span class="en">Systems</span>
-            <p>추진, 구조, 항전, 회수가 맞물리는 하나의 시스템. 전체를 보는 눈은 로켓이 가장 잘 가르쳐 줍니다.</p>
+            <p>추진, 공력·구조, 항전, 회수의 경계를 명확히 하고 하나의 임무 시퀀스로 통합합니다.</p>
           </div>
           <div class="card reveal" style="--d:.2s">
             <div class="card-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V7"/><path d="M6.5 12.5 12 7l5.5 5.5"/><path d="M4 21h16"/></svg>
             </div>
-            <h3>항공우주 인재</h3>
-            <span class="en">People</span>
-            <p>하나로를 거쳐 간 부원들이 우주 산업 곳곳에서 일합니다. 다음 세대의 항공우주 인재가 여기서 자랍니다.</p>
+            <h3>실패도 기록합니다</h3>
+            <span class="en">Learn</span>
+            <p>목표와 실제 결과를 구분하고, 기대와 달랐던 이유까지 남겨 다음 비행의 품질을 높입니다.</p>
           </div>
         </div>
       </div>
@@ -123,45 +132,32 @@
       <div class="container">
         <div class="sec-head reveal">
           <p class="sec-label">02 · History</p>
-          <h2 class="sec-title">30년의 <em>비행 기록</em></h2>
+          <h2 class="sec-title">도전과 학습의 <em>비행 기록</em></h2>
         </div>
 
-        <div class="timeline">
-          <div class="tl-item reveal">
-            <p class="tl-year">1995</p>
-            <h3>하나로의 시작</h3>
-            <p>
-              "하늘을 나는 로켓"이라는 이름으로 서울대학교에 로켓동아리가
-              창립되었습니다. 첫 부원들이 모여 첫 도면을 그리기 시작했습니다.
-            </p>
-          </div>
-          <div class="tl-item reveal">
-            <p class="tl-year">2000s – 2010s</p>
-            <h3>과학로켓의 시대</h3>
-            <p>
-              모델 로켓을 넘어 본격적인 과학로켓으로. KAIST와 공동 개발한
-              하이브리드 과학로켓 <span style="white-space:nowrap">SNUKA-Ⅱ</span>가 최대 고도 3&nbsp;km에 도달한 뒤
-              낙하산으로 무사히 귀환하며, 하이브리드 추진 기술의 가능성을 증명했습니다.
-            </p>
-          </div>
-          <div class="tl-item reveal">
+        <ol class="timeline">
+          <li class="tl-item reveal">
+            <p class="tl-year">2017</p>
+            <h3>SNUKA — 첫 국제대회의 시스템 통합 경험</h3>
+            <p>KAIST 연구팀과 하이브리드 로켓 SNUKA를 공동 개발해 IREC에 도전했습니다. 대회 비행은 실패했지만, 국제 규정과 통합 시험의 중요성을 배운 출발점이 되었습니다.</p>
+          </li>
+          <li class="tl-item reveal">
             <p class="tl-year">2023</p>
-            <h3>세계 무대로 — Spaceport America Cup</h3>
-            <p>
-              세계 최대 대학생 로켓 대회인 Spaceport America Cup에
-              사운딩 로켓 HARANG(하랑)으로 출전했습니다. 목표 고도 10,000&nbsp;ft,
-              3U 큐브샛 사출이라는 임무를 안고 미국 뉴멕시코의 발사장에 섰습니다.
-            </p>
-          </div>
-          <div class="tl-item reveal">
-            <p class="tl-year">Now</p>
-            <h3>다음 로켓을 준비하며</h3>
-            <p>
-              축적된 30년의 경험 위에서, 하나로는 오늘도 다음 로켓을
-              설계하고 있습니다. 다음 기록은 지금 함께하는 부원들의 몫입니다.
-            </p>
-          </div>
-        </div>
+            <h3>HARANG — 최고 고도 2,009 m</h3>
+            <p>Spaceport America Cup에서 실제 최고 고도 2,009&nbsp;m와 실시간 텔레메트리 전송을 기록했습니다. 개발과 비행 분석은 IAC 2023에서 발표했습니다.</p>
+          </li>
+          <li class="tl-item reveal">
+            <p class="tl-year">2024</p>
+            <h3>NURA 대상·은상, X-Corps 최우수상</h3>
+            <p>400&nbsp;m급 이중 회수 구조 로켓으로 NURA 학술대회 대상과 발사대회 은상을 받았고, 대한항공 협력 연구로 X-Corps 전국대회 최우수상을 수상했습니다.</p>
+          </li>
+          <li class="tl-item reveal">
+            <p class="tl-year">2025</p>
+            <h3>IREC 2025와 HARANG 2</h3>
+            <p>다시 국제 무대에 출전해 HARANG 2를 발사했습니다. 공개가 검증된 결과부터 프로젝트 기록에 계속 반영합니다.</p>
+          </li>
+        </ol>
+        <div class="source-links reveal"><a href="https://www.snu.ac.kr/snunow/press?bbsidx=143816&amp;md=v" target="_blank" rel="noopener">서울대 HARANG 보도자료 ↗</a><a href="https://eng.snu.ac.kr/communication/promotion/news?bbsidx=5561&amp;md=v" target="_blank" rel="noopener">서울공대 2024 성과 ↗</a></div>
       </div>
     </section>
 
@@ -169,11 +165,11 @@
     <section class="section">
       <div class="container">
         <div class="sec-head reveal">
-          <p class="sec-label">03 · People</p>
-          <h2 class="sec-title">함께 만드는 사람들</h2>
+          <p class="sec-label">03 · Team Structure</p>
+          <h2 class="sec-title">함께 만드는 <em>시스템</em></h2>
           <p class="sec-desc">
-            기계, 항공우주, 전기, 컴퓨터, 재료 — 서로 다른 전공의 부원
-            100여 명이 하나의 로켓 위에서 만납니다.
+            서로 다른 전공의 학생들이 추진, 공력·구조, 전자, 회수 파트에서
+            각 하위 시스템을 맡고 설계 리뷰와 통합 시험으로 연결합니다.
           </p>
         </div>
 
@@ -211,19 +207,19 @@
             <p class="stat-sub">서울대학교 공과대학 31동 401호</p>
           </div>
           <div class="stat reveal" style="--d:.1s">
-            <div class="stat-num"><span data-count="100">100</span><span class="unit">+</span></div>
-            <p class="stat-label">활동 부원</p>
-            <p class="stat-sub">전공을 넘나드는 크루</p>
+            <div class="stat-num"><span data-count="4">4</span></div>
+            <p class="stat-label">핵심 시스템</p>
+            <p class="stat-sub">추진 · 공력/구조 · 전자 · 회수</p>
           </div>
           <div class="stat reveal" style="--d:.15s">
-            <div class="stat-num"><span data-count="30">30</span><span class="unit">+년</span></div>
-            <p class="stat-label">이어온 역사</p>
-            <p class="stat-sub">1995년부터 지금까지</p>
+            <div class="stat-num"><span data-count="2009">2,009</span><span class="unit">m</span></div>
+            <p class="stat-label">검증된 최고 고도</p>
+            <p class="stat-sub">HARANG · 2023</p>
           </div>
           <div class="stat reveal" style="--d:.2s">
-            <div class="stat-num"><span>∞</span></div>
-            <p class="stat-label">앞으로의 비행</p>
-            <p class="stat-sub">다음 기록을 함께 쓸 사람을 기다립니다</p>
+            <div class="stat-num"><span data-count="3">3</span><span class="unit">개 상</span></div>
+            <p class="stat-label">2024 주요 수상</p>
+            <p class="stat-sub">NURA 대상·은상 · X-Corps 최우수상</p>
           </div>
         </div>
       </div>
@@ -232,7 +228,7 @@
     <!-- ============ CTA ============ -->
     <section class="cta-band">
       <h2 class="reveal">하나로의 다음 장을<br><em>함께</em> 써 내려갈 사람</h2>
-      <p class="reveal" style="--d:.1s">우리는 늘 새로운 크루를 기다립니다.</p>
+      <p class="reveal" style="--d:.1s">모집 일정과 지원 자격은 학기별 공지를 기준으로 확인해 주세요.</p>
       <a class="btn btn-primary reveal" style="--d:.2s" href="recruit.html">모집 안내 보기 <span class="arrow" aria-hidden="true">→</span></a>
     </section>
   </main>
@@ -241,8 +237,10 @@
   <footer class="footer">
     <p class="footer-word" aria-hidden="true">HANARO</p>
     <div class="container">
+      <h2 class="sr-only">사이트 정보</h2>
       <div class="footer-grid">
         <div class="footer-brand">
+          <img class="brand-emblem" src="assets/brand/hanaro-emblem.png" alt="SNU Rocket Team HANARO 엠블럼" width="640" height="640" loading="lazy">
           <a class="brand" href="index.html">
             <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
@@ -255,21 +253,21 @@
               <span class="brand-sub">SNU Rocket Team</span>
             </span>
           </a>
-          <p>하늘을 나는 로켓, 하나로.<br>1995년부터 서울대학교에서 로켓을 만들어 쏘아 올립니다.</p>
+          <p>학생이 설계하고, 제작하고, 시험해 증명하는 서울대학교 학생 로켓 팀.</p>
         </div>
         <div>
-          <h4>Menu</h4>
+          <h3>Menu</h3>
           <div class="footer-links">
             <a href="about.html">소개</a>
             <a href="projects.html">프로젝트</a>
             <a href="recruit.html">모집</a>
-            <a href="contact.html">연락처</a>
+            <a href="contact.html">후원·문의</a>
           </div>
         </div>
         <div>
-          <h4>Contact</h4>
+          <h3>Contact</h3>
           <div class="footer-links">
-            <span class="addr">서울대학교 공과대학 31동 401호</span>
+            <address class="addr">서울대학교 공과대학 31동 401호</address>
             <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
             <a href="https://www.facebook.com/SNURThanaro/" target="_blank" rel="noopener">Facebook ↗</a>
             <a href="https://www.youtube.com/watch?v=CxrSn5ktctI" target="_blank" rel="noopener">홍보영상 (YouTube) ↗</a>

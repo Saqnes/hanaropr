@@ -1,0 +1,14 @@
+{
+  "name": "snu-rocket-team-hanaro-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "SNU Rocket Team HANARO official static website",
+  "scripts": {
+    "check:html": "node scripts/check.mjs",
+    "check:js": "node --check js/main.js",
+    "check": "npm run check:html && npm run check:js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
