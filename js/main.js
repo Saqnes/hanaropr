@@ -74,7 +74,7 @@
         var alpha = s.a + Math.sin(t * s.tw + s.ph) * 0.18;
         if (alpha < 0.03) alpha = 0.03;
         ctx.globalAlpha = alpha;
-        ctx.fillStyle = i % 9 === 0 ? '#ffd9c4' : i % 7 === 0 ? '#c9d6ff' : '#ffffff';
+        ctx.fillStyle = i % 9 === 0 ? '#ffe0a0' : i % 7 === 0 ? '#ffc2cf' : '#ffffff';
         ctx.beginPath();
         ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();

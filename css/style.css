@@ -1,6 +1,7 @@
 /* ==========================================================================
    SNU ROCKET TEAM HANARO — hanaro.snu.ac.kr
-   Design system: deep-space dark · flame accent · Space Grotesk + Pretendard
+   Design system: navy night · gold + pink flame · Space Grotesk + Pretendard
+   Brand palette: navy #253046 · gold #F8B62B/#FBAE40 · pink #F77D90
    ========================================================================== */
 
 /* ---------- Fonts (self-hosted) ---------- */
@@ -26,25 +27,35 @@
 }
 
 /* ---------- Tokens ---------- */
+/* Brand palette (from HANARO logo + deck): navy #253046 · gold #F8B62B/#FBAE40
+   · pink flame #F77D90. Signature gradient = gold → pink (emblem star + rocket trail). */
 :root {
-  --bg-0: #04060d;
-  --bg-1: #070a14;
-  --bg-2: #0c1120;
+  --bg-0: #0a1120; /* deep navy night sky */
+  --bg-1: #0e1626;
+  --bg-2: #172035;
+  --navy: #253046; /* brand navy */
 
   --line: rgba(255, 255, 255, 0.08);
   --line-strong: rgba(255, 255, 255, 0.16);
 
-  --text-1: #f2f4fb;
-  --text-2: #a8b0c6;
-  --text-3: #7d87a4; /* ≥4.5:1 on --bg-0 even over faint card fills */
+  --text-1: #eef1f8;
+  --text-2: #aab4cc;
+  --text-3: #808bab; /* ≥4.5:1 on --bg-0 even over faint card fills */
 
-  --flame: #ff5d2e;
-  --flame-soft: #ff8a5c;
-  --ember: #ffb15c;
-  --ion: #7a95ff;
+  --gold: #f8b62b;
+  --gold-2: #fbae40;
+  --gold-soft: #ffce6a;
+  --pink: #f77d90;
+  --pink-soft: #ff9fb0;
 
-  --grad-flame: linear-gradient(120deg, #ffb15c 0%, #ff5d2e 45%, #ff7a3d 100%);
-  --grad-metal: linear-gradient(180deg, #ffffff 0%, #b9c3de 100%);
+  /* legacy aliases so existing rules resolve to the new brand colors */
+  --flame: #f8b62b;
+  --flame-soft: #ffce6a;
+  --ember: #ffce6a;
+  --ion: #6f8bd6;
+
+  --grad-flame: linear-gradient(115deg, #ffce6a 0%, #f8b62b 32%, #f77d90 100%);
+  --grad-metal: linear-gradient(180deg, #ffffff 0%, #c3cde2 100%);
 
   --font-display: 'Space Grotesk', 'Pretendard Variable', sans-serif;
   --font-body: 'Pretendard Variable', -apple-system, BlinkMacSystemFont,
@@ -109,7 +120,7 @@ button {
 }
 
 ::selection {
-  background: rgba(255, 93, 46, 0.35);
+  background: rgba(248, 182, 43, 0.35);
   color: #fff;
 }
 
@@ -128,7 +139,7 @@ button {
   padding: 12px 20px;
   border-radius: 999px;
   background: var(--grad-flame);
-  color: #170703;
+  color: #141d2e;
   font-weight: 700;
   transform: translateY(-200%);
   transition: transform 0.2s;
@@ -154,8 +165,8 @@ body::before {
   inset: 0;
   z-index: -3;
   background:
-    radial-gradient(1200px 800px at 80% -10%, rgba(122, 149, 255, 0.08), transparent 60%),
-    radial-gradient(1000px 700px at 10% 110%, rgba(255, 93, 46, 0.05), transparent 60%),
+    radial-gradient(1200px 800px at 82% -12%, rgba(248, 182, 43, 0.07), transparent 60%),
+    radial-gradient(1000px 720px at 8% 112%, rgba(247, 125, 144, 0.07), transparent 60%),
     var(--bg-0);
 }
 
@@ -212,7 +223,7 @@ body::after {
   height: 8px;
   border-radius: 50%;
   background: var(--grad-flame);
-  box-shadow: 0 0 12px rgba(255, 93, 46, 0.8);
+  box-shadow: 0 0 12px rgba(248, 182, 43, 0.8);
 }
 
 .sec-title {
@@ -259,13 +270,13 @@ body::after {
 
 .btn-primary {
   background: var(--grad-flame);
-  color: #170703;
-  box-shadow: 0 8px 32px rgba(255, 93, 46, 0.35);
+  color: #141d2e;
+  box-shadow: 0 8px 32px rgba(248, 182, 43, 0.35);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 44px rgba(255, 93, 46, 0.5);
+  box-shadow: 0 14px 44px rgba(248, 182, 43, 0.5);
 }
 
 .btn-ghost {
@@ -327,7 +338,7 @@ body::after {
   height: 34px;
   flex: none;
   color: var(--flame);
-  filter: drop-shadow(0 0 10px rgba(255, 93, 46, 0.45));
+  filter: drop-shadow(0 0 10px rgba(248, 182, 43, 0.45));
 }
 
 .brand-text {
@@ -391,16 +402,16 @@ body::after {
   padding: 10px 22px;
   border-radius: 999px;
   background: var(--grad-flame);
-  color: #170703;
+  color: #141d2e;
   font-size: 0.9375rem;
   font-weight: 700;
   transition: transform 0.3s var(--ease-out), box-shadow 0.3s;
-  box-shadow: 0 4px 20px rgba(255, 93, 46, 0.3);
+  box-shadow: 0 4px 20px rgba(248, 182, 43, 0.3);
 }
 
 .nav-cta:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(255, 93, 46, 0.45);
+  box-shadow: 0 8px 28px rgba(248, 182, 43, 0.45);
 }
 
 .nav-toggle {
@@ -533,7 +544,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
   transform: translateX(-50%);
   width: min(1100px, 130vw);
   height: 60vh;
-  background: radial-gradient(closest-side, rgba(255, 93, 46, 0.28), rgba(255, 93, 46, 0.08) 45%, transparent 70%);
+  /* rocket trail: pink flame core fading up into gold */
+  background: radial-gradient(closest-side, rgba(247, 125, 144, 0.3), rgba(248, 182, 43, 0.1) 48%, transparent 72%);
   pointer-events: none;
 }
 
@@ -723,8 +735,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .stat:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 93, 46, 0.45);
-  box-shadow: 0 18px 48px rgba(255, 93, 46, 0.12);
+  border-color: rgba(248, 182, 43, 0.45);
+  box-shadow: 0 18px 48px rgba(248, 182, 43, 0.12);
 }
 
 .stat-num {
@@ -794,8 +806,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 93, 46, 0.4);
-  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 93, 46, 0.15);
+  border-color: rgba(248, 182, 43, 0.4);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(248, 182, 43, 0.15);
 }
 
 .card-icon {
@@ -805,7 +817,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
   place-items: center;
   border-radius: 14px;
   border: 1px solid var(--line);
-  background: rgba(255, 93, 46, 0.08);
+  background: rgba(248, 182, 43, 0.08);
   color: var(--flame-soft);
   margin-bottom: 22px;
 }
@@ -850,14 +862,14 @@ body.menu-open .nav-toggle span:nth-child(3) {
   padding: clamp(28px, 3.4vw, 44px);
   overflow: hidden;
   background:
-    radial-gradient(560px 300px at 85% -10%, rgba(122, 149, 255, 0.12), transparent 65%),
+    radial-gradient(560px 300px at 85% -10%, rgba(247, 125, 144, 0.12), transparent 65%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
   transition: transform 0.45s var(--ease-out), border-color 0.45s, box-shadow 0.45s;
 }
 
 .project-card:hover {
   transform: translateY(-6px);
-  border-color: rgba(255, 93, 46, 0.45);
+  border-color: rgba(248, 182, 43, 0.45);
   box-shadow: 0 24px 64px rgba(0, 0, 0, 0.55);
 }
 
@@ -883,8 +895,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
   gap: 8px;
   padding: 7px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 93, 46, 0.4);
-  background: rgba(255, 93, 46, 0.1);
+  border: 1px solid rgba(248, 182, 43, 0.4);
+  background: rgba(248, 182, 43, 0.1);
   color: var(--flame-soft);
   font-family: var(--font-display);
   font-size: 0.71875rem;
@@ -1062,7 +1074,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
   border-radius: 50%;
   background: var(--flame);
   transform: translateY(-2px);
-  box-shadow: 0 0 8px rgba(255, 93, 46, 0.7);
+  box-shadow: 0 0 8px rgba(248, 182, 43, 0.7);
 }
 
 /* ---------- Journey / cycle steps ---------- */
@@ -1084,7 +1096,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .step:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 93, 46, 0.4);
+  border-color: rgba(248, 182, 43, 0.4);
 }
 
 .step-num {
@@ -1154,7 +1166,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
   border-radius: 50%;
   background: var(--bg-0);
   border: 2px solid var(--flame);
-  box-shadow: 0 0 12px rgba(255, 93, 46, 0.6);
+  box-shadow: 0 0 12px rgba(248, 182, 43, 0.6);
 }
 
 .tl-year {
@@ -1192,8 +1204,9 @@ body.menu-open .nav-toggle span:nth-child(3) {
   overflow: hidden;
   border-block: 1px solid var(--line);
   background:
-    radial-gradient(900px 480px at 50% 120%, rgba(255, 93, 46, 0.22), transparent 70%),
-    radial-gradient(700px 400px at 85% -20%, rgba(122, 149, 255, 0.1), transparent 60%);
+    radial-gradient(820px 460px at 38% 122%, rgba(247, 125, 144, 0.22), transparent 70%),
+    radial-gradient(820px 460px at 66% 124%, rgba(248, 182, 43, 0.2), transparent 70%),
+    radial-gradient(700px 400px at 85% -20%, rgba(111, 139, 214, 0.1), transparent 60%);
 }
 
 .cta-band h2 {
@@ -1273,7 +1286,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 }
 
 .faq details[open] {
-  border-color: rgba(255, 93, 46, 0.35);
+  border-color: rgba(248, 182, 43, 0.35);
 }
 
 .faq summary {
@@ -1335,7 +1348,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .contact-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 93, 46, 0.4);
+  border-color: rgba(248, 182, 43, 0.4);
   box-shadow: 0 16px 44px rgba(0, 0, 0, 0.45);
 }
 
@@ -1367,7 +1380,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
   padding: clamp(64px, 9vw, 110px) 0 40px;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(180deg, transparent, rgba(255, 93, 46, 0.04));
+  background: linear-gradient(180deg, transparent, rgba(248, 182, 43, 0.04));
 }
 
 .footer-word {
@@ -1389,6 +1402,13 @@ body.menu-open .nav-toggle span:nth-child(3) {
   grid-template-columns: 1.4fr 1fr 1fr;
   gap: clamp(32px, 5vw, 64px);
   padding-bottom: 56px;
+}
+
+.footer-emblem {
+  width: 64px;
+  height: 64px;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.5));
 }
 
 .footer-brand p {
@@ -1545,7 +1565,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .team-card:hover {
   transform: translateY(-5px);
-  border-color: rgba(255, 93, 46, 0.4);
+  border-color: rgba(248, 182, 43, 0.4);
   box-shadow: 0 20px 56px rgba(0, 0, 0, 0.5);
 }
 
@@ -1615,7 +1635,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 
 .sponsor:hover {
   transform: translateY(-4px);
-  border-color: rgba(255, 93, 46, 0.35);
+  border-color: rgba(248, 182, 43, 0.35);
 }
 
 .sponsor .name {
@@ -1655,8 +1675,8 @@ body.menu-open .nav-toggle span:nth-child(3) {
 }
 
 .org-node.head {
-  border-color: rgba(255, 93, 46, 0.4);
-  background: linear-gradient(180deg, rgba(255, 93, 46, 0.12), rgba(255, 93, 46, 0.02));
+  border-color: rgba(248, 182, 43, 0.4);
+  background: linear-gradient(180deg, rgba(248, 182, 43, 0.12), rgba(248, 182, 43, 0.02));
 }
 
 .org-node .role {
@@ -1686,7 +1706,7 @@ body.menu-open .nav-toggle span:nth-child(3) {
 .org-connector {
   width: 1px;
   height: 28px;
-  background: linear-gradient(180deg, rgba(255, 93, 46, 0.6), rgba(255, 255, 255, 0.12));
+  background: linear-gradient(180deg, rgba(248, 182, 43, 0.6), rgba(255, 255, 255, 0.12));
 }
 
 .org-teams {
