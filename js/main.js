@@ -433,4 +433,100 @@
   if (year) {
     year.textContent = new Date().getFullYear();
   }
+
+  /* ---------- Mission clock (hero telemetry, home) ---------- */
+  var clock = document.getElementById('mission-clock');
+  if (clock) {
+    var pad2 = function (n) { return (n < 10 ? '0' : '') + n; };
+    var tickClock = function () {
+      var d = new Date();
+      clock.textContent =
+        'MISSION TIME ' + pad2(d.getUTCHours()) + ':' + pad2(d.getUTCMinutes()) +
+        ':' + pad2(d.getUTCSeconds()) + ' UTC';
+    };
+    tickClock();
+    setInterval(tickClock, 1000);
+  }
+
+  /* ---------- Project year filter (projects.html) ---------- */
+  var fbar = document.querySelector('.filter-bar');
+  if (fbar) {
+    var chips = Array.prototype.slice.call(fbar.querySelectorAll('.chip'));
+    var pcards = Array.prototype.slice.call(document.querySelectorAll('#project-grid .project-card'));
+    fbar.addEventListener('click', function (e) {
+      var btn = e.target.closest('.chip');
+      if (!btn) return;
+      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === btn ? 'true' : 'false'); });
+      var f = btn.getAttribute('data-filter');
+      pcards.forEach(function (card) {
+        var show = f === 'all' || card.getAttribute('data-year') === f;
+        card.classList.toggle('is-hidden', !show);
+      });
+    });
+  }
+
+  /* ---------- Archive tabs (archive.html) ---------- */
+  var tablist = document.querySelector('.tabs[role="tablist"]');
+  if (tablist) {
+    var tabs = Array.prototype.slice.call(tablist.querySelectorAll('[role="tab"]'));
+    var panels = tabs.map(function (t) { return document.getElementById(t.getAttribute('aria-controls')); });
+    var selectTab = function (idx) {
+      tabs.forEach(function (t, i) {
+        var on = i === idx;
+        t.setAttribute('aria-selected', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+        if (panels[i]) panels[i].hidden = !on;
+      });
+    };
+    selectTab(0); /* progressive: without JS every panel stays visible */
+    tablist.addEventListener('click', function (e) {
+      var t = e.target.closest('[role="tab"]');
+      if (!t) return;
+      selectTab(tabs.indexOf(t));
+    });
+    tablist.addEventListener('keydown', function (e) {
+      var i = tabs.indexOf(document.activeElement);
+      if (i < 0) return;
+      var n;
+      if (e.key === 'ArrowRight' || e.key === 'ArrowDown') n = (i + 1) % tabs.length;
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') n = (i - 1 + tabs.length) % tabs.length;
+      else if (e.key === 'Home') n = 0;
+      else if (e.key === 'End') n = tabs.length - 1;
+      else return;
+      e.preventDefault();
+      tabs[n].focus();
+      selectTab(n);
+    });
+  }
+
+  /* ---------- Contact form → mailto composer (contact.html) ---------- */
+  var form = document.getElementById('contactForm');
+  if (form) {
+    var typeSel = document.getElementById('f-type');
+    var val = function (id) { var el = document.getElementById(id); return el ? el.value.trim() : ''; };
+
+    /* route presets from the "문의 경로" cards */
+    document.querySelectorAll('[data-preset]').forEach(function (a) {
+      a.addEventListener('click', function () {
+        if (typeSel) typeSel.value = a.getAttribute('data-preset');
+      });
+    });
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var name = val('f-name');
+      var email = val('f-email');
+      var type = typeSel ? typeSel.value : '문의';
+      var msg = val('f-msg');
+      var subject = '[하나로 문의 · ' + type + '] ' + name;
+      var body =
+        '문의 유형: ' + type + '\n' +
+        '이름 · 소속: ' + name + '\n' +
+        '회신 이메일: ' + email + '\n\n' +
+        msg + '\n';
+      window.location.href =
+        'mailto:ghyuk.lee@snu.ac.kr?subject=' + encodeURIComponent(subject) +
+        '&body=' + encodeURIComponent(body);
+    });
+  }
 })();
