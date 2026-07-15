@@ -3,41 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>서울대학교 로켓동아리 하나로 | SNU Rocket Team HANARO</title>
-  <meta name="description" content="하늘을 나는 로켓, 하나로. 1995년부터 서울대학교에서 과학로켓을 직접 설계·제작·시험·발사하는 로켓동아리 HANARO입니다.">
+  <title>HANARO · 서울대학교 로켓동아리 | SNU Rocket Team</title>
+  <meta name="description" content="서울대학교 로켓동아리 하나로(HANARO) — 과학로켓을 직접 설계·제작·시험·발사하는 학생 엔지니어링 팀. Per Ardua ad Astra.">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="서울대학교 로켓동아리 하나로 | SNU Rocket Team HANARO">
-  <meta property="og:description" content="하늘을 나는 로켓, 하나로. 1995년부터 과학로켓을 설계하고, 만들고, 쏘아 올립니다.">
-  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
-  <meta property="og:url" content="https://hanaro.snu.ac.kr/">
+  <meta property="og:title" content="HANARO · 서울대학교 로켓동아리 | SNU Rocket Team">
+  <meta property="og:description" content="과학로켓을 직접 설계·제작·시험·발사하는 학생 엔지니어링 팀. Per Ardua ad Astra.">
+  <meta property="og:image" content="assets/og.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
   <script defer src="js/main.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <canvas id="starfield" aria-hidden="true"></canvas>
 
-  <!-- ============ NAV ============ -->
   <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html" aria-label="하나로 홈으로">
-        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-          <circle cx="12" cy="9.5" r="1.7"/>
-          <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-          <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-        </svg>
-        <span class="brand-text">
-          <span class="brand-name">HANARO</span>
-          <span class="brand-sub">SNU Rocket Team</span>
-        </span>
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html" aria-label="하나로 홈">
+        <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+        <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
       </a>
-
       <nav class="nav-links" aria-label="주 메뉴">
         <a href="index.html" class="active" aria-current="page">Home</a>
         <a href="about.html">About</a>
@@ -47,16 +32,11 @@
         <a href="support.html">Support</a>
         <a href="contact.html">Contact</a>
       </nav>
-
-      <a class="nav-cta" href="support.html">후원하기</a>
-
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
-        <span></span><span></span><span></span>
-      </button>
+      <a class="nav-cta" href="support.html">후원</a>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="m"><span></span><span></span><span></span></button>
     </div>
   </header>
-
-  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile" id="m" aria-label="모바일 메뉴">
     <a href="index.html" class="active" aria-current="page">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
@@ -67,351 +47,181 @@
   </nav>
 
   <main id="main">
-    <!-- ============ HERO ============ -->
+    <!-- HERO -->
     <section class="hero">
-      <div class="hero-media" aria-hidden="true">
-        <img src="assets/photos/team-propulsion.jpg" alt="" width="796" height="594" fetchpriority="high">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">SNU Rocket Team · Seoul National University</p>
+          <h1 class="hero-title">HANARO</h1>
+          <p class="hero-sub">학생이 <span class="g">설계</span>하고, 만들고, 쏘아 올리는 과학로켓.</p>
+          <p class="hero-desc">
+            서울대학교 로켓동아리 하나로는 과학로켓을 직접 설계·제작·시험·발사하는
+            학생 엔지니어링 팀입니다. 도면 위의 계산이 실제 비행이 되는 전 과정을
+            우리 손으로 완주합니다.
+          </p>
+          <div class="actions">
+            <a class="btn btn-solid" href="about.html">하나로 알아보기 <span class="ar" aria-hidden="true">→</span></a>
+            <a class="btn btn-line" href="support.html">후원 · 협력 문의</a>
+          </div>
+          <p class="telemetry mono">
+            <span>SYS · <b>NOMINAL</b></span>
+            <span id="clock">T --:--:-- UTC</span>
+            <span>PER ARDUA AD ASTRA</span>
+          </p>
+          <div class="chips">
+            <span>Design</span><span>Build</span><span>Test</span><span>Launch</span><span>2-Stage Sounding Rocket</span>
+          </div>
+        </div>
+        <div class="schematic">
+          <span class="tag mono">FIG.01 — REFERENCE VEHICLE</span>
+          <img class="rocket" src="assets/rocket.svg" alt="하나로 2단 사운딩 로켓 도면 — 전장 2329mm, 동체 지름 85mm, 노즈콘 300mm Von Kármán" width="340" height="2449" fetchpriority="high">
+          <div class="frame" aria-hidden="true"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
+        </div>
       </div>
-      <div class="hero-hud" aria-hidden="true">
-        <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
-      </div>
-      <span class="hero-sticker" aria-hidden="true">PER ARDUA<br>AD ASTRA</span>
-      <p class="hero-eyebrow"><span class="dot" aria-hidden="true"></span>Seoul National University Rocket Team · Since 1995</p>
-      <h1 class="hero-title">HANARO</h1>
-      <p class="hero-tagline"><em>하</em>늘을 <em>나</em>는 로켓, 하나로</p>
-      <p class="hero-desc">
-        1995년부터, 서울대학교 로켓동아리 하나로는 과학로켓을 직접 설계하고,
-        만들고, 시험하고, 하늘로 쏘아 올립니다. 도면 위의 아이디어가 굉음과
-        함께 떠오르는 순간까지 — 전 과정을 우리 손으로.
-      </p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="about.html">하나로 알아보기 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost" href="support.html">후원 · 협력 문의</a>
-      </div>
-      <p class="telemetry mono" aria-hidden="true">
-        LAT 37.45°N · LON 126.95°E · <b id="mission-clock">MISSION TIME —</b>
-      </p>
-      <div class="hero-meta">
-        <span>Since 1995</span>
-        <span>Spaceport America Cup</span>
-        <span>IREC 2025</span>
-      </div>
-      <div class="scroll-cue" aria-hidden="true">Scroll</div>
     </section>
 
-    <!-- ============ MARQUEE ============ -->
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>SNU Rocket Team</span>
-        <span>하늘을 나는 로켓</span>
-        <span>Design · Build · Test · Launch</span>
-        <span>Since 1995</span>
-        <span>Per Ardua ad Astra</span>
-        <span>SNU Rocket Team</span>
-        <span>하늘을 나는 로켓</span>
-        <span>Design · Build · Test · Launch</span>
-        <span>Since 1995</span>
-        <span>Per Ardua ad Astra</span>
+    <!-- TICKER -->
+    <div class="ticker" aria-hidden="true">
+      <div class="ticker-track">
+        <span>HANARO</span><span><b>·</b></span><span>Per Ardua ad Astra</span><span><b>·</b></span><span>Design — Build — Test — Launch</span><span><b>·</b></span><span>SNU Rocket Team</span><span><b>·</b></span>
+        <span>HANARO</span><span><b>·</b></span><span>Per Ardua ad Astra</span><span><b>·</b></span><span>Design — Build — Test — Launch</span><span><b>·</b></span><span>SNU Rocket Team</span><span><b>·</b></span>
       </div>
     </div>
 
-    <!-- ============ ABOUT ============ -->
-    <section class="section" id="about">
-      <div class="container">
-        <div class="split">
-          <div class="reveal">
-            <p class="sec-label">01 · About</p>
-            <h2 class="sec-title">1995년부터<br>하늘을 향해</h2>
-            <div class="prose">
-              <p class="sec-desc">
-                하나로는 1995년 설립된 서울대학교 로켓동아리이자 비영리
-                임의단체입니다. 약 100명의 부원이 활동하며, 매년 과학로켓을
-                연구하고 비행 시험을 이어오고 있습니다.
-              </p>
-              <p class="sec-desc" style="margin-top:14px">
-                추진 · 공력 · 전자 · 회수 — 서로 다른 분야의 부원들이 하나의
-                로켓 위에서 만나, 설계부터 제작과 시험, 발사와 회수까지 개발의
-                전 주기를 직접 경험합니다.
-              </p>
-            </div>
-            <div class="hero-actions" style="margin-top:30px">
-              <a class="btn btn-ghost" href="about.html">동아리 소개 <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
-          </div>
-          <figure class="split-media reveal" style="--d:.1s">
-            <img src="assets/photos/group-pad.jpg" alt="발사장에서 로켓과 함께한 하나로 부원들의 단체 사진" width="1280" height="813" loading="lazy">
-            <figcaption>발사 캠페인을 마친 하나로 부원들 · Spaceport America Cup</figcaption>
-          </figure>
-        </div>
-
-        <div class="stats" style="margin-top:clamp(48px,6vw,72px)">
-          <div class="stat reveal" style="--d:.05s">
-            <div class="stat-num"><span data-count="1995" data-plain>1995</span></div>
-            <p class="stat-label">설립</p>
-            <p class="stat-sub">30년 넘게 이어온 역사</p>
-          </div>
-          <div class="stat reveal" style="--d:.1s">
-            <div class="stat-num"><span data-count="100">100</span><span class="unit">+</span></div>
-            <p class="stat-label">활동 부원</p>
-            <p class="stat-sub">다양한 전공의 학생들</p>
-          </div>
-          <div class="stat reveal" style="--d:.15s">
-            <div class="stat-num"><span data-count="4">4</span><span class="unit">팀</span></div>
-            <p class="stat-label">추진 · 공력 · 전자 · 회수</p>
-            <p class="stat-sub">로켓을 이루는 네 갈래</p>
-          </div>
-          <div class="stat reveal" style="--d:.2s">
-            <div class="stat-num"><span>비영리</span></div>
-            <p class="stat-label">학생 주도 단체</p>
-            <p class="stat-sub">설계부터 발사까지 직접</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ TEAMS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">02 · Teams</p>
-          <h2 class="sec-title">로켓을 이루는 <em>네 팀</em></h2>
-          <p class="sec-desc">하나의 로켓이 하늘에 오르기까지, 네 팀의 엔지니어링이 맞물립니다.</p>
-        </div>
-
-        <div class="team-grid">
-          <article class="team-card reveal" style="--d:.05s">
-            <div class="photo"><img src="assets/photos/team-propulsion.jpg" alt="야간 지상 연소 시험 중 화염을 뿜는 로켓 엔진" width="796" height="594" loading="lazy"></div>
-            <div class="body">
-              <span class="en">Propulsion</span>
-              <h3>추진팀</h3>
-              <p>로켓의 심장인 엔진. 추진제 선정과 연소 해석, 지상 연소 시험으로 추력을 만듭니다.</p>
-            </div>
-          </article>
-          <article class="team-card reveal" style="--d:.1s">
-            <div class="photo"><img src="assets/photos/team-airframe.jpg" alt="발사 레일에 장착된 하나로의 로켓 기체" width="1000" height="744" loading="lazy"></div>
-            <div class="body">
-              <span class="en">Airframe</span>
-              <h3>공력 · 구조팀</h3>
-              <p>공력 설계와 구조 해석, 복합재 제작. 가볍고 단단한 기체와 안정적인 비행을 책임집니다.</p>
-            </div>
-          </article>
-          <article class="team-card reveal" style="--d:.15s">
-            <div class="photo"><img src="assets/photos/team-avionics.jpg" alt="배선과 스위치가 연결된 로켓 항공전자 장비 스택" width="1000" height="752" loading="lazy"></div>
-            <div class="body">
-              <span class="en">Avionics</span>
-              <h3>전자팀</h3>
-              <p>비행 컴퓨터와 센서, 텔레메트리. 비행 데이터를 지상국에 전송하고 사출 시퀀스를 제어합니다.</p>
-            </div>
-          </article>
-          <article class="team-card reveal" style="--d:.2s">
-            <div class="photo"><img src="assets/photos/team-recovery.jpg" alt="낙하산을 펼치고 하강하는 로켓" width="550" height="414" loading="lazy"></div>
-            <div class="body">
-              <span class="en">Recovery</span>
-              <h3>회수팀</h3>
-              <p>낙하산 전개와 사출 시스템. 로켓과 임무 장비가 무사히 지상으로 돌아오게 합니다.</p>
-            </div>
-          </article>
-        </div>
-        <div class="hero-actions" style="margin-top:34px">
-          <a class="btn btn-ghost" href="teams.html">팀별 역할 자세히 보기 <span class="arrow" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ FEATURED VEHICLE ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">03 · Flagship</p>
-          <h2 class="sec-title">대표 기체 <em>HARANG</em></h2>
-          <p class="sec-desc">국제 로켓 공학 대회에서 하늘을 가른 하나로의 2단 사운딩 로켓.</p>
-        </div>
-
-        <div class="project-panel reveal">
-          <span class="ghost" aria-hidden="true">02</span>
-          <div>
-            <span class="pill go">FLIGHT · 발사 완료</span>
-            <h3>HARANG</h3>
-            <p class="ko">하랑 · 2단 사운딩 로켓</p>
-            <p>
-              추진부터 회수까지 하나로의 네 팀이 함께 완성한 대표 기체입니다.
-              Von Kármán 형상의 노즈콘과 2단 구성으로, 대회 규격에 맞춘 과학
-              탑재체를 싣고 비행합니다.
+    <!-- INTRO -->
+    <section class="section">
+      <div class="wrap split">
+        <div class="reveal">
+          <p class="eyebrow">01 / About</p>
+          <h2 class="h-lg title-ko">도면 위의 계산을<br><span class="g">하늘</span>로 올립니다</h2>
+          <div class="prose" style="margin-top:20px">
+            <p class="body">
+              하나로는 서울대학교 학생들이 자율적으로 운영하는 로켓 엔지니어링
+              팀입니다. 추진 · 공력 · 전자 · 회수 — 서로 다른 전공의 부원들이
+              하나의 로켓 위에서 만나, 설계부터 발사까지 개발의 전 주기를
+              직접 경험합니다.
             </p>
-            <ul class="mission-list">
-              <li>2023 · Spaceport America Cup 단독 참가, 하랑(HARANG) 발사</li>
-              <li>2025 · IREC 2025 출전, HARANG 2 발사</li>
-              <li>2025 · 한국추진공학회 학술대회 NURA 세션 1위</li>
-            </ul>
-            <a class="card-link" href="projects.html">프로젝트 자세히 보기 <span class="arrow" aria-hidden="true">→</span></a>
+            <p class="body">
+              교과과정에서 채우기 어려운 실습의 기회를 스스로 만들고, 매 비행의
+              데이터를 기록으로 남겨 다음 기체의 출발점으로 삼습니다.
+            </p>
           </div>
-          <dl class="spec-table">
-            <div><dt>전장 (Length)</dt><dd class="mono">2,329 mm</dd></div>
-            <div><dt>동체경 (Diameter)</dt><dd class="mono">Ø 85 mm</dd></div>
-            <div><dt>노즈콘 (Nose)</dt><dd class="mono">Von Kármán · 300 mm</dd></div>
-            <div><dt>구성 (Stages)</dt><dd class="mono">2단 (2-stage)</dd></div>
-            <div><dt>모토 (Motto)</dt><dd class="mono">Per Ardua ad Astra</dd></div>
-          </dl>
+          <div class="actions"><a class="btn btn-line" href="about.html">동아리 소개 <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
+        <figure class="figure-schematic media reveal" style="--d:.08s">
+          <img class="rocket-mini" src="assets/rocket.svg" alt="하나로 기준 기체 도면" width="340" height="2449" loading="lazy">
+          <figcaption class="cap">SCHEMATIC · 2-STAGE · Ø85mm</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- REFERENCE VEHICLE SPEC -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">02 / Reference Vehicle</p>
+          <h2 class="h-lg title-ko">기준 기체 <span class="g">제원</span></h2>
+          <p class="lead">하나로 3D 도색 모델에서 도출한 대표 2단 사운딩 로켓의 실측 제원입니다.</p>
+        </div>
+        <div class="metrics reveal">
+          <div class="metric"><div class="v"><span data-count="2329" data-plain>2329</span><span class="u">mm</span></div><div class="k">전장 Length</div></div>
+          <div class="metric"><div class="v">Ø<span data-count="85" data-plain>85</span><span class="u">mm</span></div><div class="k">동체경 Diameter</div></div>
+          <div class="metric"><div class="v"><span data-count="300" data-plain>300</span><span class="u">mm</span></div><div class="k">노즈 Von Kármán</div></div>
+          <div class="metric"><div class="v"><span data-count="2" data-plain>2</span><span class="u">단</span></div><div class="k">구성 Stages</div></div>
+        </div>
+        <div class="actions reveal"><a class="btn btn-line" href="projects.html">프로젝트 · 개발 과정 <span class="ar" aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <!-- SUBSYSTEMS -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">03 / Subsystems</p>
+          <h2 class="h-lg title-ko">로켓을 이루는 <span class="g">네 시스템</span></h2>
+          <p class="lead">하나의 로켓이 하늘에 오르기까지, 네 팀의 엔지니어링이 맞물립니다.</p>
+        </div>
+        <div class="grid g4">
+          <div class="panel reveal"><span class="eyebrow no-rule">Propulsion</span><h3>추진</h3><p>추진제와 엔진, 연소 해석과 지상 연소 시험으로 로켓의 추력을 만듭니다.</p></div>
+          <div class="panel reveal" style="--d:.06s"><span class="eyebrow no-rule">Airframe</span><h3>공력 · 구조</h3><p>공력 설계와 구조 해석, 복합재 기체·노즈콘·핀 제작으로 안정적인 비행을 책임집니다.</p></div>
+          <div class="panel reveal" style="--d:.12s"><span class="eyebrow no-rule">Avionics</span><h3>전자</h3><p>비행 컴퓨터·센서·통신과 사출 제어. 비행 데이터를 수집하고 시퀀스를 제어합니다.</p></div>
+          <div class="panel reveal" style="--d:.18s"><span class="eyebrow no-rule">Recovery</span><h3>회수</h3><p>사출과 낙하산 전개. 로켓과 탑재체가 무사히 지상으로 돌아오게 합니다.</p></div>
+        </div>
+        <div class="actions reveal"><a class="btn btn-line" href="teams.html">팀별 역할 자세히 <span class="ar" aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <!-- PROCESS -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">04 / Process</p>
+          <h2 class="h-lg title-ko">설계에서 <span class="g">발사</span>까지</h2>
+        </div>
+        <div class="cycle">
+          <div class="phase reveal"><span class="n"></span><h3>설계</h3><span class="en">Design</span><p>임무와 목표 고도 정의, 공력·구조·추진 해석과 상세 설계.</p></div>
+          <div class="phase reveal" style="--d:.06s"><span class="n"></span><h3>제작</h3><span class="en">Manufacture</span><p>복합재 성형과 기계 가공, 엔진·항공전자 조립.</p></div>
+          <div class="phase reveal" style="--d:.12s"><span class="n"></span><h3>시험</h3><span class="en">Test</span><p>지상 연소 시험과 사출·회수 시험으로 시스템 검증.</p></div>
+          <div class="phase reveal" style="--d:.18s"><span class="n"></span><h3>발사</h3><span class="en">Launch</span><p>발사 캠페인, 비행 데이터 수집과 회수 후 분석.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ PROJECTS PREVIEW ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">04 · Projects</p>
-          <h2 class="sec-title">우리가 만든 <em>로켓들</em></h2>
+    <!-- SPONSORS PREVIEW -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">05 / Support</p>
+          <h2 class="h-lg title-ko">함께 만드는 <span class="g">다음 발사</span></h2>
+          <p class="lead">로켓 한 대에는 재료와 시험, 발사 캠페인이 필요합니다. 학생들의 도전에 연료가 되어 주세요.</p>
         </div>
-
-        <div class="grid-2">
-          <article class="project-card reveal" style="--d:.05s">
-            <span class="ghost" aria-hidden="true">2025</span>
-            <span class="project-chip">Latest · IREC</span>
-            <h3>HARANG 2</h3>
-            <p class="ko">하랑 2</p>
-            <p class="desc">IREC 2025에 출전해 발사한 최신 기체. 학술대회 NURA 세션 1위와 함께 연구·실전 양쪽에서 성과를 남겼습니다.</p>
-            <div class="spec-row">
-              <span>2025</span><span>2-stage</span><span>IREC</span>
-            </div>
-            <a class="card-link" href="projects.html">자세히 <span class="arrow" aria-hidden="true">→</span></a>
-          </article>
-          <article class="project-card reveal" style="--d:.1s">
-            <span class="ghost" aria-hidden="true">2023</span>
-            <span class="project-chip">Sounding Rocket</span>
-            <h3>HARANG</h3>
-            <p class="ko">하랑</p>
-            <p class="desc">Spaceport America Cup에 단독으로 참가해 발사한 사운딩 로켓. 하나로의 대표 기체 계보를 열었습니다.</p>
-            <div class="spec-row">
-              <span>2023</span><span>Sounding</span><span>SA Cup</span>
-            </div>
-            <a class="card-link" href="projects.html">자세히 <span class="arrow" aria-hidden="true">→</span></a>
-          </article>
+        <div class="ph-block reveal">
+          <p class="eyebrow">Sponsors · 후원사</p>
+          <p class="ph-note">후원사 로고와 목록이 들어갈 자리입니다. <span class="ph">후원사 정보 입력</span></p>
         </div>
-        <div class="hero-actions" style="margin-top:26px">
-          <a class="btn btn-ghost" href="projects.html">전체 프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
-        </div>
+        <div class="actions reveal"><a class="btn btn-solid" href="support.html">후원 안내 보기 <span class="ar" aria-hidden="true">→</span></a><a class="btn btn-line" href="contact.html">문의하기</a></div>
       </div>
     </section>
 
-    <!-- ============ FLIGHT RECORD ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">05 · Flight Record</p>
-          <h2 class="sec-title">하나로의 <em>비행 기록</em></h2>
-          <p class="sec-desc">30년 동안 이어진 설계와 발사의 기록. 전체 기록은 아카이브에서 확인하세요.</p>
-        </div>
-
-        <div class="timeline">
-          <div class="tl-item reveal">
-            <p class="tl-year">1995</p>
-            <h3>하나로 창립</h3>
-            <p>서울대학교 로켓동아리 하나로가 문을 열었습니다. 첫 부원들이 모여 첫 도면을 그리기 시작했습니다.</p>
-          </div>
-          <div class="tl-item reveal">
-            <p class="tl-year">2019</p>
-            <h3>Halo 발사</h3>
-            <p>Spaceport America Cup에 단독으로 참가해 로켓 Halo를 발사했습니다.</p>
-          </div>
-          <div class="tl-item reveal">
-            <p class="tl-year">2023</p>
-            <h3>HARANG 발사</h3>
-            <p>Spaceport America Cup에 단독 참가해 사운딩 로켓 HARANG(하랑)을 발사했습니다.</p>
-          </div>
-          <div class="tl-item reveal">
-            <p class="tl-year">2025</p>
-            <h3>IREC 2025 출전 · HARANG 2 발사</h3>
-            <p>국제 로켓 공학 대회 IREC 2025에 출전해 HARANG 2를 발사했고, 한국추진공학회 학술대회 NURA 세션에서 1위를 차지했습니다.</p>
-          </div>
-        </div>
-        <div class="hero-actions" style="margin-top:34px">
-          <a class="btn btn-ghost" href="archive.html">전체 기록 · 아카이브 <span class="arrow" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ SPONSORS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">06 · Sponsors</p>
-          <h2 class="sec-title">함께해 주시는 <em>분들</em></h2>
-          <p class="sec-desc">학생들의 도전은 여러 후원사의 응원으로 하늘에 오릅니다.</p>
-        </div>
-
-        <div class="sponsors">
-          <div class="sponsor reveal" style="--d:.05s">
-            <span class="name">한화에어로스페이스</span>
-            <span class="kind">Hanwha Aerospace</span>
-          </div>
-          <div class="sponsor reveal" style="--d:.1s">
-            <span class="name">대한항공</span>
-            <span class="kind">Korean Air</span>
-          </div>
-        </div>
-        <div class="hero-actions" style="margin-top:26px">
-          <a class="btn btn-ghost" href="support.html">후원 · 협력 안내 <span class="arrow" aria-hidden="true">→</span></a>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ CTA ============ -->
-    <section class="cta-band">
-      <h2 class="reveal">다음 로켓을<br><em>함께</em> 쏘아 올려요</h2>
-      <p class="reveal" style="--d:.1s">후원·협력 제안부터 활동 문의까지, 언제든 환영합니다.</p>
-      <div class="hero-actions reveal" style="--d:.2s">
-        <a class="btn btn-primary" href="support.html">후원 안내 보기 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost" href="contact.html">연락처 보기</a>
+    <!-- CTA -->
+    <section class="cta">
+      <div class="wrap">
+        <h2 class="title-ko reveal">역경을 넘어, <span class="g">별</span>까지</h2>
+        <p class="reveal" style="--d:.06s">Per Ardua ad Astra — 다음 로켓의 첫 도면을 함께 그려 주세요.</p>
+        <div class="actions reveal" style="--d:.12s"><a class="btn btn-solid" href="support.html">후원 · 협력 <span class="ar" aria-hidden="true">→</span></a><a class="btn btn-line" href="projects.html">프로젝트 보기</a></div>
       </div>
     </section>
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <p class="footer-word" aria-hidden="true">HANARO</p>
-    <div class="container">
+    <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
-        <img class="footer-emblem" src="assets/emblem.png" alt="서울대학교 로켓동아리 하나로 엠블럼" width="64" height="64" loading="lazy">
-          <a class="brand" href="index.html">
-            <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-              <circle cx="12" cy="9.5" r="1.7"/>
-              <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-              <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-            </svg>
-            <span class="brand-text">
-              <span class="brand-name">HANARO</span>
-              <span class="brand-sub">SNU Rocket Team</span>
-            </span>
+          <a class="brand" href="index.html" aria-label="하나로 홈">
+            <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+            <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
           </a>
-          <p>하늘을 나는 로켓, 하나로.<br>1995년부터 서울대학교에서 과학로켓을 만들어 쏘아 올립니다.</p>
+          <p>서울대학교 로켓동아리 하나로. 과학로켓을 직접 설계·제작·시험·발사합니다.</p>
         </div>
         <div>
           <h4>Menu</h4>
           <div class="footer-links">
-            <a href="about.html">About</a>
-            <a href="projects.html">Projects</a>
-            <a href="teams.html">Teams</a>
-            <a href="archive.html">Archive</a>
-            <a href="support.html">Support</a>
-            <a href="contact.html">Contact</a>
+            <a href="about.html">About</a><a href="projects.html">Projects</a><a href="teams.html">Teams</a>
+            <a href="archive.html">Archive</a><a href="support.html">Support</a><a href="contact.html">Contact</a>
           </div>
         </div>
         <div>
           <h4>Contact</h4>
           <div class="footer-links">
-            <span class="addr">서울대학교 공과대학 31동 401호</span>
-            <a href="mailto:ghyuk.lee@snu.ac.kr">ghyuk.lee@snu.ac.kr</a>
-            <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
-            <a href="https://chief-sing-e0a.notion.site/" target="_blank" rel="noopener">Notion 아카이브 ↗</a>
+            <span class="ph">주소 입력</span>
+            <span class="ph">이메일 입력</span>
+            <span class="ph">SNS 입력</span>
           </div>
         </div>
       </div>
-      <div class="footer-bottom">
-        <span>© <span id="year">2026</span> SNU Rocket Team HANARO. All rights reserved.</span>
-        <span class="tag mono">37.45°N 126.95°E · Designed for the sky</span>
+      <div class="footer-bot">
+        <span>© <span id="year">2026</span> SNU Rocket Team HANARO.</span>
+        <span class="mono">PER ARDUA AD ASTRA</span>
       </div>
     </div>
   </footer>

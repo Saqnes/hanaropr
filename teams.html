@@ -3,41 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Teams | 서울대학교 로켓동아리 하나로</title>
-  <meta name="description" content="하나로의 네 팀 — 추진 · 공력·구조 · 전자 · 회수. 각 팀의 역할과 실제 수행 업무, 산출물, 담당 프로젝트와 조직도를 소개합니다.">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Teams | 서울대학교 로켓동아리 하나로">
-  <meta property="og:description" content="로켓을 이루는 네 팀과 하나로의 조직도.">
-  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
-  <meta property="og:url" content="https://hanaro.snu.ac.kr/teams.html">
+  <title>Teams · HANARO 서울대학교 로켓동아리</title>
+  <meta name="description" content="하나로의 네 시스템 — 추진 · 공력·구조 · 전자 · 회수. 각 팀의 역할과 실제 업무, 조직도를 소개합니다.">
+  <meta property="og:title" content="Teams · HANARO 서울대학교 로켓동아리">
+  <meta property="og:description" content="로켓을 이루는 네 팀과 조직도.">
+  <meta property="og:image" content="assets/og.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
   <script defer src="js/main.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">본문 바로가기</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <canvas id="starfield" aria-hidden="true"></canvas>
-
-  <!-- ============ NAV ============ -->
   <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html" aria-label="하나로 홈으로">
-        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-          <circle cx="12" cy="9.5" r="1.7"/>
-          <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-          <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-        </svg>
-        <span class="brand-text">
-          <span class="brand-name">HANARO</span>
-          <span class="brand-sub">SNU Rocket Team</span>
-        </span>
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html" aria-label="하나로 홈">
+        <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+        <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
       </a>
-
       <nav class="nav-links" aria-label="주 메뉴">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -47,16 +30,11 @@
         <a href="support.html">Support</a>
         <a href="contact.html">Contact</a>
       </nav>
-
-      <a class="nav-cta" href="support.html">후원하기</a>
-
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
-        <span></span><span></span><span></span>
-      </button>
+      <a class="nav-cta" href="support.html">후원</a>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="m"><span></span><span></span><span></span></button>
     </div>
   </header>
-
-  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile" id="m" aria-label="모바일 메뉴">
     <a href="index.html">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
@@ -67,271 +45,172 @@
   </nav>
 
   <main id="main">
-    <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
-      <div class="container">
-        <p class="sec-label reveal">Teams</p>
-        <h1 class="reveal" style="--d:.05s">하나의 로켓,<br><em>네 팀</em>의 엔지니어링</h1>
-        <p class="lead reveal" style="--d:.1s">
-          추진 · 공력·구조 · 전자 · 회수. 서로 다른 전공의 부원들이 각자의
-          시스템을 맡아, 설계부터 발사까지 하나의 로켓 위에서 만납니다.
-        </p>
-        <div class="legend reveal" style="--d:.15s;margin-top:26px">
-          <span><i class="dot-prop"></i>추진 Propulsion</span>
-          <span><i class="dot-air"></i>공력·구조 Airframe</span>
-          <span><i class="dot-avi"></i>전자 Avionics</span>
-          <span><i class="dot-rec"></i>회수 Recovery</span>
+      <div class="wrap">
+        <p class="eyebrow reveal">Teams</p>
+        <h1 class="title-ko reveal" style="--d:.04s">하나의 로켓,<br><span class="g">네 팀</span>의 엔지니어링</h1>
+        <p class="lead reveal" style="--d:.08s">추진 · 공력·구조 · 전자 · 회수. 서로 다른 전공의 부원들이 각자의 시스템을 맡아, 설계부터 발사까지 하나의 로켓 위에서 만납니다.</p>
+        <div class="legend reveal" style="--d:.12s;margin-top:24px">
+          <span><i class="d-prop"></i>추진 Propulsion</span>
+          <span><i class="d-air"></i>공력·구조 Airframe</span>
+          <span><i class="d-avi"></i>전자 Avionics</span>
+          <span><i class="d-rec"></i>회수 Recovery</span>
         </div>
       </div>
     </section>
 
-    <!-- ============ TEAM 1 · PROPULSION ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="split">
-          <figure class="split-media reveal">
-            <img src="assets/photos/team-propulsion.jpg" alt="야간 지상 연소 시험 중 화염을 뿜는 로켓 엔진" width="796" height="594" loading="lazy">
-            <figcaption>지상 연소 시험 · Propulsion</figcaption>
-          </figure>
-          <div class="subsys reveal" style="--d:.1s">
-            <div class="sub-head">
-              <span class="micro"><i class="dot-prop" style="display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:6px"></i>Propulsion · 01</span>
-            </div>
-            <h2 class="sec-title">추진팀</h2>
-            <p class="sec-desc">로켓의 심장인 엔진을 만듭니다. 추진제를 선정·배합하고, 연소와 노즐을 해석하며, 지상 연소 시험으로 추력과 연소 안정성을 검증합니다.</p>
-            <ul class="mission-list">
-              <li>추진제 선정 · 배합과 그레인 제작</li>
-              <li>연소 해석과 노즐 · 연소실 설계</li>
-              <li>지상 연소 시험(static fire)으로 추력 검증</li>
-            </ul>
-            <div class="tag-row">
-              <span>추진제</span><span>연소 해석</span><span>노즐 설계</span><span>지상 연소 시험</span>
-            </div>
-            <a class="card-link" href="projects.html">담당 프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
+    <!-- 01 Propulsion -->
+    <section class="section tight">
+      <div class="wrap split">
+        <div class="media reveal">
+          <div class="panel" style="min-height:220px;display:flex;flex-direction:column;justify-content:space-between">
+            <span class="eyebrow"><i class="d-prop" style="width:11px;height:11px;display:inline-block"></i> Propulsion · 01</span>
+            <span class="ph-note">지상 연소 시험 사진 자리 · <span class="ph">사진 입력</span></span>
           </div>
         </div>
+        <div class="reveal" style="--d:.06s">
+          <h2 class="h-lg title-ko">추진팀</h2>
+          <p class="body" style="margin-top:14px">로켓의 심장인 엔진을 만듭니다. 추진제를 선정·배합하고, 연소와 노즐을 해석하며, 지상 연소 시험으로 추력과 연소 안정성을 검증합니다.</p>
+          <ul class="blist">
+            <li>추진제 선정·배합과 그레인 제작</li>
+            <li>연소 해석과 노즐·연소실 설계</li>
+            <li>지상 연소 시험(static fire)으로 추력 검증</li>
+          </ul>
+          <div class="tags"><span>추진제</span><span>연소 해석</span><span>노즐 설계</span><span>지상 연소 시험</span></div>
+          <div class="actions"><a class="btn btn-line" href="projects.html">담당 프로젝트 <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ TEAM 2 · AIRFRAME ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="split reverse">
-          <figure class="split-media reveal">
-            <img src="assets/photos/team-airframe.jpg" alt="발사 레일에 장착된 하나로의 로켓 기체" width="1000" height="744" loading="lazy">
-            <figcaption>발사 레일의 완성 기체 · Airframe</figcaption>
-          </figure>
-          <div class="subsys reveal" style="--d:.1s">
-            <div class="sub-head">
-              <span class="micro"><i class="dot-air" style="display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:6px"></i>Airframe · 02</span>
-            </div>
-            <h2 class="sec-title">공력 · 구조팀</h2>
-            <p class="sec-desc">가볍고 단단한 기체와 안정적인 비행을 책임집니다. 공력을 설계하고 구조를 해석하며, 복합재로 기체와 노즈콘·핀을 직접 성형·가공합니다.</p>
-            <ul class="mission-list">
-              <li>공력 설계와 비행 안정성 해석</li>
-              <li>구조 해석과 하중 · 강도 검증</li>
-              <li>복합재 기체 · 노즈콘 · 핀 성형과 가공</li>
-            </ul>
-            <div class="tag-row">
-              <span>CFD 공력</span><span>구조 해석</span><span>복합재 성형</span><span>기체 조립</span>
-            </div>
-            <a class="card-link" href="projects.html">담당 프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
+    <!-- 02 Airframe -->
+    <section class="section tight">
+      <div class="wrap split rev">
+        <div class="media reveal">
+          <div class="panel" style="min-height:220px;display:flex;flex-direction:column;justify-content:space-between">
+            <span class="eyebrow"><i class="d-air" style="width:11px;height:11px;display:inline-block"></i> Airframe · 02</span>
+            <span class="ph-note">기체·발사 준비 사진 자리 · <span class="ph">사진 입력</span></span>
           </div>
         </div>
+        <div class="reveal" style="--d:.06s">
+          <h2 class="h-lg title-ko">공력 · 구조팀</h2>
+          <p class="body" style="margin-top:14px">가볍고 단단한 기체와 안정적인 비행을 책임집니다. 공력을 설계하고 구조를 해석하며, 복합재로 기체와 노즈콘·핀을 직접 성형·가공합니다.</p>
+          <ul class="blist">
+            <li>공력 설계와 비행 안정성 해석</li>
+            <li>구조 해석과 하중·강도 검증</li>
+            <li>복합재 기체·노즈콘·핀 성형과 가공</li>
+          </ul>
+          <div class="tags"><span>CFD 공력</span><span>구조 해석</span><span>복합재 성형</span><span>기체 조립</span></div>
+          <div class="actions"><a class="btn btn-line" href="projects.html">담당 프로젝트 <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ TEAM 3 · AVIONICS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="split">
-          <figure class="split-media reveal">
-            <img src="assets/photos/team-avionics.jpg" alt="배선과 스위치가 연결된 로켓 항공전자 장비 스택" width="1000" height="752" loading="lazy">
-            <figcaption>항공전자 스택 · Avionics</figcaption>
-          </figure>
-          <div class="subsys reveal" style="--d:.1s">
-            <div class="sub-head">
-              <span class="micro"><i class="dot-avi" style="display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:6px"></i>Avionics · 03</span>
-            </div>
-            <h2 class="sec-title">전자팀</h2>
-            <p class="sec-desc">로켓의 두뇌와 신경을 만듭니다. 비행 컴퓨터와 센서를 설계하고, 비행 데이터를 지상국에 전송하며, 사출 시퀀스를 정확한 시점에 제어합니다.</p>
-            <ul class="mission-list">
-              <li>비행 컴퓨터 · 센서 보드 설계와 펌웨어</li>
-              <li>텔레메트리 · 지상국(GS) 통신</li>
-              <li>사출 시퀀스 제어와 비행 데이터 로깅</li>
-            </ul>
-            <div class="tag-row">
-              <span>PCB 설계</span><span>임베디드</span><span>텔레메트리</span><span>센서 융합</span>
-            </div>
-            <a class="card-link" href="projects.html">담당 프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
+    <!-- 03 Avionics -->
+    <section class="section tight">
+      <div class="wrap split">
+        <div class="media reveal">
+          <div class="panel" style="min-height:220px;display:flex;flex-direction:column;justify-content:space-between">
+            <span class="eyebrow"><i class="d-avi" style="width:11px;height:11px;display:inline-block"></i> Avionics · 03</span>
+            <span class="ph-note">항공전자 스택 사진 자리 · <span class="ph">사진 입력</span></span>
           </div>
         </div>
+        <div class="reveal" style="--d:.06s">
+          <h2 class="h-lg title-ko">전자팀</h2>
+          <p class="body" style="margin-top:14px">로켓의 두뇌와 신경을 만듭니다. 비행 컴퓨터와 센서를 설계하고, 비행 데이터를 지상국에 전송하며, 사출 시퀀스를 정확한 시점에 제어합니다.</p>
+          <ul class="blist">
+            <li>비행 컴퓨터·센서 보드 설계와 펌웨어</li>
+            <li>텔레메트리·지상국(GS) 통신</li>
+            <li>사출 시퀀스 제어와 비행 데이터 로깅</li>
+          </ul>
+          <div class="tags"><span>PCB 설계</span><span>임베디드</span><span>텔레메트리</span><span>센서 융합</span></div>
+          <div class="actions"><a class="btn btn-line" href="projects.html">담당 프로젝트 <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ TEAM 4 · RECOVERY ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="split reverse">
-          <figure class="split-media reveal">
-            <img src="assets/photos/team-recovery.jpg" alt="낙하산을 펼치고 하강하는 로켓" width="550" height="414" loading="lazy">
-            <figcaption>낙하산 전개 · Recovery</figcaption>
-          </figure>
-          <div class="subsys reveal" style="--d:.1s">
-            <div class="sub-head">
-              <span class="micro"><i class="dot-rec" style="display:inline-block;width:9px;height:9px;border-radius:2px;vertical-align:middle;margin-right:6px"></i>Recovery · 04</span>
-            </div>
-            <h2 class="sec-title accent-rec">회수팀</h2>
-            <p class="sec-desc">로켓과 임무 장비가 무사히 지상으로 돌아오게 합니다. 사출 시스템을 설계하고, 낙하산을 정해진 고도에서 전개해 안전한 회수를 완성합니다.</p>
-            <ul class="mission-list">
-              <li>사출(ejection) 시스템 설계와 화약 · 가스 사출</li>
-              <li>낙하산 설계와 전개 시험</li>
-              <li>안전한 착지 · 회수 및 기체 재사용 점검</li>
-            </ul>
-            <div class="tag-row">
-              <span>사출 설계</span><span>낙하산</span><span>전개 시험</span><span>회수 운용</span>
-            </div>
-            <a class="card-link" href="projects.html">담당 프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
+    <!-- 04 Recovery -->
+    <section class="section tight">
+      <div class="wrap split rev">
+        <div class="media reveal">
+          <div class="panel" style="min-height:220px;display:flex;flex-direction:column;justify-content:space-between">
+            <span class="eyebrow"><i class="d-rec" style="width:11px;height:11px;display:inline-block"></i> Recovery · 04</span>
+            <span class="ph-note">낙하산 전개 사진 자리 · <span class="ph">사진 입력</span></span>
           </div>
         </div>
+        <div class="reveal" style="--d:.06s">
+          <h2 class="h-lg title-ko"><span class="c">회수팀</span></h2>
+          <p class="body" style="margin-top:14px">로켓과 탑재체가 무사히 지상으로 돌아오게 합니다. 사출 시스템을 설계하고, 낙하산을 정해진 고도에서 전개해 안전한 회수를 완성합니다.</p>
+          <ul class="blist">
+            <li>사출(ejection) 시스템 설계와 화약·가스 사출</li>
+            <li>낙하산 설계와 전개 시험</li>
+            <li>안전한 착지·회수 및 기체 재사용 점검</li>
+          </ul>
+          <div class="tags"><span>사출 설계</span><span>낙하산</span><span>전개 시험</span><span>회수 운용</span></div>
+          <div class="actions"><a class="btn btn-line" href="projects.html">담당 프로젝트 <span class="ar" aria-hidden="true">→</span></a></div>
+        </div>
       </div>
     </section>
 
-    <!-- ============ ORG CHART ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">Organization · 조직도</p>
-          <h2 class="sec-title">기능으로 짜인 <em>조직</em></h2>
-          <p class="sec-desc">회장단과 행정이 전체를 조율하고, 네 팀이 각자의 서브시스템을 개발·운영합니다.</p>
+    <!-- ORG CHART -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">Organization · 조직도</p>
+          <h2 class="h-lg title-ko">기능으로 짜인 <span class="g">조직</span></h2>
+          <p class="lead">회장단과 행정이 전체를 조율하고, 네 팀이 각자의 서브시스템을 개발·운영합니다. 실제 이름은 임기마다 갱신하세요.</p>
         </div>
-
         <div class="org reveal">
-          <div class="org-lead">
-            <div class="org-node head">
-              <span class="role">회장</span>
-              <div class="person">이강혁</div>
-            </div>
-            <div class="org-node head">
-              <span class="role">부회장</span>
-              <div class="person">김동빈</div>
-            </div>
+          <div class="org-row">
+            <div class="node lead"><span class="role">회장</span><div class="who"><span class="ph">이름 입력</span></div></div>
+            <div class="node lead"><span class="role">부회장</span><div class="who"><span class="ph">이름 입력</span></div></div>
           </div>
-
-          <div class="org-connector" aria-hidden="true"></div>
-
-          <div class="org-node">
-            <span class="role">행정 · 총무</span>
-            <div class="person">최사윤</div>
-          </div>
-
-          <div class="org-connector" aria-hidden="true"></div>
-
+          <div class="org-line" aria-hidden="true"></div>
+          <div class="node"><span class="role">행정 · 총무</span><div class="who"><span class="ph">이름 입력</span></div></div>
+          <div class="org-line" aria-hidden="true"></div>
           <div class="org-teams">
-            <div class="org-node">
-              <span class="role">추진팀 · 팀장</span>
-              <div class="person">임재휘<small>엔진 · 추진제 · 연소 시험</small></div>
-            </div>
-            <div class="org-node">
-              <span class="role">공력 · 구조팀 · 팀장</span>
-              <div class="person">이가애<small>공력 · 구조 · 복합재</small></div>
-            </div>
-            <div class="org-node">
-              <span class="role">전자팀 · 팀장</span>
-              <div class="person">박호건<small>항전 · 통신 · 사출 제어</small></div>
-            </div>
-            <div class="org-node">
-              <span class="role">회수팀 · 팀장</span>
-              <div class="person">이강혁<small>사출 · 낙하산 · 회수</small></div>
-            </div>
+            <div class="node"><span class="role">추진팀장</span><div class="who"><span class="ph">이름</span><small>엔진 · 추진제 · 연소</small></div></div>
+            <div class="node"><span class="role">공력·구조팀장</span><div class="who"><span class="ph">이름</span><small>공력 · 구조 · 복합재</small></div></div>
+            <div class="node"><span class="role">전자팀장</span><div class="who"><span class="ph">이름</span><small>항전 · 통신 · 사출</small></div></div>
+            <div class="node"><span class="role">회수팀장</span><div class="who"><span class="ph">이름</span><small>사출 · 낙하산 · 회수</small></div></div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ RECRUIT ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="grid-auto">
-          <div class="hud-panel reveal" style="--d:.05s">
-            <span class="micro">Join · 입부</span>
-            <h3>경험이 없어도 괜찮아요</h3>
-            <p>전공도, 학번도 다양합니다. 손으로 만들고 배우려는 마음이 있다면 누구나 환영합니다. 선배 부원과 함께 기초부터 배웁니다.</p>
-          </div>
-          <div class="hud-panel reveal" style="--d:.1s">
-            <span class="micro">What you get · 얻는 것</span>
-            <h3>진짜 로켓, 진짜 경험</h3>
-            <p>강의로 채우기 어려운 실습. 설계·제작·시험·발사의 전 과정을 직접 경험하고, 이름을 건 기체를 하늘로 올립니다.</p>
-          </div>
-          <div class="hud-panel reveal" style="--d:.15s">
-            <span class="micro">Apply · 지원</span>
-            <h3>지원하는 방법</h3>
-            <p>가장 빠른 소식은 인스타그램에서. 입부 문의는 회장단 연락처로 편하게 남겨 주세요.</p>
-            <div class="hero-actions" style="margin-top:18px">
-              <a class="btn btn-ghost" href="contact.html">입부 문의 <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
-          </div>
+    <!-- RECRUIT -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="grid">
+          <div class="panel reveal"><span class="eyebrow">Join · 입부</span><h3>경험이 없어도 괜찮아요</h3><p>전공도, 학번도 다양합니다. 손으로 만들고 배우려는 마음이 있다면 누구나 환영합니다.</p></div>
+          <div class="panel reveal" style="--d:.06s"><span class="eyebrow">What you get · 얻는 것</span><h3>진짜 로켓, 진짜 경험</h3><p>강의로 채우기 어려운 실습. 설계·제작·시험·발사의 전 과정을 직접 경험합니다.</p></div>
+          <div class="panel reveal" style="--d:.12s"><span class="eyebrow">Apply · 지원</span><h3>지원하는 방법</h3><p>입부 문의는 연락처 페이지에서 남겨 주세요.</p><div class="actions"><a class="btn btn-line" href="contact.html">입부 문의 <span class="ar" aria-hidden="true">→</span></a></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CTA ============ -->
-    <section class="cta-band">
-      <h2 class="reveal">네 팀이 만든 로켓,<br><em>기록</em>으로 만나기</h2>
-      <p class="reveal" style="--d:.1s">각 팀이 함께 완성한 프로젝트와 발사의 순간들을 확인해 보세요.</p>
-      <div class="hero-actions reveal" style="--d:.2s">
-        <a class="btn btn-primary" href="projects.html">프로젝트 보기 <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn btn-ghost" href="archive.html">아카이브 보기</a>
+    <section class="cta">
+      <div class="wrap">
+        <h2 class="title-ko reveal">네 팀이 만든 로켓,<br><span class="g">기록</span>으로 만나기</h2>
+        <p class="reveal" style="--d:.06s">각 팀이 함께 완성한 프로젝트와 발사의 순간들을 확인해 보세요.</p>
+        <div class="actions reveal" style="--d:.12s"><a class="btn btn-solid" href="projects.html">프로젝트 보기 <span class="ar" aria-hidden="true">→</span></a><a class="btn btn-line" href="archive.html">아카이브</a></div>
       </div>
     </section>
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <p class="footer-word" aria-hidden="true">HANARO</p>
-    <div class="container">
+    <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
-        <img class="footer-emblem" src="assets/emblem.png" alt="서울대학교 로켓동아리 하나로 엠블럼" width="64" height="64" loading="lazy">
-          <a class="brand" href="index.html">
-            <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-              <circle cx="12" cy="9.5" r="1.7"/>
-              <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-              <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-            </svg>
-            <span class="brand-text">
-              <span class="brand-name">HANARO</span>
-              <span class="brand-sub">SNU Rocket Team</span>
-            </span>
+          <a class="brand" href="index.html" aria-label="하나로 홈">
+            <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+            <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
           </a>
-          <p>하늘을 나는 로켓, 하나로.<br>1995년부터 서울대학교에서 과학로켓을 만들어 쏘아 올립니다.</p>
+          <p>서울대학교 로켓동아리 하나로. 과학로켓을 직접 설계·제작·시험·발사합니다.</p>
         </div>
-        <div>
-          <h4>Menu</h4>
-          <div class="footer-links">
-            <a href="about.html">About</a>
-            <a href="projects.html">Projects</a>
-            <a href="teams.html">Teams</a>
-            <a href="archive.html">Archive</a>
-            <a href="support.html">Support</a>
-            <a href="contact.html">Contact</a>
-          </div>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <div class="footer-links">
-            <span class="addr">서울대학교 공과대학 31동 401호</span>
-            <a href="mailto:ghyuk.lee@snu.ac.kr">ghyuk.lee@snu.ac.kr</a>
-            <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
-            <a href="https://chief-sing-e0a.notion.site/" target="_blank" rel="noopener">Notion 아카이브 ↗</a>
-          </div>
-        </div>
+        <div><h4>Menu</h4><div class="footer-links"><a href="about.html">About</a><a href="projects.html">Projects</a><a href="teams.html">Teams</a><a href="archive.html">Archive</a><a href="support.html">Support</a><a href="contact.html">Contact</a></div></div>
+        <div><h4>Contact</h4><div class="footer-links"><span class="ph">주소 입력</span><span class="ph">이메일 입력</span><span class="ph">SNS 입력</span></div></div>
       </div>
-      <div class="footer-bottom">
-        <span>© <span id="year">2026</span> SNU Rocket Team HANARO. All rights reserved.</span>
-        <span class="tag mono">37.45°N 126.95°E · Designed for the sky</span>
-      </div>
+      <div class="footer-bot"><span>© <span id="year">2026</span> SNU Rocket Team HANARO.</span><span class="mono">PER ARDUA AD ASTRA</span></div>
     </div>
   </footer>
 </body>

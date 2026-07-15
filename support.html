@@ -3,41 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Support | 서울대학교 로켓동아리 하나로</title>
-  <meta name="description" content="하나로 후원·협력 안내 — 후원이 필요한 이유와 후원금 사용처, 후원 예우, 후원 방법(공대 교육연구재단 기부·직접 후원 계좌·문의).">
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Support | 서울대학교 로켓동아리 하나로">
-  <meta property="og:description" content="학생들의 도전을 함께 만들어 주세요. 하나로 후원·협력 안내.">
-  <meta property="og:image" content="https://hanaro.snu.ac.kr/assets/og.png">
-  <meta property="og:url" content="https://hanaro.snu.ac.kr/support.html">
+  <title>Support · HANARO 서울대학교 로켓동아리</title>
+  <meta name="description" content="하나로 후원·협력 안내 — 후원이 필요한 이유와 후원금 사용처, 후원 예우, 후원 방법.">
+  <meta property="og:title" content="Support · HANARO 서울대학교 로켓동아리">
+  <meta property="og:description" content="학생들의 도전에 연료가 되어 주세요.">
+  <meta property="og:image" content="assets/og.png">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
-  <link rel="stylesheet" href="assets/fonts/pretendard/PretendardVariable-VF.css">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
   <script defer src="js/main.js"></script>
 </head>
 <body class="has-sticky-cta">
   <a class="skip-link" href="#main">본문 바로가기</a>
-  <div class="scroll-progress" aria-hidden="true"></div>
-  <canvas id="starfield" aria-hidden="true"></canvas>
-
-  <!-- ============ NAV ============ -->
   <header class="nav">
-    <div class="container nav-inner">
-      <a class="brand" href="index.html" aria-label="하나로 홈으로">
-        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-          <circle cx="12" cy="9.5" r="1.7"/>
-          <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-          <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-        </svg>
-        <span class="brand-text">
-          <span class="brand-name">HANARO</span>
-          <span class="brand-sub">SNU Rocket Team</span>
-        </span>
+    <div class="wrap nav-in">
+      <a class="brand" href="index.html" aria-label="하나로 홈">
+        <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+        <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
       </a>
-
       <nav class="nav-links" aria-label="주 메뉴">
         <a href="index.html">Home</a>
         <a href="about.html">About</a>
@@ -47,16 +30,11 @@
         <a href="support.html" class="active" aria-current="page">Support</a>
         <a href="contact.html">Contact</a>
       </nav>
-
-      <a class="nav-cta" href="#inquiry">후원 문의</a>
-
-      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mobile-menu">
-        <span></span><span></span><span></span>
-      </button>
+      <a class="nav-cta" href="#how">후원 문의</a>
+      <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="m"><span></span><span></span><span></span></button>
     </div>
   </header>
-
-  <nav class="mobile-menu" id="mobile-menu" aria-label="모바일 메뉴">
+  <nav class="mobile" id="m" aria-label="모바일 메뉴">
     <a href="index.html">홈 <small>Home</small></a>
     <a href="about.html">소개 <small>About</small></a>
     <a href="projects.html">프로젝트 <small>Projects</small></a>
@@ -67,294 +45,118 @@
   </nav>
 
   <main id="main">
-    <!-- ============ PAGE HERO ============ -->
     <section class="page-hero">
-      <div class="container">
-        <p class="sec-label reveal">Support</p>
-        <h1 class="reveal" style="--d:.05s">학생들의 도전에<br><em>연료</em>가 되어 주세요</h1>
-        <p class="lead reveal" style="--d:.1s">
-          하나로 후원은 단순한 기부가 아닙니다. 30년간 로켓을 만들어 온
-          서울대 공학도들과의 접점이자, 미래 항공우주 인재를 함께 길러내는
-          투자입니다. 여러분의 후원은 로켓의 재료가 되고, 발사장으로 향하는
-          길이 됩니다.
-        </p>
+      <div class="wrap">
+        <p class="eyebrow reveal">Support</p>
+        <h1 class="title-ko reveal" style="--d:.04s">학생들의 도전에<br><span class="g">연료</span>가 되어 주세요</h1>
+        <p class="lead reveal" style="--d:.08s">하나로 후원은 단순한 기부가 아닙니다. 로켓을 직접 만들어 온 서울대 공학도들과의 접점이자, 미래 항공우주 인재를 함께 길러내는 투자입니다.</p>
       </div>
     </section>
 
-    <!-- ============ WHY + FUND USAGE ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">01 · Why Support</p>
-          <h2 class="sec-title">후원이 <em>필요한 이유</em></h2>
-          <p class="sec-desc">하나로는 학생들이 직접 운영하는 비영리 단체입니다. 로켓 한 대를 하늘로 올리기까지, 후원은 다음 곳에 쓰입니다.</p>
+    <!-- WHY + FUND USAGE -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">01 / Why Support</p>
+          <h2 class="h-lg title-ko">후원이 <span class="g">필요한 이유</span></h2>
+          <p class="lead">하나로는 학생들이 직접 운영하는 비영리 팀입니다. 로켓 한 대를 하늘로 올리기까지, 후원은 다음 곳에 쓰입니다.</p>
         </div>
-
-        <div class="grid-auto">
-          <div class="hud-panel reveal" style="--d:.05s">
-            <span class="micro">01 · Materials</span>
-            <h3>재료 · 부품비</h3>
-            <p>복합재, 금속 소재, 전자 부품 등 기체와 항공전자를 만드는 재료비.</p>
-          </div>
-          <div class="hud-panel reveal" style="--d:.1s">
-            <span class="micro">02 · Propulsion</span>
-            <h3>엔진 · 추진제</h3>
-            <p>엔진 제작과 추진제, 지상 연소 시험 운영에 필요한 비용.</p>
-          </div>
-          <div class="hud-panel reveal" style="--d:.15s">
-            <span class="micro">03 · Testing</span>
-            <h3>시험 · 안전</h3>
-            <p>사출·회수 시험, 통합 점검, 안전 장비 등 검증 단계 비용.</p>
-          </div>
-          <div class="hud-panel reveal" style="--d:.2s">
-            <span class="micro">04 · Campaign</span>
-            <h3>발사 캠페인</h3>
-            <p>국내외 대회 등록, 발사장 원정·운송·숙식 등 발사 캠페인 비용.</p>
-          </div>
+        <div class="grid g4">
+          <div class="panel reveal"><span class="eyebrow no-rule">01 · Materials</span><h3>재료 · 부품비</h3><p>복합재, 금속 소재, 전자 부품 등 기체와 항공전자를 만드는 재료비.</p></div>
+          <div class="panel reveal" style="--d:.06s"><span class="eyebrow no-rule">02 · Propulsion</span><h3>엔진 · 추진제</h3><p>엔진 제작과 추진제, 지상 연소 시험 운영 비용.</p></div>
+          <div class="panel reveal" style="--d:.12s"><span class="eyebrow no-rule">03 · Testing</span><h3>시험 · 안전</h3><p>사출·회수 시험, 통합 점검, 안전 장비 등 검증 단계 비용.</p></div>
+          <div class="panel reveal" style="--d:.18s"><span class="eyebrow no-rule">04 · Campaign</span><h3>발사 캠페인</h3><p>대회 등록, 발사장 원정·운송·숙식 등 발사 캠페인 비용.</p></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ CREDIBILITY ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">02 · Track Record</p>
-          <h2 class="sec-title">믿고 맡길 수 있는 <em>기술력</em></h2>
-          <p class="sec-desc">막연한 약속이 아니라, 30년의 기록으로 증명합니다.</p>
+    <!-- CREDIBILITY -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">02 / Track Record</p>
+          <h2 class="h-lg title-ko">믿고 맡길 수 있는 <span class="g">기술력</span></h2>
+          <p class="lead">막연한 약속이 아니라, 직접 설계·제작한 기체로 증명합니다.</p>
         </div>
         <div class="metrics reveal">
-          <div class="metric">
-            <div class="val"><span data-count="30">30</span><span class="u">년+</span></div>
-            <div class="lbl">Since 1995</div>
-          </div>
-          <div class="metric">
-            <div class="val"><span data-count="4">4</span><span class="u">회+</span></div>
-            <div class="lbl">국제대회 발사</div>
-          </div>
-          <div class="metric">
-            <div class="val"><span data-count="100">100</span><span class="u">명+</span></div>
-            <div class="lbl">활동 부원</div>
-          </div>
-          <div class="metric">
-            <div class="val">NURA</div>
-            <div class="lbl">학술대회 1위</div>
-          </div>
+          <div class="metric"><div class="v"><span data-count="2329" data-plain>2329</span><span class="u">mm</span></div><div class="k">기준 기체 전장</div></div>
+          <div class="metric"><div class="v"><span data-count="2" data-plain>2</span><span class="u">단</span></div><div class="k">단 분리 구성</div></div>
+          <div class="metric"><div class="v"><span data-count="4" data-plain>4</span><span class="u">팀</span></div><div class="k">엔지니어링 서브시스템</div></div>
+          <div class="metric"><div class="v"><span class="ph">N</span></div><div class="k">누적 발사 (입력)</div></div>
         </div>
-        <div class="hero-actions reveal" style="margin-top:26px">
-          <a class="btn btn-ghost" href="projects.html">프로젝트 · 기술 보기 <span class="arrow" aria-hidden="true">→</span></a>
-          <a class="btn btn-ghost" href="archive.html">발사 · 수상 기록</a>
-        </div>
+        <div class="actions reveal"><a class="btn btn-line" href="projects.html">프로젝트 · 기술 보기 <span class="ar" aria-hidden="true">→</span></a><a class="btn btn-line" href="archive.html">발사 · 수상 기록</a></div>
       </div>
     </section>
 
-    <!-- ============ TIERS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">03 · Recognition</p>
-          <h2 class="sec-title">후원 <em>예우</em></h2>
-          <p class="sec-desc">후원 규모와 방식에 따라 아래와 같은 예우를 준비합니다. 구체적인 내용은 문의를 통해 맞춤으로 조율해 드립니다.</p>
+    <!-- TIERS -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">03 / Recognition</p>
+          <h2 class="h-lg title-ko">후원 <span class="g">예우</span></h2>
+          <p class="lead">후원 규모와 방식에 따라 아래와 같은 예우를 준비합니다. 구체적인 내용은 문의로 맞춤 조율해 드립니다.</p>
         </div>
-
         <div class="tiers">
-          <div class="tier reveal" style="--d:.05s">
-            <span class="tier-name">Fuel</span>
-            <p class="tier-amt">소액 후원 <small>/ 개인·소규모</small></p>
-            <ul>
-              <li>홈페이지 후원자 명단 게재</li>
-              <li>활동 소식 뉴스레터</li>
-              <li>감사 서한</li>
-            </ul>
-          </div>
-          <div class="tier reveal" style="--d:.1s">
-            <span class="tier-name">Booster</span>
-            <p class="tier-amt">물품 · 기술 지원</p>
-            <ul>
-              <li>Fuel 예우 포함</li>
-              <li>단체복 · 자료 로고 노출</li>
-              <li>기술 세미나 · 자문 연계</li>
-            </ul>
-          </div>
-          <div class="tier feature reveal" style="--d:.15s">
-            <span class="tier-name">Orbit</span>
-            <p class="tier-amt">정기 후원</p>
-            <ul>
-              <li>Booster 예우 포함</li>
-              <li>제작 로켓 로고 인쇄</li>
-              <li>학술대회 · 언론 홍보 시 후원 명시</li>
-              <li>채용 설명회 · 인재 연계</li>
-            </ul>
-          </div>
-          <div class="tier reveal" style="--d:.2s">
-            <span class="tier-name">Mission</span>
-            <p class="tier-amt">메인 파트너</p>
-            <ul>
-              <li>Orbit 예우 포함</li>
-              <li>메인 스폰서 브랜딩</li>
-              <li>산학 협력 · 장학생 선발 논의</li>
-              <li>맞춤 협력 프로그램</li>
-            </ul>
-          </div>
+          <div class="tier reveal"><span class="tn">Fuel</span><p class="ta">소액 후원 <small>/ 개인·소규모</small></p><ul><li>홈페이지 후원자 명단 게재</li><li>활동 소식 뉴스레터</li><li>감사 서한</li></ul></div>
+          <div class="tier reveal" style="--d:.06s"><span class="tn">Booster</span><p class="ta">물품 · 기술 지원</p><ul><li>Fuel 예우 포함</li><li>단체복·자료 로고 노출</li><li>기술 세미나·자문 연계</li></ul></div>
+          <div class="tier feat reveal" style="--d:.12s"><span class="tn">Orbit</span><p class="ta">정기 후원</p><ul><li>Booster 예우 포함</li><li>제작 로켓 로고 인쇄</li><li>학술대회·언론 홍보 시 후원 명시</li><li>채용 설명회·인재 연계</li></ul></div>
+          <div class="tier reveal" style="--d:.18s"><span class="tn">Mission</span><p class="ta">메인 파트너</p><ul><li>Orbit 예우 포함</li><li>메인 스폰서 브랜딩</li><li>산학 협력·장학생 논의</li><li>맞춤 협력 프로그램</li></ul></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ BENEFITS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">04 · Benefits</p>
-          <h2 class="sec-title">후원사에게 드리는 <em>혜택</em></h2>
+    <!-- METHODS -->
+    <section class="section tight" id="how">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">04 / How To Support</p>
+          <h2 class="h-lg title-ko">후원하는 <span class="g">방법</span></h2>
         </div>
-
-        <div class="grid-3">
-          <div class="card reveal" style="--d:.05s">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/><circle cx="12" cy="9.5" r="1.7"/><path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/><path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/></svg>
-            </div>
-            <h3>로고 노출</h3>
-            <span class="en">Branding</span>
-            <p>제작하는 로켓과 부원 단체복에 후원사 로고를 인쇄해, 발사 현장 곳곳에 함께합니다.</p>
-          </div>
-          <div class="card reveal" style="--d:.1s">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-6v14L3 13z"/><path d="M7 12v5a2 2 0 0 0 2 2h1"/></svg>
-            </div>
-            <h3>홍보 · 명시</h3>
-            <span class="en">Promotion</span>
-            <p>학술대회·언론 홍보 자료에 후원 기관을 명시하고, 학교와 언론을 통해 함께 알립니다.</p>
-          </div>
-          <div class="card reveal" style="--d:.15s">
-            <div class="card-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10L12 5 2 10l10 5 10-5z"/><path d="M6 12v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5"/></svg>
-            </div>
-            <h3>인재 · 협력</h3>
-            <span class="en">Talent</span>
-            <p>항공우주 인재 육성에 함께하고, 채용 연계·장학생 선발 등 다양한 산학 협력을 논의할 수 있습니다.</p>
-          </div>
+        <div class="grid">
+          <div class="panel reveal"><span class="eyebrow">01</span><h3>재단 기부</h3><p>학교 발전기금·교육연구재단을 통한 지정 기부. 세금공제 영수증 발급이 가능합니다. <span class="ph">기부 절차·링크 입력</span></p></div>
+          <div class="panel reveal" style="--d:.06s"><span class="eyebrow">02</span><h3>직접 후원 계좌</h3><p>아래 계좌로 직접 후원해 주실 수 있습니다.</p><div class="ph-block" style="margin-top:12px"><p class="ph-note">예금주 · 계좌번호 <span class="ph">계좌 정보 입력</span></p></div></div>
+          <div class="panel reveal" style="--d:.12s"><span class="eyebrow">03</span><h3>발전기금 · 문의</h3><p>메일·전화로 연락 주시면 맞춤 후원 방식을 함께 안내해 드립니다.</p><div class="actions"><a class="btn btn-line" href="contact.html">문의하기 <span class="ar" aria-hidden="true">→</span></a></div></div>
         </div>
       </div>
     </section>
 
-    <!-- ============ METHODS ============ -->
-    <section class="section" style="padding-top:0" id="inquiry">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">05 · How To Support</p>
-          <h2 class="sec-title">후원하는 <em>방법</em></h2>
-          <p class="sec-desc">세 가지 방법 중 편한 방식으로 참여하실 수 있습니다.</p>
+    <!-- SPONSORS -->
+    <section class="section tight">
+      <div class="wrap">
+        <div class="head reveal">
+          <p class="eyebrow">Our Sponsors · 후원사</p>
+          <h2 class="h-lg title-ko">함께해 주시는 <span class="g">분들</span></h2>
         </div>
-
-        <div class="grid-3">
-          <div class="method reveal" style="--d:.05s">
-            <span class="step-num">01</span>
-            <h3>공대 교육연구재단 기부</h3>
-            <p>서울대학교 공과대학 교육연구재단 홈페이지에서 <strong>항공우주공학과 지정</strong>으로 기부하실 수 있습니다. 기부금은 세금공제 영수증 발급이 가능합니다.</p>
-          </div>
-          <div class="method reveal" style="--d:.1s">
-            <span class="step-num">02</span>
-            <h3>직접 후원 계좌</h3>
-            <p>아래 계좌로 직접 후원해 주실 수 있습니다. (직접 후원은 세금공제 영수증 발급이 어렵습니다.)</p>
-            <div class="account">
-              <span class="label">농협</span>
-              <div class="no mono">301-0199-0034-91</div>
-              <div class="holder">예금주 · 서울대학교 로켓동아리 하나로</div>
-            </div>
-          </div>
-          <div class="method reveal" style="--d:.15s">
-            <span class="step-num">03</span>
-            <h3>발전기금 · 문의</h3>
-            <p>메일 · 우편 · 팩스 · 전화 등으로 회장단에 연락 주시면, 발전기금 신청과 맞춤 후원 방식을 함께 안내해 드립니다.</p>
-            <div class="hero-actions" style="margin-top:20px">
-              <a class="btn btn-ghost" href="contact.html">회장단 연락처 <span class="arrow" aria-hidden="true">→</span></a>
-            </div>
-          </div>
-        </div>
+        <div class="ph-block reveal"><p class="ph-note">후원사 로고를 균일한 크기로 배치할 자리입니다. <span class="ph">후원사 정보 입력</span></p></div>
       </div>
     </section>
 
-    <!-- ============ SPONSORS ============ -->
-    <section class="section" style="padding-top:0">
-      <div class="container">
-        <div class="sec-head reveal">
-          <p class="sec-label">Our Sponsors</p>
-          <h2 class="sec-title">함께해 주시는 <em>분들</em></h2>
-        </div>
-        <div class="sponsors">
-          <div class="sponsor reveal" style="--d:.05s">
-            <span class="name">한화에어로스페이스</span>
-            <span class="kind">Hanwha Aerospace</span>
-          </div>
-          <div class="sponsor reveal" style="--d:.1s">
-            <span class="name">대한항공</span>
-            <span class="kind">Korean Air</span>
-          </div>
-        </div>
+    <section class="cta">
+      <div class="wrap">
+        <h2 class="title-ko reveal">함께 만드는<br><span class="g">다음 발사</span></h2>
+        <p class="reveal" style="--d:.06s">후원·협력 제안을 언제든 환영합니다. 담당 부원이 친절히 안내해 드립니다.</p>
+        <div class="actions reveal" style="--d:.12s"><a class="btn btn-solid" href="contact.html">문의하기 <span class="ar" aria-hidden="true">→</span></a></div>
       </div>
-    </section>
-
-    <!-- ============ CTA ============ -->
-    <section class="cta-band">
-      <h2 class="reveal">함께 만드는<br><em>다음 발사</em></h2>
-      <p class="reveal" style="--d:.1s">후원·협력 제안을 언제든 환영합니다. 담당 부원이 친절히 안내해 드립니다.</p>
-      <a class="btn btn-primary reveal" style="--d:.2s" href="contact.html">문의하기 <span class="arrow" aria-hidden="true">→</span></a>
     </section>
   </main>
 
-  <!-- ============ FOOTER ============ -->
   <footer class="footer">
-    <p class="footer-word" aria-hidden="true">HANARO</p>
-    <div class="container">
+    <div class="wrap">
       <div class="footer-grid">
         <div class="footer-brand">
-        <img class="footer-emblem" src="assets/emblem.png" alt="서울대학교 로켓동아리 하나로 엠블럼" width="64" height="64" loading="lazy">
-          <a class="brand" href="index.html">
-            <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 2.5c2.6 2.6 3.7 6 3.7 9 0 1.9-.5 3.7-1.4 5.5H9.7C8.8 15.2 8.3 13.4 8.3 11.5c0-3 1.1-6.4 3.7-9z"/>
-              <circle cx="12" cy="9.5" r="1.7"/>
-              <path d="M8.6 13.8 5.8 17.4h3M15.4 13.8l2.8 3.6h-3"/>
-              <path d="M10.9 19.7c0 .9.4 1.7 1.1 2.5.7-.8 1.1-1.6 1.1-2.5"/>
-            </svg>
-            <span class="brand-text">
-              <span class="brand-name">HANARO</span>
-              <span class="brand-sub">SNU Rocket Team</span>
-            </span>
+          <a class="brand" href="index.html" aria-label="하나로 홈">
+            <svg class="mark" viewBox="0 0 24 30" aria-hidden="true"><path d="M12 1.5c3 3.4 4.3 7.6 4.3 11.5 0 2.7-.7 5.2-2 7.4H9.7c-1.3-2.2-2-4.7-2-7.4C7.7 9.1 9 4.9 12 1.5z" fill="#f98a80"/><circle cx="12" cy="11" r="1.9" fill="#0e1116"/><path d="M8.3 16 5 20.6l3.5-.3M15.7 16 19 20.6l-3.5-.3" stroke="#f5a623" stroke-width="1.3" fill="none" stroke-linejoin="round"/><path d="M9.9 22c0 1.7.9 3.2 2.1 4.3 1.2-1.1 2.1-2.6 2.1-4.3z" fill="#f5a623"/></svg>
+            <span class="bt"><b>HANARO</b><em>SNU Rocket Team</em></span>
           </a>
-          <p>하늘을 나는 로켓, 하나로.<br>1995년부터 서울대학교에서 과학로켓을 만들어 쏘아 올립니다.</p>
+          <p>서울대학교 로켓동아리 하나로. 과학로켓을 직접 설계·제작·시험·발사합니다.</p>
         </div>
-        <div>
-          <h4>Menu</h4>
-          <div class="footer-links">
-            <a href="about.html">About</a>
-            <a href="projects.html">Projects</a>
-            <a href="teams.html">Teams</a>
-            <a href="archive.html">Archive</a>
-            <a href="support.html">Support</a>
-            <a href="contact.html">Contact</a>
-          </div>
-        </div>
-        <div>
-          <h4>Contact</h4>
-          <div class="footer-links">
-            <span class="addr">서울대학교 공과대학 31동 401호</span>
-            <a href="mailto:ghyuk.lee@snu.ac.kr">ghyuk.lee@snu.ac.kr</a>
-            <a href="https://www.instagram.com/snu_hanaro/" target="_blank" rel="noopener">Instagram ↗</a>
-            <a href="https://chief-sing-e0a.notion.site/" target="_blank" rel="noopener">Notion 아카이브 ↗</a>
-          </div>
-        </div>
+        <div><h4>Menu</h4><div class="footer-links"><a href="about.html">About</a><a href="projects.html">Projects</a><a href="teams.html">Teams</a><a href="archive.html">Archive</a><a href="support.html">Support</a><a href="contact.html">Contact</a></div></div>
+        <div><h4>Contact</h4><div class="footer-links"><span class="ph">주소 입력</span><span class="ph">이메일 입력</span><span class="ph">SNS 입력</span></div></div>
       </div>
-      <div class="footer-bottom">
-        <span>© <span id="year">2026</span> SNU Rocket Team HANARO. All rights reserved.</span>
-        <span class="tag mono">37.45°N 126.95°E · Designed for the sky</span>
-      </div>
+      <div class="footer-bot"><span>© <span id="year">2026</span> SNU Rocket Team HANARO.</span><span class="mono">PER ARDUA AD ASTRA</span></div>
     </div>
   </footer>
 
-  <!-- mobile sticky CTA -->
-  <div class="sticky-cta" aria-hidden="false">
-    <a class="btn btn-ghost" href="tel:+821041288276">전화 문의</a>
-    <a class="btn btn-primary" href="contact.html">후원 문의하기</a>
-  </div>
+  <div class="sticky-cta"><a class="btn btn-line" href="#how">후원 방법</a><a class="btn btn-solid" href="contact.html">후원 문의하기</a></div>
 </body>
 </html>
