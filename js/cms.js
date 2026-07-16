@@ -38,7 +38,8 @@
       var cls = DONE.test(x.status) ? 'go' : 'warn';
       pill = '<div style="margin-top:14px"><span class="pill ' + cls + '">' + esc(x.status) + '</span></div>';
     }
-    return '<article class="panel" data-year="' + esc(x.year || '') + '">' +
+    return '<article class="panel' + (x.image ? ' has-img' : '') + '" data-year="' + esc(x.year || '') + '">' +
+      (x.image ? '<img class="p-img" src="' + esc(x.image) + '" alt="' + esc(x.name || '') + '" loading="lazy">' : '') +
       '<span class="eyebrow no-rule">' + esc(x.event || 'Project') + '</span>' +
       '<h3 style="margin-top:6px">' + esc(x.name) + '</h3>' +
       (x.ko ? '<p class="muted" style="margin-top:2px;font-size:.9rem">' + esc(x.ko) + '</p>' : '') +
@@ -204,6 +205,33 @@
     return out;
   }
 
+  /* ---- photo slots (data-cms-img) — uploaded image fills the placeholder panel ---- */
+  function applyImages(imgs) {
+    imgs = imgs || {};
+    Array.prototype.forEach.call(qsa('[data-cms-img]'), function (el) {
+      var url = imgs[el.getAttribute('data-cms-img')];
+      var old = el.querySelector('img.slot-img'); if (old) old.remove();
+      var ph = el.querySelector('.ph-note');
+      if (!url) { el.classList.remove('has-photo'); if (ph) ph.style.display = ''; return; }
+      if (ph) ph.style.display = 'none';
+      var img = document.createElement('img');
+      img.className = 'slot-img'; img.src = url; img.alt = ''; img.loading = 'lazy';
+      el.insertBefore(img, el.firstChild);
+      el.classList.add('has-photo');
+    });
+  }
+  /* For the admin editor: discover photo slots + a human label. */
+  function readImageSlots(root) {
+    var out = [];
+    Array.prototype.forEach.call((root || document).querySelectorAll('[data-cms-img]'), function (el) {
+      var lbl = '';
+      var eb = el.querySelector('.eyebrow'); if (eb) lbl = norm(eb.textContent);
+      if (!lbl) { var ph = el.querySelector('.ph-note'); if (ph) lbl = norm(ph.textContent); }
+      out.push({ key: el.getAttribute('data-cms-img'), label: lbl });
+    });
+    return out;
+  }
+
   /* ---- location: address + map ---- */
   function applyLocation(loc) {
     loc = loc || {};
@@ -225,8 +253,15 @@
     fill('#cms-sponsors', data.sponsors, sponsorItem, '등록된 후원사가 없습니다.');
     fill('#cms-contacts', data.contacts, contactCard, '등록된 연락처가 없습니다.');
     fillProjects(data.projects);
+    // featured projects on the home page
+    var featured = (data.projects || []).filter(function (p) { return p.featured; });
+    var hp = qs('#cms-home-projects');
+    if (hp) hp.innerHTML = featured.length ? featured.map(projectCard).join('') : '';
+    var hpSec = qs('#home-projects-sec');
+    if (hpSec) hpSec.hidden = !featured.length;
     applySupport(data.support);
     applyLocation(data.location);
+    applyImages(data.images);
     var cnt = qs('#cms-launch-count');
     if (cnt) cnt.textContent = (data.launches && data.launches.length) || 0;
   }
@@ -242,6 +277,7 @@
   window.HANARO_CMS = {
     esc: esc, launchRow: launchRow, awardRow: awardRow, projectCard: projectCard,
     sponsorItem: sponsorItem, contactCard: contactCard, apply: apply, hydrate: hydrate,
-    applyContent: applyContent, readContentDefaults: readContentDefaults
+    applyContent: applyContent, readContentDefaults: readContentDefaults,
+    applyImages: applyImages, readImageSlots: readImageSlots
   };
 })();

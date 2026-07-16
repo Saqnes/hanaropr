@@ -51,9 +51,11 @@
         { k: 'year', t: 'text', ph: '연도 (예: 2025)' }, { k: 'event', t: 'text', ph: '대회/라벨' },
         { k: 'team', t: 'text', ph: '담당 팀' },
         { k: 'status', t: 'select', opts: ['', '설계', '제작', '시험', '발사', '완료'] },
-        { k: 'summary', t: 'textarea', ph: '목표·성과 요약', full: true }
+        { k: 'summary', t: 'textarea', ph: '목표·성과 요약', full: true },
+        { k: 'image', t: 'image', label: '대표 사진', full: true },
+        { k: 'featured', t: 'check', label: '메인(홈)에 대표 프로젝트로 노출', full: true }
       ],
-      title: function (x) { return x.name || '새 프로젝트'; }
+      title: function (x) { return (x.featured ? '★ ' : '') + (x.name || '새 프로젝트'); }
     },
     launches: {
       type: 'array', label: '발사 기록', empty: '등록된 발사 기록이 없습니다.',
@@ -112,17 +114,20 @@
         { k: 'address', t: 'text', ph: '푸터 주소', full: true }
       ]
     },
-    content: { type: 'content', label: '페이지 문구' }
+    content: { type: 'content', label: '페이지 문구' },
+    images: { type: 'images', label: '사진' }
   };
-  var ORDER = ['projects', 'launches', 'awards', 'sponsors', 'contacts', 'support', 'location', 'site', 'content'];
+  var ORDER = ['projects', 'launches', 'awards', 'sponsors', 'contacts', 'support', 'location', 'site', 'content', 'images'];
 
-  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [], content: {} };
+  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [], content: {}, images: {} };
   var active = 'projects';
 
   /* page copy (data-cms-text / data-cms-list) discovery */
   var PAGES = ['index.html', 'about.html', 'projects.html', 'teams.html', 'archive.html', 'support.html', 'contact.html'];
   var PAGE_LABEL = { 'index.html': '홈', 'about.html': '소개', 'projects.html': '프로젝트', 'teams.html': '팀', 'archive.html': '아카이브', 'support.html': '후원', 'contact.html': '연락처' };
   var contentFields = null; /* null = not loaded yet; else array of {key,type,item,def,page} */
+  var imageSlots = null;    /* null = not loaded; else array of {key,label,page} */
+  var pendingImg = {};      /* committed path -> local dataURL (for instant preview before redeploy) */
 
   /* ---------- gate ---------- */
   function sha256(str) {
@@ -130,7 +135,7 @@
       return Array.prototype.map.call(new Uint8Array(h), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
     });
   }
-  function unlock() { $('#gate').style.display = 'none'; $('#app').hidden = false; loadData(); loadContentFields(); }
+  function unlock() { $('#gate').style.display = 'none'; $('#app').hidden = false; loadData(); loadContentFields(); loadImageSlots(); }
   if (sessionStorage.getItem('hanaro_admin') === '1') unlock();
   $('#gateForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -147,7 +152,8 @@
       .then(function (d) {
         d = d || {};
         ORDER.forEach(function (k) {
-          if (SCHEMA[k].type === 'object' || SCHEMA[k].type === 'content') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
+          var t = SCHEMA[k].type;
+          if (t === 'object' || t === 'content' || t === 'images') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
           else state[k] = Array.isArray(d[k]) ? d[k] : [];
         });
         buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage();
@@ -162,6 +168,7 @@
       var count;
       if (SCHEMA[k].type === 'object') count = '';
       else if (SCHEMA[k].type === 'content') count = ' <span class="mono" style="opacity:.6">(' + Object.keys(state.content || {}).length + ')</span>';
+      else if (SCHEMA[k].type === 'images') count = ' <span class="mono" style="opacity:.6">(' + Object.keys(state.images || {}).length + ')</span>';
       else count = ' <span class="mono" style="opacity:.6">(' + state[k].length + ')</span>';
       return '<button class="tab" role="tab" data-col="' + k + '" aria-selected="' + (k === active) + '">' + SCHEMA[k].label + count + '</button>';
     }).join('');
@@ -172,9 +179,25 @@
   }
 
   /* ---------- editor ---------- */
+  function imgWidget(k, src) {
+    var pv = pendingImg[src] || src;
+    return '<div class="imgw">' +
+      (src ? '<img class="imgw-pv" src="' + esc(pv) + '" alt="">' : '<div class="imgw-pv empty">사진 없음</div>') +
+      '<div class="imgw-act">' +
+      '<label class="btn btn-line imgw-file">사진 선택<input type="file" accept="image/*" data-imgfile="' + esc(k) + '" hidden></label>' +
+      (src ? '<button type="button" class="btn btn-line imgw-del" data-imgdel="' + esc(k) + '">제거</button>' : '') +
+      '</div></div>';
+  }
   function field(colKey, i, f) {
-    var val = (i === null ? state[colKey][f.k] : state[colKey][i][f.k]) || '';
+    var raw = (i === null ? state[colKey][f.k] : state[colKey][i][f.k]);
+    var val = raw || '';
     var id = 'f-' + colKey + '-' + (i === null ? 'o' : i) + '-' + f.k;
+    if (f.t === 'check') {
+      return '<div class="field full"><label class="ck"><input id="' + id + '" data-k="' + f.k + '" data-t="check" type="checkbox"' + (raw ? ' checked' : '') + '><span>' + (f.label || f.k) + '</span></label></div>';
+    }
+    if (f.t === 'image') {
+      return '<div class="field full"><label>' + (f.label || '사진') + '</label>' + imgWidget(f.k, val) + '</div>';
+    }
     var inp;
     if (f.t === 'textarea') inp = '<textarea id="' + id + '" data-k="' + f.k + '" placeholder="' + (f.ph || '') + '">' + esc(val) + '</textarea>';
     else if (f.t === 'select') inp = '<select id="' + id + '" data-k="' + f.k + '">' + f.opts.map(function (o) {
@@ -188,6 +211,7 @@
   function renderEditor() {
     var sc = SCHEMA[active];
     if (sc.type === 'content') { renderContentEditor(); return; }
+    if (sc.type === 'images') { renderImagesEditor(); return; }
     if (sc.type === 'object') {
       var of = sc.fields.map(function (f) { return field(active, null, f); }).join('');
       $('#editor').innerHTML = '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + sc.label + '</b></div><div class="ed-grid">' + of + '</div></div>';
@@ -253,16 +277,22 @@
       : '<input id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" type="text" value="' + esc(tv) + '">';
     return '<div class="field full"><label for="' + id + '">' + esc(f.key) + '</label>' + inp + '</div>';
   }
+  var openPages = {};
   function renderContentEditor() {
     if (!contentFields) { $('#editor').innerHTML = '<p class="note">페이지 문구를 불러오는 중…</p>'; return; }
     if (!contentFields.length) { $('#editor').innerHTML = '<p class="note">편집 가능한 문구를 찾지 못했습니다.</p>'; return; }
-    var html = '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트에 박힌 설명 문구입니다. 고치면 그 값으로 바뀌고, <b>비우면 원래 문구</b>로 돌아갑니다.</p>';
-    PAGES.forEach(function (pg) {
+    var pagesWith = PAGES.filter(function (pg) { return contentFields.some(function (f) { return f.page === pg; }); });
+    if (!Object.keys(openPages).length) { openPages[pagesWith.indexOf(previewPage) >= 0 ? previewPage : pagesWith[0]] = true; }
+    var html = '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트에 박힌 설명 문구입니다. 페이지를 펼쳐 고치면 오른쪽 미리보기에 즉시 반영, <b>비우면 원래 문구</b>로 돌아갑니다.</p>';
+    pagesWith.forEach(function (pg) {
       var fs = contentFields.filter(function (f) { return f.page === pg; });
-      if (!fs.length) return;
-      html += '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + (PAGE_LABEL[pg] || pg) +
-        '</b><span class="mono" style="opacity:.45;font-size:.68rem">' + pg + '</span></div><div class="ed-grid">' +
-        fs.map(contentField).join('') + '</div></div>';
+      var open = !!openPages[pg];
+      var nOv = fs.filter(function (f) { return Object.prototype.hasOwnProperty.call(state.content, f.key); }).length;
+      html += '<div class="panel ed-entry" style="padding:0 16px">' +
+        '<button type="button" class="acc-head" data-accpg="' + pg + '" aria-expanded="' + open + '">' +
+        '<span class="caret">▸</span><span>' + (PAGE_LABEL[pg] || pg) + '</span><span class="pg">' + pg + '</span>' +
+        (nOv ? '<span class="ct">' + nOv + ' 수정</span>' : '') + '</button>' +
+        '<div class="acc-body"' + (open ? '' : ' hidden') + '><div class="ed-grid">' + fs.map(contentField).join('') + '</div></div></div>';
     });
     $('#editor').innerHTML = html;
   }
@@ -281,6 +311,71 @@
     buildTabs();
   }
 
+  /* ---------- images ---------- */
+  function fileToDataURL(file) {
+    return new Promise(function (res, rej) { var r = new FileReader(); r.onload = function () { res(r.result); }; r.onerror = rej; r.readAsDataURL(file); });
+  }
+  function uploadFile(file) {
+    if (!/^image\//.test(file.type || '')) { toast('이미지 파일만 올릴 수 있어요', true); return Promise.resolve(null); }
+    return fileToDataURL(file).then(function (dataUrl) {
+      var b64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
+      return fetch('/api/upload', {
+        method: 'POST', headers: { 'Content-Type': 'application/json', 'x-admin-secret': $('#apiSecret').value },
+        body: JSON.stringify({ filename: file.name, contentType: file.type, dataBase64: b64 })
+      }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }, function () { return { ok: false, j: {} }; }); })
+        .then(function (res) {
+          if (res.ok && res.j && res.j.ok && res.j.path) {
+            var p = res.j.path.replace(/^\/+/, '');
+            pendingImg[p] = dataUrl; // instant preview until redeploy
+            toast('사진 업로드됨 · 저장 후 재배포되면 사이트 반영');
+            return p;
+          }
+          if (dataUrl.length < 900000) { toast('업로드 서버 미설정 — 사진을 파일에 직접 저장(용량 주의)', true); return dataUrl; }
+          toast('사진 업로드 실패: ' + ((res.j && res.j.error) || '서버 확인') + ' (사진이 너무 큼)', true);
+          return null;
+        }).catch(function () {
+          if (dataUrl.length < 900000) { toast('업로드 서버 미설정 — 사진을 파일에 직접 저장(용량 주의)', true); return dataUrl; }
+          toast('사진 업로드 실패 (사진이 너무 큼)', true); return null;
+        });
+    });
+  }
+  function setImageValue(k, url, ctx) {
+    if (ctx.slot) { if (url) state.images[k] = url; else delete state.images[k]; }
+    else if (ctx.entry) {
+      var i = +ctx.entry.getAttribute('data-i');
+      if (SCHEMA[active].type === 'object') state[active][k] = url; else state[active][i][k] = url;
+    }
+    buildTabs(); renderEditor(); renderPreview();
+  }
+  function loadImageSlots() {
+    imageSlots = [];
+    var seen = {};
+    return Promise.all(PAGES.map(function (pg) {
+      return fetch(pg, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+        if (!html) return;
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        CMS.readImageSlots(doc).forEach(function (s) { if (seen[s.key]) return; seen[s.key] = 1; s.page = pg; imageSlots.push(s); });
+      }).catch(function () { });
+    })).then(function () { buildTabs(); if (active === 'images') { renderEditor(); renderPreview(); } });
+  }
+  function renderImagesEditor() {
+    if (!imageSlots) { $('#editor').innerHTML = '<p class="note">사진 자리를 불러오는 중…</p>'; return; }
+    if (!imageSlots.length) { $('#editor').innerHTML = '<p class="note">사진 자리가 없습니다.</p>'; return; }
+    var html = '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트의 각 사진 자리입니다. 사진을 올리면 그 자리에 채워지고, <b>저장·재배포 후</b> 실제 사이트에 반영됩니다.</p>';
+    PAGES.forEach(function (pg) {
+      var ss = imageSlots.filter(function (s) { return s.page === pg; });
+      if (!ss.length) return;
+      html += '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + (PAGE_LABEL[pg] || pg) +
+        '</b><span class="mono" style="opacity:.45;font-size:.68rem">' + pg + '</span></div><div class="ed-grid">' +
+        ss.map(function (s) {
+          return '<div class="field full"><label>' + esc(s.label || s.key) +
+            ' <span class="mono" style="opacity:.4;text-transform:none;letter-spacing:0">' + esc(s.key) + '</span></label>' +
+            imgWidget(s.key, state.images[s.key] || '') + '</div>';
+        }).join('') + '</div></div>';
+    });
+    $('#editor').innerHTML = html;
+  }
+
   $('#editor').addEventListener('focusin', function (e) {
     var ck = e.target.getAttribute('data-ckey'); if (!ck) return;
     var f = contentFields && contentFields.filter(function (x) { return x.key === ck; })[0];
@@ -292,14 +387,44 @@
     if (ck) { updateContent(ck, e.target); renderPreview(); return; }
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var sc = SCHEMA[active];
-    if (sc.type === 'object') { state[active][k] = e.target.value; renderPreview(); return; }
+    var v = e.target.getAttribute('data-t') === 'check' ? e.target.checked : e.target.value;
+    if (sc.type === 'object') { state[active][k] = v; renderPreview(); return; }
     var entry = e.target.closest('.ed-entry'); if (!entry) return;
     var i = +entry.getAttribute('data-i');
-    state[active][i][k] = e.target.value;
+    state[active][i][k] = v;
     var t = entry.querySelector('.ed-head b'); if (t) t.textContent = sc.title(state[active][i]);
+    if (e.target.getAttribute('data-t') === 'check') buildTabs();
     renderPreview();
   });
+  /* image upload: file chosen in any imgWidget */
+  $('#editor').addEventListener('change', function (e) {
+    var t = e.target;
+    if (t.getAttribute('data-imgfile') == null || !t.files || !t.files[0]) return;
+    var k = t.getAttribute('data-imgfile');
+    var entry = t.closest('.ed-entry');
+    var ctx = (entry && active !== 'images') ? { entry: entry } : { slot: true };
+    var w = t.closest('.imgw'); if (w) w.classList.add('busy');
+    uploadFile(t.files[0]).then(function (url) {
+      if (w) w.classList.remove('busy');
+      if (url) setImageValue(k, url, ctx);
+    });
+  });
   $('#editor').addEventListener('click', function (e) {
+    var acc = e.target.closest('[data-accpg]');
+    if (acc) {
+      var pg = acc.getAttribute('data-accpg');
+      openPages[pg] = !openPages[pg];
+      if (openPages[pg] && pg !== previewPage) loadFrame(pg);
+      renderEditor();
+      return;
+    }
+    var del = e.target.closest('[data-imgdel]');
+    if (del) {
+      var dk = del.getAttribute('data-imgdel');
+      var entry0 = del.closest('.ed-entry');
+      setImageValue(dk, '', (entry0 && active !== 'images') ? { entry: entry0 } : { slot: true });
+      return;
+    }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var act = b.getAttribute('data-act'), arr = state[active];
     if (act === 'add') { arr.push({}); buildTabs(); renderEditor(); renderPreview(); return; }
@@ -315,16 +440,25 @@
   var PREVIEW_PAGE_FOR = {
     projects: 'projects.html', launches: 'archive.html', awards: 'archive.html',
     sponsors: 'support.html', contacts: 'contact.html', support: 'support.html',
-    location: 'contact.html', site: 'index.html', content: 'index.html'
+    location: 'contact.html', site: 'index.html', content: 'index.html', images: 'teams.html'
   };
   var previewPage = '';
   var _pvTimer = 0;
 
+  /* swap freshly-uploaded image paths (not yet redeployed) for their local dataURLs
+     so the preview shows the photo instantly */
+  function previewState() {
+    if (!Object.keys(pendingImg).length) return state;
+    var s; try { s = JSON.parse(JSON.stringify(state)); } catch (e) { return state; }
+    (s.projects || []).forEach(function (p) { if (p.image && pendingImg[p.image]) p.image = pendingImg[p.image]; });
+    if (s.images) Object.keys(s.images).forEach(function (k) { if (pendingImg[s.images[k]]) s.images[k] = pendingImg[s.images[k]]; });
+    return s;
+  }
   function applyToFrame() {
     var f = $('#cmsFrame'); if (!f) return;
     try {
       var w = f.contentWindow;
-      if (w && w.HANARO_CMS && w.HANARO_CMS.apply) w.HANARO_CMS.apply(state);
+      if (w && w.HANARO_CMS && w.HANARO_CMS.apply) w.HANARO_CMS.apply(previewState());
     } catch (e) { /* scripts not ready yet */ }
   }
   function loadFrame(pg) {
@@ -333,7 +467,7 @@
     var f = $('#cmsFrame'); if (!f) return;
     fetch(pg, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
       if (!html) return;
-      var snap = JSON.stringify(state).replace(/</g, '\\u003c');
+      var snap = JSON.stringify(previewState()).replace(/</g, '\\u003c');
       var inject = '<base href="/">' +
         '<style>.reveal{opacity:1!important;transform:none!important}</style>' +
         '<scr' + 'ipt>window.HANARO_DATA=' + snap + ';</scr' + 'ipt>';

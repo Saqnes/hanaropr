@@ -307,6 +307,15 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .gallery figcaption { padding: 13px 16px 15px; font-size: 0.83rem; color: var(--ink-1); }
 .gallery figcaption .m { display: block; font-family: var(--mono); font-size: 0.64rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); margin-bottom: 5px; }
 
+/* ---------- CMS photos (uploaded via admin) ---------- */
+.p-img { width: 100%; aspect-ratio: 16/10; object-fit: cover; border-radius: calc(var(--r) - 3px); margin-bottom: 14px; display: block; border: 1px solid var(--line); background: var(--paper-2); }
+[data-cms-img] { position: relative; overflow: hidden; }
+.slot-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+[data-cms-img].has-photo > *:not(.slot-img) { position: relative; z-index: 1; }
+[data-cms-img].has-photo .eyebrow { text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8); }
+.panel.has-photo .ph-note { display: none; }
+.gallery .ph-img.has-photo { color: transparent; }
+
 /* ---------- tiers ---------- */
 .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; }
 .tier { display: flex; flex-direction: column; border: 1px solid var(--line); border-radius: var(--r); padding: clamp(20px, 2.6vw, 30px); background: rgba(255,255,255,.02); }
