@@ -141,6 +141,9 @@
       return c.tagName.toLowerCase() === tag;
     });
   }
+  /* collapse HTML source whitespace the way the browser renders inline text
+     (runs of spaces/newlines -> single space), then trim ends. */
+  function norm(s) { return String(s == null ? '' : s).replace(/\s+/g, ' ').trim(); }
   /* simple, safe markup <-> html (only ever emits the known accent spans) */
   function markupToHtml(str) {
     return esc(str)
@@ -151,15 +154,16 @@
   function htmlToMarkup(el) {
     var out = '';
     Array.prototype.forEach.call(el.childNodes, function (n) {
-      if (n.nodeType === 3) { out += n.textContent; return; }
+      if (n.nodeType === 3) { out += n.textContent.replace(/\s+/g, ' '); return; }
       if (n.nodeType !== 1) return;
       var t = n.tagName.toLowerCase();
       if (t === 'br') out += '\n';
-      else if (t === 'span' && n.classList.contains('g')) out += '*' + n.textContent + '*';
-      else if (t === 'span' && n.classList.contains('c')) out += '~' + n.textContent + '~';
-      else out += n.textContent;
+      else if (t === 'span' && n.classList.contains('g')) out += '*' + norm(n.textContent) + '*';
+      else if (t === 'span' && n.classList.contains('c')) out += '~' + norm(n.textContent) + '~';
+      else out += n.textContent.replace(/\s+/g, ' ');
     });
-    return out.replace(/\s+$/, '').replace(/^\s+/, '');
+    /* keep <br> newlines, but drop the surrounding source-indent whitespace */
+    return out.replace(/[ \t]*\n[ \t]*/g, '\n').replace(/ {2,}/g, ' ').replace(/^\s+|\s+$/g, '');
   }
   function applyContent(content, root) {
     content = content || {};
@@ -186,14 +190,14 @@
     var els = (root || document).querySelectorAll(CMS_SEL);
     Array.prototype.forEach.call(els, function (el) {
       if (el.hasAttribute('data-cms-text')) {
-        out.push({ key: el.getAttribute('data-cms-text'), type: 'text', def: (el.textContent || '').trim() });
+        out.push({ key: el.getAttribute('data-cms-text'), type: 'text', def: norm(el.textContent) });
       } else if (el.hasAttribute('data-cms-rich')) {
         out.push({ key: el.getAttribute('data-cms-rich'), type: 'rich', def: htmlToMarkup(el) });
       } else {
         out.push({
           key: el.getAttribute('data-cms-list'), type: 'list',
           item: (el.getAttribute('data-cms-item') || 'li'),
-          def: listItems(el).map(function (c) { return (c.textContent || '').trim(); })
+          def: listItems(el).map(function (c) { return norm(c.textContent); })
         });
       }
     });
