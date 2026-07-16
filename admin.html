@@ -26,7 +26,13 @@
     .admin-tabs { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }
     .admin-cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 3vw, 36px); align-items: start; }
     .preview { position: sticky; top: 82px; }
-    .preview-label { font-family: var(--mono); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 12px; display: block; }
+    .preview-label { font-family: var(--mono); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); display: block; }
+    .pv-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .pv-select { margin-left: auto; padding: 6px 10px; border-radius: 4px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); color: var(--ink-0); font: inherit; font-size: .82rem; }
+    .pv-reload { width: 30px; height: 30px; border: 1px solid var(--line-2); border-radius: 4px; color: var(--ink-2); font-size: 1rem; transition: color .2s, border-color .2s; }
+    .pv-reload:hover { color: var(--gold); border-color: var(--gold); }
+    .cms-frame { width: 100%; height: 76vh; border: 1px solid var(--line-2); border-radius: var(--r); background: var(--paper); display: block; }
+    @media (max-width: 860px) { .cms-frame { height: 62vh; } }
     .ed-entry { position: relative; margin-bottom: 14px; }
     .ed-entry .ed-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
     .ed-entry .ed-head .idx { font-family: var(--mono); font-size: .7rem; color: var(--gold); letter-spacing: .1em; }
@@ -89,8 +95,20 @@
       <div class="admin-cols">
         <div id="editor"></div>
         <div class="preview">
-          <span class="preview-label">Live preview · 미리보기</span>
-          <div id="preview"></div>
+          <div class="pv-bar">
+            <span class="preview-label">Live preview · 실제 페이지</span>
+            <select id="cmsPage" class="pv-select" aria-label="미리보기 페이지">
+              <option value="index.html">홈</option>
+              <option value="about.html">소개</option>
+              <option value="projects.html">프로젝트</option>
+              <option value="teams.html">팀</option>
+              <option value="archive.html">아카이브</option>
+              <option value="support.html">후원</option>
+              <option value="contact.html">연락처</option>
+            </select>
+            <button type="button" id="cmsReload" class="pv-reload" title="새로고침" aria-label="미리보기 새로고침">↻</button>
+          </div>
+          <iframe id="cmsFrame" class="cms-frame" title="사이트 미리보기" loading="lazy"></iframe>
         </div>
       </div>
     </div>

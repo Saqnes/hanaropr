@@ -129,21 +129,48 @@
     if (f) { if (s.foundation) { f.href = s.foundation; f.hidden = false; } else { f.hidden = true; } }
   }
 
-  /* ---- editable page copy (data-cms-text = single string, data-cms-list = items) ----
+  /* ---- editable page copy ----
+     data-cms-text  = plain single string    (textContent)
+     data-cms-rich  = text + accent/newline   (simple markup: *gold*, ~coral~, newline=<br>)
+     data-cms-list  = list items (li, or spans via data-cms-item)
      The HTML keeps its current text as the default; content[key] overrides it. */
+  var CMS_SEL = '[data-cms-text],[data-cms-rich],[data-cms-list]';
   function listItems(el) {
     var tag = (el.getAttribute('data-cms-item') || 'li').toLowerCase();
     return Array.prototype.filter.call(el.children, function (c) {
       return c.tagName.toLowerCase() === tag;
     });
   }
+  /* simple, safe markup <-> html (only ever emits the known accent spans) */
+  function markupToHtml(str) {
+    return esc(str)
+      .replace(/\n/g, '<br>')
+      .replace(/\*([^*]+)\*/g, '<span class="g">$1</span>')
+      .replace(/~([^~]+)~/g, '<span class="c">$1</span>');
+  }
+  function htmlToMarkup(el) {
+    var out = '';
+    Array.prototype.forEach.call(el.childNodes, function (n) {
+      if (n.nodeType === 3) { out += n.textContent; return; }
+      if (n.nodeType !== 1) return;
+      var t = n.tagName.toLowerCase();
+      if (t === 'br') out += '\n';
+      else if (t === 'span' && n.classList.contains('g')) out += '*' + n.textContent + '*';
+      else if (t === 'span' && n.classList.contains('c')) out += '~' + n.textContent + '~';
+      else out += n.textContent;
+    });
+    return out.replace(/\s+$/, '').replace(/^\s+/, '');
+  }
   function applyContent(content, root) {
     content = content || {};
-    var els = (root || document).querySelectorAll('[data-cms-text],[data-cms-list]');
+    var els = (root || document).querySelectorAll(CMS_SEL);
     Array.prototype.forEach.call(els, function (el) {
       if (el.hasAttribute('data-cms-text')) {
         var v = content[el.getAttribute('data-cms-text')];
         if (typeof v === 'string' && v.trim() !== '') el.textContent = v;
+      } else if (el.hasAttribute('data-cms-rich')) {
+        var rv = content[el.getAttribute('data-cms-rich')];
+        if (typeof rv === 'string' && rv.trim() !== '') el.innerHTML = markupToHtml(rv);
       } else {
         var lv = content[el.getAttribute('data-cms-list')];
         if (Array.isArray(lv) && lv.length) {
@@ -156,10 +183,12 @@
   /* For the admin editor: read the current (default) copy out of a parsed document. */
   function readContentDefaults(root) {
     var out = [];
-    var els = (root || document).querySelectorAll('[data-cms-text],[data-cms-list]');
+    var els = (root || document).querySelectorAll(CMS_SEL);
     Array.prototype.forEach.call(els, function (el) {
       if (el.hasAttribute('data-cms-text')) {
         out.push({ key: el.getAttribute('data-cms-text'), type: 'text', def: (el.textContent || '').trim() });
+      } else if (el.hasAttribute('data-cms-rich')) {
+        out.push({ key: el.getAttribute('data-cms-rich'), type: 'rich', def: htmlToMarkup(el) });
       } else {
         out.push({
           key: el.getAttribute('data-cms-list'), type: 'list',

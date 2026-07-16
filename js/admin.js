@@ -150,9 +150,9 @@
           if (SCHEMA[k].type === 'object' || SCHEMA[k].type === 'content') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
           else state[k] = Array.isArray(d[k]) ? d[k] : [];
         });
-        buildTabs(); renderEditor(); renderPreview();
+        buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage();
       })
-      .catch(function () { buildTabs(); renderEditor(); renderPreview(); });
+      .catch(function () { buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage(); });
   }
 
   /* ---------- tabs ---------- */
@@ -167,7 +167,7 @@
     }).join('');
     t.onclick = function (e) {
       var b = e.target.closest('[data-col]'); if (!b) return;
-      active = b.getAttribute('data-col'); buildTabs(); renderEditor(); renderPreview();
+      active = b.getAttribute('data-col'); ensurePreviewPage(); buildTabs(); renderEditor(); renderPreview();
     };
   }
 
@@ -241,6 +241,12 @@
         ' <span class="mono" style="opacity:.5;text-transform:none;letter-spacing:0">· 목록 (한 줄에 하나)</span></label>' +
         '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="list" rows="' + Math.max(2, arr.length) + '">' + esc(arr.join('\n')) + '</textarea></div>';
     }
+    if (f.type === 'rich') {
+      var rv = (typeof ov === 'string') ? ov : f.def;
+      return '<div class="field full"><label for="' + id + '">' + esc(f.key) +
+        ' <span class="mono" style="opacity:.5;text-transform:none;letter-spacing:0">· 강조 *별표* · 줄바꿈 Enter</span></label>' +
+        '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="rich" rows="' + Math.max(2, Math.ceil(rv.length / 40)) + '">' + esc(rv) + '</textarea></div>';
+    }
     var tv = (typeof ov === 'string') ? ov : f.def;
     var inp = tv.length > 56
       ? '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" rows="3">' + esc(tv) + '</textarea>'
@@ -275,6 +281,12 @@
     buildTabs();
   }
 
+  $('#editor').addEventListener('focusin', function (e) {
+    var ck = e.target.getAttribute('data-ckey'); if (!ck) return;
+    var f = contentFields && contentFields.filter(function (x) { return x.key === ck; })[0];
+    if (f && f.page && f.page !== previewPage) { loadFrame(f.page); setTimeout(function () { focusFrameEl(ck); }, 700); }
+    else focusFrameEl(ck);
+  });
   $('#editor').addEventListener('input', function (e) {
     var ck = e.target.getAttribute('data-ckey');
     if (ck) { updateContent(ck, e.target); renderPreview(); return; }
@@ -299,26 +311,63 @@
     buildTabs(); renderEditor(); renderPreview();
   });
 
+  /* ---------- live preview: the real page in an iframe, driven by editor state ---------- */
+  var PREVIEW_PAGE_FOR = {
+    projects: 'projects.html', launches: 'archive.html', awards: 'archive.html',
+    sponsors: 'support.html', contacts: 'contact.html', support: 'support.html',
+    location: 'contact.html', site: 'index.html', content: 'index.html'
+  };
+  var previewPage = '';
+  var _pvTimer = 0;
+
+  function applyToFrame() {
+    var f = $('#cmsFrame'); if (!f) return;
+    try {
+      var w = f.contentWindow;
+      if (w && w.HANARO_CMS && w.HANARO_CMS.apply) w.HANARO_CMS.apply(state);
+    } catch (e) { /* scripts not ready yet */ }
+  }
+  function loadFrame(pg) {
+    previewPage = pg;
+    var sel = $('#cmsPage'); if (sel && sel.value !== pg) sel.value = pg;
+    var f = $('#cmsFrame'); if (!f) return;
+    fetch(pg, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
+      if (!html) return;
+      var snap = JSON.stringify(state).replace(/</g, '\\u003c');
+      var inject = '<base href="/">' +
+        '<style>.reveal{opacity:1!important;transform:none!important}</style>' +
+        '<scr' + 'ipt>window.HANARO_DATA=' + snap + ';</scr' + 'ipt>';
+      html = html.replace(/<head([^>]*)>/i, '<head$1>' + inject);
+      var doc = f.contentDocument;
+      doc.open(); doc.write(html); doc.close();
+      setTimeout(applyToFrame, 180);
+      setTimeout(applyToFrame, 550);
+    }).catch(function () { });
+  }
+  function ensurePreviewPage() {
+    var pg = PREVIEW_PAGE_FOR[active] || 'index.html';
+    if (pg !== previewPage) loadFrame(pg);
+    else applyToFrame();
+  }
+  function focusFrameEl(key) {
+    var f = $('#cmsFrame'); if (!f) return;
+    try {
+      var el = f.contentDocument.querySelector('[data-cms-text="' + key + '"],[data-cms-rich="' + key + '"],[data-cms-list="' + key + '"]');
+      if (!el) return;
+      el.scrollIntoView({ block: 'center' });
+      var prev = el.style.outline;
+      el.style.outline = '2px solid #f5a623'; el.style.outlineOffset = '2px';
+      setTimeout(function () { el.style.outline = prev; }, 1400);
+    } catch (e) { }
+  }
   function renderPreview() {
-    var sc = SCHEMA[active];
-    if (sc.type === 'content') { renderContentPreview(); return; }
-    if (sc.type === 'object') { $('#preview').innerHTML = sc.preview(state[active]); return; }
-    var arr = state[active];
-    $('#preview').innerHTML = arr.length ? sc.preview(arr) : '<p class="note">' + sc.empty + '</p>';
+    clearTimeout(_pvTimer);
+    _pvTimer = setTimeout(applyToFrame, 120);
   }
-  function renderContentPreview() {
-    if (!contentFields || !contentFields.length) { $('#preview').innerHTML = '<p class="note">불러오는 중…</p>'; return; }
-    var body = contentFields.map(function (f) {
-      var ov = state.content[f.key];
-      var isOv = (f.type === 'list') ? Array.isArray(ov) : (typeof ov === 'string');
-      var eff = (f.type === 'list') ? (Array.isArray(ov) ? ov : f.def).join(' · ') : (typeof ov === 'string' ? ov : f.def);
-      return '<div style="padding:8px 0;border-bottom:1px solid var(--line)">' +
-        '<span class="mono" style="font-size:.64rem;letter-spacing:.04em;color:' + (isOv ? 'var(--gold)' : 'var(--ink-2)') + '">' +
-        esc(f.key) + (isOv ? ' · 수정됨' : '') + '</span>' +
-        '<p style="margin-top:3px;font-size:.9rem">' + esc(eff) + '</p></div>';
-    }).join('');
-    $('#preview').innerHTML = '<p class="note" style="margin-bottom:10px">현재 문구 — <span style="color:var(--gold)">노란색</span>이 수정한 항목. 저장하면 사이트에 반영됩니다.</p>' + body;
-  }
+
+  /* preview page controls */
+  $('#cmsPage').addEventListener('change', function () { loadFrame(this.value); });
+  $('#cmsReload').addEventListener('click', function () { loadFrame(previewPage || 'index.html'); });
 
   /* ---------- save ---------- */
   function serialize() { return JSON.stringify(state, null, 2); }
