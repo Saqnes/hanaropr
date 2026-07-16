@@ -48,9 +48,19 @@
 > **저장 암호**는 로그인 암호와 **다른** 값(환경변수 `ADMIN_SECRET`)입니다. 새 임원에게
 > 인계할 때 이 값을 알려주세요.
 
-## ① 암호 변경 (필수)
+## ① 편집기 암호 게이트 (`REQUIRE_PASS`)
 
-`js/admin.js` 맨 위 `PASS_HASH`를 새 암호의 SHA-256으로 교체:
+`/admin.html` 진입 잠금입니다. `js/admin.js` 위쪽 `REQUIRE_PASS`로 켜고 끕니다:
+- **Cloudflare Access(이메일 로그인)를 안 쓰는 동안**(예: 팀 공동 테스트) → `true`(현재 기본).
+  공유 암호 하나로 팀이 들어옵니다. 로그아웃 = 암호 화면으로.
+- **Access가 `/admin.html`을 보호할 때** → `false`로 꺼도 됩니다. 그때 로그아웃 버튼은
+  Access 로그아웃(`/cdn-cgi/access/logout`)으로 연결됩니다.
+
+> ⚠️ 이 암호는 **보조(소프트) 잠금**입니다(브라우저 코드라 완전한 보안 아님).
+> **사이트를 실제로 바꾸는 저장/업로드는 항상 `ADMIN_SECRET`이 필요**하므로, 그 값만
+> 팀 안에서 관리하면 편집기가 열려 있어도 사이트 자체는 안전합니다.
+
+암호를 바꾸려면 `PASS_HASH`를 새 암호의 SHA-256으로 교체:
 ```bash
 node -e "console.log(require('crypto').createHash('sha256').update('새암호').digest('hex'))"
 ```

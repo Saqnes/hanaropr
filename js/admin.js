@@ -13,6 +13,11 @@
 (function () {
   'use strict';
   var PASS_HASH = '74968a976986aad87dbe978260a57fb1128122e1eb9318db63b561cfe4de61fa';
+  // Gate on /admin.html. Keep TRUE whenever Cloudflare Access is OFF (e.g. team-test
+  // phase) so the editor isn't wide open — one shared passphrase lets the team in.
+  // When Access (email login) protects /admin.html, you can set this to false.
+  // NOTE: this is a SOFT gate; the real write-protection is ADMIN_SECRET on save/upload.
+  var REQUIRE_PASS = true;
   var DATA_URL = 'assets/data.json';
   var SAVE_API = '/api/save';
 
@@ -167,7 +172,8 @@
     });
   }
   function unlock() { $('#gate').style.display = 'none'; $('#app').hidden = false; loadData(); loadContentFields(); loadImageSlots(); }
-  if (sessionStorage.getItem('hanaro_admin') === '1') unlock();
+  if (!REQUIRE_PASS || sessionStorage.getItem('hanaro_admin') === '1') unlock();
+  else $('#gate').style.display = 'grid';
   $('#gateForm').addEventListener('submit', function (e) {
     e.preventDefault();
     sha256($('#pass').value).then(function (h) {
@@ -175,7 +181,11 @@
       else { $('#gateErr').style.display = 'block'; }
     });
   });
-  $('#btnLogout').addEventListener('click', function () { sessionStorage.removeItem('hanaro_admin'); location.reload(); });
+  $('#btnLogout').addEventListener('click', function () {
+    if (dirty && !window.confirm('저장하지 않은 변경사항이 있어요. 그래도 나갈까요?')) return;
+    if (REQUIRE_PASS) { sessionStorage.removeItem('hanaro_admin'); location.reload(); }
+    else { location.href = '/cdn-cgi/access/logout'; } // Cloudflare Access logout
+  });
   window.addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
   window.addEventListener('keydown', function (e) {
     if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
@@ -617,6 +627,7 @@
   }
   /* click an editable element in the live preview -> jump to & focus its editor field */
   function adminEdit(key, kind) {
+    exitPreviewMode(); // on mobile, come back from preview to the editor
     if (kind === 'img') {
       active = 'images'; buildTabs(); renderEditor(); renderPreview();
       setTimeout(function () {
@@ -640,6 +651,23 @@
   /* preview page controls */
   $('#cmsPage').addEventListener('change', function () { loadFrame(this.value); });
   $('#cmsReload').addEventListener('click', function () { loadFrame(previewPage || 'index.html'); });
+
+  /* mobile: toggle between editor and full-screen preview */
+  function exitPreviewMode() {
+    if (document.body.classList.contains('pv-mode')) {
+      document.body.classList.remove('pv-mode');
+      var mt = $('#mobileToggle'); if (mt) mt.textContent = '미리보기 ▸';
+    }
+  }
+  (function () {
+    var mt = $('#mobileToggle'); if (!mt) return;
+    mt.addEventListener('click', function () {
+      var on = document.body.classList.toggle('pv-mode');
+      mt.textContent = on ? '◂ 편집으로' : '미리보기 ▸';
+      window.scrollTo(0, 0);
+      if (on) { ensurePreviewPage(); setTimeout(applyToFrame, 60); }
+    });
+  })();
 
   /* ---------- save ---------- */
   function serialize() { return JSON.stringify(state, null, 2); }
