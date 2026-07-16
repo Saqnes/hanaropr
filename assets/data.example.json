@@ -34,5 +34,8 @@
   "sponsors": [
     { "name": "예시 후원사 A", "kind": "Example Sponsor" },
     { "name": "예시 후원사 B", "kind": "Example Corp" }
-  ]
+  ],
+  "content": {
+    "teams.prop.desc": "(예시) 관리자 페이지 '페이지 문구' 탭에서 이 설명을 자유롭게 바꿀 수 있습니다."
+  }
 }

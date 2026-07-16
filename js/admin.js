@@ -111,12 +111,18 @@
         { k: 'notion', t: 'text', ph: '아카이브(노션) URL', full: true },
         { k: 'address', t: 'text', ph: '푸터 주소', full: true }
       ]
-    }
+    },
+    content: { type: 'content', label: '페이지 문구' }
   };
-  var ORDER = ['projects', 'launches', 'awards', 'sponsors', 'contacts', 'support', 'location', 'site'];
+  var ORDER = ['projects', 'launches', 'awards', 'sponsors', 'contacts', 'support', 'location', 'site', 'content'];
 
-  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [] };
+  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [], content: {} };
   var active = 'projects';
+
+  /* page copy (data-cms-text / data-cms-list) discovery */
+  var PAGES = ['index.html', 'about.html', 'projects.html', 'teams.html', 'archive.html', 'support.html', 'contact.html'];
+  var PAGE_LABEL = { 'index.html': '홈', 'about.html': '소개', 'projects.html': '프로젝트', 'teams.html': '팀', 'archive.html': '아카이브', 'support.html': '후원', 'contact.html': '연락처' };
+  var contentFields = null; /* null = not loaded yet; else array of {key,type,item,def,page} */
 
   /* ---------- gate ---------- */
   function sha256(str) {
@@ -124,7 +130,7 @@
       return Array.prototype.map.call(new Uint8Array(h), function (b) { return ('0' + b.toString(16)).slice(-2); }).join('');
     });
   }
-  function unlock() { $('#gate').style.display = 'none'; $('#app').hidden = false; loadData(); }
+  function unlock() { $('#gate').style.display = 'none'; $('#app').hidden = false; loadData(); loadContentFields(); }
   if (sessionStorage.getItem('hanaro_admin') === '1') unlock();
   $('#gateForm').addEventListener('submit', function (e) {
     e.preventDefault();
@@ -141,7 +147,7 @@
       .then(function (d) {
         d = d || {};
         ORDER.forEach(function (k) {
-          if (SCHEMA[k].type === 'object') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
+          if (SCHEMA[k].type === 'object' || SCHEMA[k].type === 'content') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
           else state[k] = Array.isArray(d[k]) ? d[k] : [];
         });
         buildTabs(); renderEditor(); renderPreview();
@@ -153,7 +159,10 @@
   function buildTabs() {
     var t = $('#adminTabs');
     t.innerHTML = ORDER.map(function (k) {
-      var count = SCHEMA[k].type === 'object' ? '' : ' <span class="mono" style="opacity:.6">(' + state[k].length + ')</span>';
+      var count;
+      if (SCHEMA[k].type === 'object') count = '';
+      else if (SCHEMA[k].type === 'content') count = ' <span class="mono" style="opacity:.6">(' + Object.keys(state.content || {}).length + ')</span>';
+      else count = ' <span class="mono" style="opacity:.6">(' + state[k].length + ')</span>';
       return '<button class="tab" role="tab" data-col="' + k + '" aria-selected="' + (k === active) + '">' + SCHEMA[k].label + count + '</button>';
     }).join('');
     t.onclick = function (e) {
@@ -178,6 +187,7 @@
 
   function renderEditor() {
     var sc = SCHEMA[active];
+    if (sc.type === 'content') { renderContentEditor(); return; }
     if (sc.type === 'object') {
       var of = sc.fields.map(function (f) { return field(active, null, f); }).join('');
       $('#editor').innerHTML = '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + sc.label + '</b></div><div class="ed-grid">' + of + '</div></div>';
@@ -197,7 +207,77 @@
     $('#editor').innerHTML = html;
   }
 
+  /* ---------- page copy (content) editor ---------- */
+  function loadContentFields() {
+    contentFields = [];
+    var seen = {};
+    return Promise.all(PAGES.map(function (pg) {
+      return fetch(pg, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; })
+        .then(function (html) {
+          if (!html) return;
+          var doc = new DOMParser().parseFromString(html, 'text/html');
+          CMS.readContentDefaults(doc).forEach(function (f) {
+            if (seen[f.key]) return;
+            seen[f.key] = 1; f.page = pg; contentFields.push(f);
+          });
+        }).catch(function () { });
+    })).then(function () {
+      buildTabs();
+      if (active === 'content') { renderEditor(); renderPreview(); }
+    });
+  }
+  function sameArr(a, b) {
+    a = a || []; b = b || [];
+    if (a.length !== b.length) return false;
+    for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
+    return true;
+  }
+  function contentField(f) {
+    var id = 'c-' + f.key.replace(/[^a-z0-9]/gi, '-');
+    var ov = state.content[f.key];
+    if (f.type === 'list') {
+      var arr = Array.isArray(ov) ? ov : f.def;
+      return '<div class="field full"><label for="' + id + '">' + esc(f.key) +
+        ' <span class="mono" style="opacity:.5;text-transform:none;letter-spacing:0">· 목록 (한 줄에 하나)</span></label>' +
+        '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="list" rows="' + Math.max(2, arr.length) + '">' + esc(arr.join('\n')) + '</textarea></div>';
+    }
+    var tv = (typeof ov === 'string') ? ov : f.def;
+    var inp = tv.length > 56
+      ? '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" rows="3">' + esc(tv) + '</textarea>'
+      : '<input id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" type="text" value="' + esc(tv) + '">';
+    return '<div class="field full"><label for="' + id + '">' + esc(f.key) + '</label>' + inp + '</div>';
+  }
+  function renderContentEditor() {
+    if (!contentFields) { $('#editor').innerHTML = '<p class="note">페이지 문구를 불러오는 중…</p>'; return; }
+    if (!contentFields.length) { $('#editor').innerHTML = '<p class="note">편집 가능한 문구를 찾지 못했습니다.</p>'; return; }
+    var html = '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트에 박힌 설명 문구입니다. 고치면 그 값으로 바뀌고, <b>비우면 원래 문구</b>로 돌아갑니다.</p>';
+    PAGES.forEach(function (pg) {
+      var fs = contentFields.filter(function (f) { return f.page === pg; });
+      if (!fs.length) return;
+      html += '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + (PAGE_LABEL[pg] || pg) +
+        '</b><span class="mono" style="opacity:.45;font-size:.68rem">' + pg + '</span></div><div class="ed-grid">' +
+        fs.map(contentField).join('') + '</div></div>';
+    });
+    $('#editor').innerHTML = html;
+  }
+  function updateContent(key, el) {
+    var f = contentFields && contentFields.filter(function (x) { return x.key === key; })[0];
+    if (el.getAttribute('data-ctype') === 'list') {
+      var arr = el.value.split('\n').map(function (s) { return s.trim(); }).filter(function (s) { return s !== ''; });
+      if (f && sameArr(arr, f.def)) delete state.content[key];
+      else if (!arr.length) delete state.content[key];
+      else state.content[key] = arr;
+    } else {
+      var v = el.value;
+      if ((f && v === f.def) || v.trim() === '') delete state.content[key];
+      else state.content[key] = v;
+    }
+    buildTabs();
+  }
+
   $('#editor').addEventListener('input', function (e) {
+    var ck = e.target.getAttribute('data-ckey');
+    if (ck) { updateContent(ck, e.target); renderPreview(); return; }
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var sc = SCHEMA[active];
     if (sc.type === 'object') { state[active][k] = e.target.value; renderPreview(); return; }
@@ -221,9 +301,23 @@
 
   function renderPreview() {
     var sc = SCHEMA[active];
+    if (sc.type === 'content') { renderContentPreview(); return; }
     if (sc.type === 'object') { $('#preview').innerHTML = sc.preview(state[active]); return; }
     var arr = state[active];
     $('#preview').innerHTML = arr.length ? sc.preview(arr) : '<p class="note">' + sc.empty + '</p>';
+  }
+  function renderContentPreview() {
+    if (!contentFields || !contentFields.length) { $('#preview').innerHTML = '<p class="note">불러오는 중…</p>'; return; }
+    var body = contentFields.map(function (f) {
+      var ov = state.content[f.key];
+      var isOv = (f.type === 'list') ? Array.isArray(ov) : (typeof ov === 'string');
+      var eff = (f.type === 'list') ? (Array.isArray(ov) ? ov : f.def).join(' · ') : (typeof ov === 'string' ? ov : f.def);
+      return '<div style="padding:8px 0;border-bottom:1px solid var(--line)">' +
+        '<span class="mono" style="font-size:.64rem;letter-spacing:.04em;color:' + (isOv ? 'var(--gold)' : 'var(--ink-2)') + '">' +
+        esc(f.key) + (isOv ? ' · 수정됨' : '') + '</span>' +
+        '<p style="margin-top:3px;font-size:.9rem">' + esc(eff) + '</p></div>';
+    }).join('');
+    $('#preview').innerHTML = '<p class="note" style="margin-bottom:10px">현재 문구 — <span style="color:var(--gold)">노란색</span>이 수정한 항목. 저장하면 사이트에 반영됩니다.</p>' + body;
   }
 
   /* ---------- save ---------- */

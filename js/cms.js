@@ -129,6 +129,48 @@
     if (f) { if (s.foundation) { f.href = s.foundation; f.hidden = false; } else { f.hidden = true; } }
   }
 
+  /* ---- editable page copy (data-cms-text = single string, data-cms-list = items) ----
+     The HTML keeps its current text as the default; content[key] overrides it. */
+  function listItems(el) {
+    var tag = (el.getAttribute('data-cms-item') || 'li').toLowerCase();
+    return Array.prototype.filter.call(el.children, function (c) {
+      return c.tagName.toLowerCase() === tag;
+    });
+  }
+  function applyContent(content, root) {
+    content = content || {};
+    var els = (root || document).querySelectorAll('[data-cms-text],[data-cms-list]');
+    Array.prototype.forEach.call(els, function (el) {
+      if (el.hasAttribute('data-cms-text')) {
+        var v = content[el.getAttribute('data-cms-text')];
+        if (typeof v === 'string' && v.trim() !== '') el.textContent = v;
+      } else {
+        var lv = content[el.getAttribute('data-cms-list')];
+        if (Array.isArray(lv) && lv.length) {
+          var tag = el.getAttribute('data-cms-item') || 'li';
+          el.innerHTML = lv.map(function (it) { return '<' + tag + '>' + esc(it) + '</' + tag + '>'; }).join('');
+        }
+      }
+    });
+  }
+  /* For the admin editor: read the current (default) copy out of a parsed document. */
+  function readContentDefaults(root) {
+    var out = [];
+    var els = (root || document).querySelectorAll('[data-cms-text],[data-cms-list]');
+    Array.prototype.forEach.call(els, function (el) {
+      if (el.hasAttribute('data-cms-text')) {
+        out.push({ key: el.getAttribute('data-cms-text'), type: 'text', def: (el.textContent || '').trim() });
+      } else {
+        out.push({
+          key: el.getAttribute('data-cms-list'), type: 'list',
+          item: (el.getAttribute('data-cms-item') || 'li'),
+          def: listItems(el).map(function (c) { return (c.textContent || '').trim(); })
+        });
+      }
+    });
+    return out;
+  }
+
   /* ---- location: address + map ---- */
   function applyLocation(loc) {
     loc = loc || {};
@@ -144,6 +186,7 @@
   function apply(data) {
     data = data || {};
     applySite(data.site);
+    applyContent(data.content);
     fill('#cms-launches', data.launches, launchRow, '등록된 발사 기록이 없습니다.');
     fill('#cms-awards', data.awards, awardRow, '등록된 수상 내역이 없습니다.');
     fill('#cms-sponsors', data.sponsors, sponsorItem, '등록된 후원사가 없습니다.');
@@ -165,6 +208,7 @@
 
   window.HANARO_CMS = {
     esc: esc, launchRow: launchRow, awardRow: awardRow, projectCard: projectCard,
-    sponsorItem: sponsorItem, contactCard: contactCard, apply: apply, hydrate: hydrate
+    sponsorItem: sponsorItem, contactCard: contactCard, apply: apply, hydrate: hydrate,
+    applyContent: applyContent, readContentDefaults: readContentDefaults
   };
 })();
