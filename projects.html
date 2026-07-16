@@ -11,6 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
+  <script defer src="js/cms.js"></script>
   <script defer src="js/main.js"></script>
 </head>
 <body>
@@ -119,18 +120,10 @@
           <h2 class="h-lg title-ko">지나온 <span class="g">기체들</span></h2>
           <p class="lead">아래는 프로젝트 카드 템플릿입니다. 각 카드에 실제 로켓 정보를 채우면 됩니다.</p>
         </div>
-        <div class="filter" role="group" aria-label="연도로 필터">
-          <button class="chip" data-filter="all" aria-pressed="true">전체</button>
-          <button class="chip" data-filter="a" aria-pressed="false">연도 A</button>
-          <button class="chip" data-filter="b" aria-pressed="false">연도 B</button>
-        </div>
-        <div class="grid g2" id="project-grid">
-          <article class="panel reveal" data-year="a"><span class="eyebrow no-rule">Project · 최신</span><h3 style="margin-top:6px"><span class="ph">로켓 이름</span></h3><p style="margin-top:10px">목표·성과 요약을 입력하세요.</p><div class="tags"><span class="ph">연도</span><span class="ph">대회</span><span class="ph">담당 팀</span></div></article>
-          <article class="panel reveal" data-year="a" style="--d:.06s"><span class="eyebrow no-rule">Project</span><h3 style="margin-top:6px"><span class="ph">로켓 이름</span></h3><p style="margin-top:10px">목표·성과 요약을 입력하세요.</p><div class="tags"><span class="ph">연도</span><span class="ph">대회</span></div></article>
-          <article class="panel reveal" data-year="b" style="--d:.12s"><span class="eyebrow no-rule">Project</span><h3 style="margin-top:6px"><span class="ph">로켓 이름</span></h3><p style="margin-top:10px">목표·성과 요약을 입력하세요.</p><div class="tags"><span class="ph">연도</span><span class="ph">대회</span></div></article>
-          <article class="panel reveal" data-year="b" style="--d:.18s"><span class="eyebrow no-rule">Project</span><h3 style="margin-top:6px"><span class="ph">로켓 이름</span></h3><p style="margin-top:10px">목표·성과 요약을 입력하세요.</p><div class="tags"><span class="ph">연도</span><span class="ph">대회</span></div></article>
-        </div>
-        <p class="note reveal" style="margin-top:18px">전체 발사·수상 기록은 <a class="g" href="archive.html">아카이브 →</a> 에서 관리합니다.</p>
+        <div class="filter" id="cms-filter" role="group" aria-label="연도로 필터"></div>
+        <div class="grid g2" id="cms-projects"></div>
+        <noscript><p class="note">프로젝트 목록은 관리자 페이지에서 관리하며, 브라우저에서 불러옵니다.</p></noscript>
+        <p class="note reveal" style="margin-top:18px">프로젝트는 <a class="g" href="admin.html">관리자 페이지</a>에서 추가·수정합니다. 전체 발사·수상 기록은 <a class="g" href="archive.html">아카이브 →</a></p>
       </div>
     </section>
 

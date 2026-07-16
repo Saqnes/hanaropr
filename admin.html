@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Admin · HANARO 관리자</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body::before, body::after { position: fixed; }
+    /* gate */
+    #gate { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: var(--pad); }
+    #gate .box { width: min(420px, 100%); }
+    /* app */
+    #app[hidden] { display: none; }
+    .admin-bar {
+      position: sticky; top: 0; z-index: 30; display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center;
+      padding: 12px var(--pad); border-bottom: 1px solid var(--line);
+      background: rgba(10,13,18,.86); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    }
+    .admin-bar .brand b { font-size: 1rem; }
+    .admin-bar .spacer { flex: 1; }
+    .admin-bar .btn { padding: 9px 15px; font-size: .85rem; }
+    .admin-wrap { padding: clamp(18px, 3vw, 34px) var(--pad) 90px; }
+    .admin-tabs { display: flex; flex-wrap: wrap; gap: 2px; border-bottom: 1px solid var(--line); margin-bottom: 22px; }
+    .admin-cols { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(18px, 3vw, 36px); align-items: start; }
+    .preview { position: sticky; top: 82px; }
+    .preview-label { font-family: var(--mono); font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 12px; display: block; }
+    .ed-entry { position: relative; margin-bottom: 14px; }
+    .ed-entry .ed-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .ed-entry .ed-head .idx { font-family: var(--mono); font-size: .7rem; color: var(--gold); letter-spacing: .1em; }
+    .ed-entry .ed-head .sp { flex: 1; }
+    .ed-btn { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 4px; padding: 5px 9px; transition: color .2s, border-color .2s; }
+    .ed-btn:hover { color: var(--ink-0); border-color: var(--line-2); }
+    .ed-btn.danger:hover { color: var(--coral); border-color: var(--coral); }
+    .ed-grid { display: grid; gap: 10px; grid-template-columns: 1fr 1fr; }
+    .ed-grid .full { grid-column: 1 / -1; }
+    .ed-add { width: 100%; border: 1px dashed var(--line-2); border-radius: var(--r); padding: 14px; color: var(--gold); font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; transition: background-color .2s, border-color .2s; }
+    .ed-add:hover { background: rgba(245,166,35,.06); border-color: var(--gold); }
+    .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(20px); z-index: 60; padding: 11px 20px; border-radius: 6px; background: var(--paper-3); border: 1px solid var(--line-2); color: var(--ink-0); font-size: .9rem; opacity: 0; pointer-events: none; transition: opacity .25s, transform .25s; }
+    .toast.show { opacity: 1; transform: translateX(-50%); }
+    .toast.err { border-color: var(--coral); color: var(--coral); }
+    .secret-row { display: flex; gap: 8px; align-items: center; }
+    .secret-row input { width: 150px; padding: 8px 10px; border-radius: 4px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); color: var(--ink-0); font: inherit; font-size: .82rem; }
+    @media (max-width: 860px) { .admin-cols { grid-template-columns: 1fr; } .preview { position: static; } .ed-grid { grid-template-columns: 1fr; } }
+  </style>
+  <script>document.documentElement.classList.add('js');</script>
+  <script defer src="js/cms.js"></script>
+  <script defer src="js/admin.js"></script>
+</head>
+<body>
+  <!-- passphrase gate (soft — real access control = Cloudflare Access, see ADMIN.md) -->
+  <div id="gate">
+    <div class="panel box">
+      <span class="eyebrow">HANARO · Admin</span>
+      <h1 class="h-md" style="margin:10px 0 4px">관리자 로그인</h1>
+      <p class="muted" style="font-size:.9rem;margin-bottom:18px">관리자만 접근하는 편집 페이지입니다.</p>
+      <form id="gateForm" class="form" style="gap:12px">
+        <div class="field"><label for="pass">암호</label><input id="pass" type="password" autocomplete="current-password" placeholder="관리자 암호"></div>
+        <button class="btn btn-solid" type="submit">들어가기 <span class="ar" aria-hidden="true">→</span></button>
+        <p id="gateErr" class="note" style="color:var(--coral);display:none">암호가 올바르지 않습니다.</p>
+        <p class="note">보안: 이 암호는 보조 잠금입니다. 실제 접근 제한은 <b>Cloudflare Access</b>로 <code>/admin.html</code> 경로를 잠그세요(ADMIN.md 참고).</p>
+      </form>
+    </div>
+  </div>
+
+  <!-- editor app -->
+  <div id="app" hidden>
+    <header class="admin-bar">
+      <span class="brand"><b>HANARO</b></span>
+      <span class="eyebrow no-rule" style="color:var(--ink-2)">콘텐츠 관리</span>
+      <span class="spacer"></span>
+      <div class="secret-row" title="Cloudflare Function 사용 시 서버 저장 암호">
+        <input id="apiSecret" type="password" placeholder="서버 저장 암호(선택)" autocomplete="off">
+        <button class="btn btn-line" id="btnSave" type="button">서버에 저장</button>
+      </div>
+      <button class="btn btn-line" id="btnDownload" type="button">JSON 다운로드</button>
+      <button class="btn btn-line" id="btnCopy" type="button">복사</button>
+      <button class="btn btn-solid" id="btnLogout" type="button">로그아웃</button>
+    </header>
+
+    <div class="admin-wrap">
+      <p class="muted" style="font-size:.9rem;margin-bottom:16px">
+        아래에서 항목을 추가·수정하면 오른쪽 미리보기가 <b>실제 사이트와 동일한 포맷</b>으로 갱신됩니다.
+        저장 후 사이트에 반영하려면 <b>서버에 저장</b>(자동 커밋) 또는 <b>JSON 다운로드</b> 후 <code>assets/data.json</code>에 커밋하세요.
+      </p>
+      <nav class="admin-tabs" id="adminTabs" role="tablist" aria-label="콘텐츠 종류"></nav>
+      <div class="admin-cols">
+        <div id="editor"></div>
+        <div class="preview">
+          <span class="preview-label">Live preview · 미리보기</span>
+          <div id="preview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

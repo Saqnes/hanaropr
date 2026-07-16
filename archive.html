@@ -11,6 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
+  <script defer src="js/cms.js"></script>
   <script defer src="js/main.js"></script>
 </head>
 <body>
@@ -64,20 +65,14 @@
 
         <!-- LAUNCH LOG -->
         <div class="tabpanel" role="tabpanel" id="p-log" aria-labelledby="t-log">
-          <div class="log">
-            <div class="log-row reveal"><span class="yr mono"><span class="ph">연도</span></span><div><p class="nm"><span class="ph">기체 · 대회</span></p><p class="ds">발사 내용을 입력하세요.</p></div><div class="mt"><span class="pill go">발사 완료</span></div></div>
-            <div class="log-row reveal" style="--d:.05s"><span class="yr mono"><span class="ph">연도</span></span><div><p class="nm"><span class="ph">기체 · 대회</span></p><p class="ds">발사 내용을 입력하세요.</p></div><div class="mt"><span class="pill go">발사 완료</span></div></div>
-            <div class="log-row reveal" style="--d:.1s"><span class="yr mono"><span class="ph">연도</span></span><div><p class="nm"><span class="ph">기체 · 대회</span></p><p class="ds">이상·부분 성공은 pink 배지로 표기합니다.</p></div><div class="mt"><span class="pill warn">부분 성공</span></div></div>
-          </div>
-          <p class="note reveal" style="margin-top:16px">각 행을 복사해 실제 발사 기록을 추가하세요. 성공은 <span class="pill go" style="vertical-align:middle">발사 완료</span>, 이상·부분은 <span class="pill warn" style="vertical-align:middle">부분 성공</span>.</p>
+          <div class="log" id="cms-launches"></div>
+          <noscript><p class="note">발사 기록은 관리자 페이지에서 관리하며, 브라우저에서 불러옵니다.</p></noscript>
+          <p class="note reveal" style="margin-top:16px">발사 기록은 <a class="g" href="admin.html">관리자 페이지</a>에서 추가합니다. 성공 <span class="pill go" style="vertical-align:middle">발사 완료</span>, 이상·부분 <span class="pill warn" style="vertical-align:middle">부분 성공</span>.</p>
         </div>
 
         <!-- AWARDS -->
         <div class="tabpanel" role="tabpanel" id="p-award" aria-labelledby="t-award">
-          <div class="log">
-            <div class="log-row reveal"><span class="yr mono"><span class="ph">연도</span></span><div><p class="nm"><span class="ph">대회 · 상 이름</span></p><p class="ds">수상 내용을 입력하세요.</p></div><div class="mt"><span class="pill go"><span class="ph">순위</span></span></div></div>
-            <div class="log-row reveal" style="--d:.05s"><span class="yr mono"><span class="ph">연도</span></span><div><p class="nm"><span class="ph">학술대회 · 발표</span></p><p class="ds">발표·수상 내용을 입력하세요.</p></div><div class="mt"><span class="pill go"><span class="ph">순위</span></span></div></div>
-          </div>
+          <div class="log" id="cms-awards"></div>
         </div>
 
         <!-- EXTERNAL -->
@@ -91,10 +86,8 @@
 
         <!-- COLLABORATION -->
         <div class="tabpanel" role="tabpanel" id="p-collab" aria-labelledby="t-collab">
-          <div class="grid">
-            <div class="ph-block reveal"><p class="eyebrow">Sponsors · 후원사</p><p class="ph-note">후원사 로고와 목록을 입력하세요. <span class="ph">후원사 입력</span></p></div>
-            <div class="panel reveal" style="--d:.06s"><span class="eyebrow">Partner with us · 협력 제안</span><h3>함께하실 기관을 찾습니다</h3><p>기술 지원·물품 후원·산학 협력 등 다양한 형태의 협력을 환영합니다.</p><div class="actions"><a class="btn btn-line" href="support.html">협력 안내 <span class="ar" aria-hidden="true">→</span></a></div></div>
-          </div>
+          <div style="margin-bottom:16px"><p class="eyebrow" style="margin-bottom:12px">Sponsors · 후원사</p><div class="grid g4" id="cms-sponsors"></div></div>
+          <div class="panel reveal"><span class="eyebrow">Partner with us · 협력 제안</span><h3>함께하실 기관을 찾습니다</h3><p>기술 지원·물품 후원·산학 협력 등 다양한 형태의 협력을 환영합니다.</p><div class="actions"><a class="btn btn-line" href="support.html">협력 안내 <span class="ar" aria-hidden="true">→</span></a></div></div>
         </div>
 
         <div class="ph-block reveal" style="margin-top:30px;text-align:center">

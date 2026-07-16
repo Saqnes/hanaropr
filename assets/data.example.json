@@ -1,0 +1,17 @@
+{
+  "projects": [
+    {"name":"예시 로켓 II","ko":"프로토타입","year":"2025","event":"대회 A","team":"전 팀","status":"완료","summary":"예시 프로젝트 설명입니다. 실제 값은 관리자 페이지에서 입력합니다."},
+    {"name":"예시 로켓 I","year":"2024","event":"대회 B","status":"시험","summary":"진행 중 프로젝트 예시."}
+  ],
+  "launches":[
+    {"year":"2025","name":"예시 기체 · 대회 A","desc":"발사 성공 예시","status":"go"},
+    {"year":"2024","name":"예시 기체 · 대회 B","desc":"부분 성공 예시","status":"warn"}
+  ],
+  "awards":[
+    {"year":"2025","name":"예시 학술대회","rank":"1위","desc":"수상 예시"}
+  ],
+  "sponsors":[
+    {"name":"예시 후원사 A","kind":"Example Sponsor"},
+    {"name":"예시 후원사 B","kind":"Example Corp"}
+  ]
+}

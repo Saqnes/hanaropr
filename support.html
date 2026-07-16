@@ -11,6 +11,7 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.classList.add('js');</script>
+  <script defer src="js/cms.js"></script>
   <script defer src="js/main.js"></script>
 </head>
 <body class="has-sticky-cta">
@@ -82,7 +83,7 @@
           <div class="metric"><div class="v"><span data-count="2329" data-plain>2329</span><span class="u">mm</span></div><div class="k">기준 기체 전장</div></div>
           <div class="metric"><div class="v"><span data-count="2" data-plain>2</span><span class="u">단</span></div><div class="k">단 분리 구성</div></div>
           <div class="metric"><div class="v"><span data-count="4" data-plain>4</span><span class="u">팀</span></div><div class="k">엔지니어링 서브시스템</div></div>
-          <div class="metric"><div class="v"><span class="ph">N</span></div><div class="k">누적 발사 (입력)</div></div>
+          <div class="metric"><div class="v"><span id="cms-launch-count">0</span></div><div class="k">누적 발사</div></div>
         </div>
         <div class="actions reveal"><a class="btn btn-line" href="projects.html">프로젝트 · 기술 보기 <span class="ar" aria-hidden="true">→</span></a><a class="btn btn-line" href="archive.html">발사 · 수상 기록</a></div>
       </div>
@@ -127,7 +128,8 @@
           <p class="eyebrow">Our Sponsors · 후원사</p>
           <h2 class="h-lg title-ko">함께해 주시는 <span class="g">분들</span></h2>
         </div>
-        <div class="ph-block reveal"><p class="ph-note">후원사 로고를 균일한 크기로 배치할 자리입니다. <span class="ph">후원사 정보 입력</span></p></div>
+        <div class="grid g4 reveal" id="cms-sponsors"></div>
+        <noscript><p class="note">후원사 목록은 관리자 페이지에서 관리합니다.</p></noscript>
       </div>
     </section>
 

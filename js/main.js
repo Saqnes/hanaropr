@@ -85,18 +85,8 @@
     tick(); setInterval(tick, 1000);
   }
 
-  /* ---- project year filter ---- */
-  var fbar = $('.filter');
-  if (fbar) {
-    var chips = $$('.chip', fbar);
-    var cards = $$('#project-grid [data-year]');
-    fbar.addEventListener('click', function (e) {
-      var b = e.target.closest('.chip'); if (!b) return;
-      chips.forEach(function (c) { c.setAttribute('aria-pressed', c === b ? 'true' : 'false'); });
-      var f = b.getAttribute('data-filter');
-      cards.forEach(function (c) { c.hidden = !(f === 'all' || c.getAttribute('data-year') === f); });
-    });
-  }
+  /* ---- CMS content: projects / launches / awards / sponsors (from data.json) ---- */
+  if (window.HANARO_CMS) window.HANARO_CMS.hydrate();
 
   /* ---- archive tabs ---- */
   var tablist = $('.tabs[role="tablist"]');
