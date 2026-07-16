@@ -128,6 +128,14 @@
   var contentFields = null; /* null = not loaded yet; else array of {key,type,item,def,page} */
   var imageSlots = null;    /* null = not loaded; else array of {key,label,page} */
   var pendingImg = {};      /* committed path -> local dataURL (for instant preview before redeploy) */
+  var dirty = false;        /* unsaved changes present */
+  function markDirty() { dirty = true; updateSaveState(); }
+  function clearDirty() { dirty = false; updateSaveState(); }
+  function updateSaveState() {
+    var el = $('#saveState'); if (!el) return;
+    el.textContent = dirty ? '● 저장 안 됨 — 변경사항 있음' : '저장됨';
+    el.className = 'save-state' + (dirty ? ' unsaved' : '');
+  }
 
   /* ---------- gate ---------- */
   function sha256(str) {
@@ -145,6 +153,7 @@
     });
   });
   $('#btnLogout').addEventListener('click', function () { sessionStorage.removeItem('hanaro_admin'); location.reload(); });
+  window.addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
 
   /* ---------- data ---------- */
   function loadData() {
@@ -308,7 +317,7 @@
       if ((f && v === f.def) || v.trim() === '') delete state.content[key];
       else state.content[key] = v;
     }
-    buildTabs();
+    markDirty(); buildTabs();
   }
 
   /* ---------- images ---------- */
@@ -345,7 +354,7 @@
       var i = +ctx.entry.getAttribute('data-i');
       if (SCHEMA[active].type === 'object') state[active][k] = url; else state[active][i][k] = url;
     }
-    buildTabs(); renderEditor(); renderPreview();
+    markDirty(); buildTabs(); renderEditor(); renderPreview();
   }
   function loadImageSlots() {
     imageSlots = [];
@@ -388,13 +397,13 @@
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var sc = SCHEMA[active];
     var v = e.target.getAttribute('data-t') === 'check' ? e.target.checked : e.target.value;
-    if (sc.type === 'object') { state[active][k] = v; renderPreview(); return; }
+    if (sc.type === 'object') { state[active][k] = v; markDirty(); renderPreview(); return; }
     var entry = e.target.closest('.ed-entry'); if (!entry) return;
     var i = +entry.getAttribute('data-i');
     state[active][i][k] = v;
     var t = entry.querySelector('.ed-head b'); if (t) t.textContent = sc.title(state[active][i]);
     if (e.target.getAttribute('data-t') === 'check') buildTabs();
-    renderPreview();
+    markDirty(); renderPreview();
   });
   /* image upload: file chosen in any imgWidget */
   $('#editor').addEventListener('change', function (e) {
@@ -427,13 +436,16 @@
     }
     var b = e.target.closest('[data-act]'); if (!b) return;
     var act = b.getAttribute('data-act'), arr = state[active];
-    if (act === 'add') { arr.push({}); buildTabs(); renderEditor(); renderPreview(); return; }
+    if (act === 'add') { arr.push({}); markDirty(); buildTabs(); renderEditor(); renderPreview(); return; }
     var entry = b.closest('.ed-entry'); if (!entry) return;
     var i = +entry.getAttribute('data-i');
-    if (act === 'del') arr.splice(i, 1);
+    if (act === 'del') {
+      if (!window.confirm('이 항목을 삭제할까요? 저장하면 사이트에서도 사라집니다.')) return;
+      arr.splice(i, 1);
+    }
     else if (act === 'up' && i > 0) arr.splice(i - 1, 0, arr.splice(i, 1)[0]);
     else if (act === 'down' && i < arr.length - 1) arr.splice(i + 1, 0, arr.splice(i, 1)[0]);
-    buildTabs(); renderEditor(); renderPreview();
+    markDirty(); buildTabs(); renderEditor(); renderPreview();
   });
 
   /* ---------- live preview: the real page in an iframe, driven by editor state ---------- */
@@ -513,6 +525,7 @@
     var a = document.createElement('a');
     a.href = URL.createObjectURL(new Blob([serialize()], { type: 'application/json' }));
     a.download = 'data.json'; a.click(); URL.revokeObjectURL(a.href);
+    clearDirty();
     toast('data.json 다운로드됨 · assets/ 에 커밋하세요');
   });
   $('#btnCopy').addEventListener('click', function () {
@@ -528,7 +541,7 @@
       body: serialize()
     }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
       .then(function (res) {
-        if (res.ok && res.j.ok) toast('서버에 저장됨 · 재배포 중 (1–2분)');
+        if (res.ok && res.j.ok) { clearDirty(); toast('서버에 저장됨 · 재배포 중 (1–2분)'); }
         else toast('서버 저장 실패: ' + ((res.j && (res.j.error || res.j.detail)) || '설정 확인'), true);
       })
       .catch(function () { toast('서버 저장 안 됨 — 백엔드 미설정 시 JSON 다운로드를 사용하세요', true); })
