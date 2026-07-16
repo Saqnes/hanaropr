@@ -1,17 +1,38 @@
 {
+  "site": {
+    "email": "contact@example.com",
+    "instagram": "https://instagram.com/",
+    "notion": "https://notion.so/",
+    "address": "서울대학교 공과대학 ○○동 ○○호"
+  },
+  "contacts": [
+    { "role": "회장", "name": "홍길동", "email": "hong@example.com", "phone": "010-0000-0000" },
+    { "role": "부회장", "name": "김하나", "email": "kim@example.com", "phone": "010-0000-0000" },
+    { "role": "총무", "name": "이로켓", "email": "lee@example.com", "phone": "010-0000-0000" }
+  ],
+  "support": {
+    "bank": "○○은행",
+    "number": "000-0000-0000-00",
+    "holder": "서울대학교 로켓동아리 하나로",
+    "foundation": "https://example.com/donation"
+  },
+  "location": {
+    "address": "서울특별시 관악구 관악로 1, 서울대학교 공과대학 ○○동 ○○호",
+    "mapEmbed": ""
+  },
   "projects": [
-    {"name":"예시 로켓 II","ko":"프로토타입","year":"2025","event":"대회 A","team":"전 팀","status":"완료","summary":"예시 프로젝트 설명입니다. 실제 값은 관리자 페이지에서 입력합니다."},
-    {"name":"예시 로켓 I","year":"2024","event":"대회 B","status":"시험","summary":"진행 중 프로젝트 예시."}
+    { "name": "예시 로켓 II", "ko": "프로토타입", "year": "2025", "event": "대회 A", "team": "전 팀", "status": "완료", "summary": "예시 프로젝트 설명입니다. 실제 값은 관리자 페이지에서 입력합니다." },
+    { "name": "예시 로켓 I", "year": "2024", "event": "대회 B", "status": "시험", "summary": "진행 중 프로젝트 예시." }
   ],
-  "launches":[
-    {"year":"2025","name":"예시 기체 · 대회 A","desc":"발사 성공 예시","status":"go"},
-    {"year":"2024","name":"예시 기체 · 대회 B","desc":"부분 성공 예시","status":"warn"}
+  "launches": [
+    { "year": "2025", "name": "예시 기체 · 대회 A", "desc": "발사 성공 예시", "status": "go" },
+    { "year": "2024", "name": "예시 기체 · 대회 B", "desc": "부분 성공 예시", "status": "warn" }
   ],
-  "awards":[
-    {"year":"2025","name":"예시 학술대회","rank":"1위","desc":"수상 예시"}
+  "awards": [
+    { "year": "2025", "name": "예시 학술대회", "rank": "1위", "desc": "수상 예시" }
   ],
-  "sponsors":[
-    {"name":"예시 후원사 A","kind":"Example Sponsor"},
-    {"name":"예시 후원사 B","kind":"Example Corp"}
+  "sponsors": [
+    { "name": "예시 후원사 A", "kind": "Example Sponsor" },
+    { "name": "예시 후원사 B", "kind": "Example Corp" }
   ]
 }

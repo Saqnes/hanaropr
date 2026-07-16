@@ -1,4 +1,8 @@
 {
+  "site": { "email": "", "instagram": "", "notion": "", "address": "" },
+  "contacts": [],
+  "support": { "bank": "", "number": "", "holder": "", "foundation": "" },
+  "location": { "address": "", "mapEmbed": "" },
   "projects": [],
   "launches": [],
   "awards": [],

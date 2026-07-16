@@ -1,6 +1,9 @@
 /* HANARO — shared content renderers (used by public pages AND the admin preview,
    so the site format stays identical). Data comes from assets/data.json, or from
-   a preinjected window.HANARO_DATA (used by the offline preview bundle). */
+   a preinjected window.HANARO_DATA (used by the offline preview bundle).
+
+   NOTE: assets/data.json is a PUBLIC file. Anything here is visible to anyone.
+   Editing is protected (Cloudflare Access + /api/save); display data is public. */
 (function () {
   'use strict';
 
@@ -9,9 +12,12 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  function tel(s) { return String(s || '').replace(/[^0-9+]/g, ''); }
   var DONE = /(완료|성공|success)/i;
+  var qs = function (s) { return document.querySelector(s); };
+  var qsa = function (s) { return document.querySelectorAll(s); };
 
-  /* ---- entry renderers (match css/style.css components exactly) ---- */
+  /* ---- collection item renderers (match css/style.css components exactly) ---- */
   function launchRow(x) {
     var cls = x.status === 'warn' ? 'warn' : 'go';
     var label = x.statusLabel || (x.status === 'warn' ? '부분 성공' : '발사 완료');
@@ -44,9 +50,17 @@
       '<b style="font-size:1.1rem;letter-spacing:-.01em">' + esc(x.name) + '</b>' +
       (x.kind ? '<span class="muted" style="display:block;font-size:.8rem;margin-top:5px">' + esc(x.kind) + '</span>' : '') + '</div>';
   }
+  function contactCard(x) {
+    var links = '';
+    if (x.email) links += '<a href="mailto:' + esc(x.email) + '">✉&nbsp; ' + esc(x.email) + '</a>';
+    if (x.phone) links += '<a href="tel:' + esc(tel(x.phone)) + '">☎&nbsp; ' + esc(x.phone) + '</a>';
+    return '<div class="panel"><span class="eyebrow no-rule">' + esc(x.role || '연락처') + '</span>' +
+      '<h3 style="margin-top:6px">' + esc(x.name) + '</h3>' +
+      (links ? '<div class="footer-links" style="margin-top:12px">' + links + '</div>' : '') + '</div>';
+  }
 
   function fill(sel, arr, fn, empty) {
-    var els = document.querySelectorAll(sel);
+    var els = qsa(sel);
     if (!els.length) return;
     var html = (arr && arr.length) ? arr.map(fn).join('')
       : '<p class="note" style="padding:6px 0">' + empty + '</p>';
@@ -65,14 +79,10 @@
       });
     });
   }
-
   function fillProjects(arr) {
-    var grid = document.querySelector('#cms-projects');
-    if (grid) {
-      grid.innerHTML = (arr && arr.length) ? arr.map(projectCard).join('')
-        : '<p class="note">등록된 프로젝트가 없습니다.</p>';
-    }
-    var bar = document.querySelector('#cms-filter');
+    var grid = qs('#cms-projects');
+    if (grid) grid.innerHTML = (arr && arr.length) ? arr.map(projectCard).join('') : '<p class="note">등록된 프로젝트가 없습니다.</p>';
+    var bar = qs('#cms-filter');
     if (bar) {
       if (arr && arr.length) {
         var years = arr.map(function (p) { return p.year; }).filter(Boolean);
@@ -84,13 +94,64 @@
     }
   }
 
+  /* ---- site-wide fields (footer contact, form recipient) ---- */
+  function applySite(site) {
+    site = site || {};
+    Array.prototype.forEach.call(qsa('[data-site]'), function (el) {
+      var k = el.getAttribute('data-site');
+      var v = site[k] || '';
+      if (k === 'email') {
+        if (v) { el.textContent = v; if (el.tagName === 'A') el.href = 'mailto:' + v; el.hidden = false; } else { el.hidden = true; }
+      } else if (k === 'instagram' || k === 'notion') {
+        if (v) { el.href = v; el.hidden = false; } else { el.hidden = true; }
+      } else if (k === 'address') {
+        el.textContent = v; el.hidden = !v;
+      }
+    });
+    var form = qs('#contactForm');
+    if (form && site.email) form.setAttribute('data-to', site.email);
+  }
+
+  /* ---- support: account + foundation ---- */
+  function applySupport(s) {
+    s = s || {};
+    var acc = qs('#cms-account');
+    if (acc) {
+      if (s.number || s.bank) {
+        acc.innerHTML = '<span class="eyebrow no-rule" style="margin-bottom:6px">' + (esc(s.bank) || '계좌') + '</span>' +
+          '<p class="mono" style="font-size:1.05rem;word-break:break-all">' + esc(s.number) + '</p>' +
+          (s.holder ? '<p class="muted" style="font-size:.82rem;margin-top:4px">예금주 · ' + esc(s.holder) + '</p>' : '');
+      } else {
+        acc.innerHTML = '<p class="ph-note">계좌 정보 미입력 — 관리자 페이지에서 입력</p>';
+      }
+    }
+    var f = qs('#cms-foundation');
+    if (f) { if (s.foundation) { f.href = s.foundation; f.hidden = false; } else { f.hidden = true; } }
+  }
+
+  /* ---- location: address + map ---- */
+  function applyLocation(loc) {
+    loc = loc || {};
+    Array.prototype.forEach.call(qsa('#cms-address'), function (el) { el.textContent = loc.address || ''; });
+    var m = qs('#cms-map');
+    if (m) {
+      m.innerHTML = loc.mapEmbed
+        ? '<iframe src="' + esc(loc.mapEmbed) + '" loading="lazy" title="위치 지도" style="width:100%;height:100%;min-height:220px;border:0;display:block"></iframe>'
+        : '<div style="min-height:220px;display:grid;place-items:center"><p class="ph-note">지도 임베드 미입력</p></div>';
+    }
+  }
+
   function apply(data) {
     data = data || {};
+    applySite(data.site);
     fill('#cms-launches', data.launches, launchRow, '등록된 발사 기록이 없습니다.');
     fill('#cms-awards', data.awards, awardRow, '등록된 수상 내역이 없습니다.');
     fill('#cms-sponsors', data.sponsors, sponsorItem, '등록된 후원사가 없습니다.');
+    fill('#cms-contacts', data.contacts, contactCard, '등록된 연락처가 없습니다.');
     fillProjects(data.projects);
-    var cnt = document.querySelector('#cms-launch-count');
+    applySupport(data.support);
+    applyLocation(data.location);
+    var cnt = qs('#cms-launch-count');
     if (cnt) cnt.textContent = (data.launches && data.launches.length) || 0;
   }
 
@@ -99,11 +160,11 @@
     return fetch('assets/data.json', { cache: 'no-store' })
       .then(function (r) { return r.ok ? r.json() : null; })
       .then(function (d) { if (d) apply(d); return d; })
-      .catch(function () { /* keep static fallback */ return null; });
+      .catch(function () { return null; });
   }
 
   window.HANARO_CMS = {
     esc: esc, launchRow: launchRow, awardRow: awardRow, projectCard: projectCard,
-    sponsorItem: sponsorItem, apply: apply, hydrate: hydrate
+    sponsorItem: sponsorItem, contactCard: contactCard, apply: apply, hydrate: hydrate
   };
 })();
