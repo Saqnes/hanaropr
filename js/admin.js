@@ -87,7 +87,7 @@
       preview: function (a) { return '<div class="grid">' + a.map(CMS.contactCard).join('') + '</div>'; },
       fields: [
         { k: 'role', t: 'text', ph: '직책 (예: 회장)' }, { k: 'name', t: 'text', ph: '이름' },
-        { k: 'email', t: 'text', ph: '이메일 (공개됨)', full: true }, { k: 'phone', t: 'text', ph: '전화 (공개됨·선택)', full: true }
+        { k: 'email', t: 'text', ph: '이메일 (공개됨)', chk: 'email', full: true }, { k: 'phone', t: 'text', ph: '전화 (공개됨·선택)', full: true }
       ],
       title: function (x) { return (x.role ? x.role + ' · ' : '') + (x.name || '새 연락처'); }
     },
@@ -95,22 +95,22 @@
       type: 'object', label: '후원 정보', preview: pvSupport,
       fields: [
         { k: 'bank', t: 'text', ph: '은행 (예: 농협)' }, { k: 'number', t: 'text', ph: '계좌번호 (공개됨)' },
-        { k: 'holder', t: 'text', ph: '예금주', full: true }, { k: 'foundation', t: 'text', ph: '재단 기부 링크 URL', full: true }
+        { k: 'holder', t: 'text', ph: '예금주', full: true }, { k: 'foundation', t: 'text', ph: '재단 기부 링크 URL', chk: 'url', full: true }
       ]
     },
     location: {
       type: 'object', label: '위치', preview: pvLocation,
       fields: [
         { k: 'address', t: 'text', ph: '주소', full: true },
-        { k: 'mapEmbed', t: 'text', ph: '지도 임베드 URL (iframe src)', full: true }
+        { k: 'mapEmbed', t: 'text', ph: '지도 임베드 URL (iframe src)', chk: 'url', full: true }
       ]
     },
     site: {
       type: 'object', label: '사이트 정보', preview: pvSite,
       fields: [
-        { k: 'email', t: 'text', ph: '대표 이메일 (문의 폼 수신·공개됨)', full: true },
-        { k: 'instagram', t: 'text', ph: '인스타그램 URL', full: true },
-        { k: 'notion', t: 'text', ph: '아카이브(노션) URL', full: true },
+        { k: 'email', t: 'text', ph: '대표 이메일 (문의 폼 수신·공개됨)', chk: 'email', full: true },
+        { k: 'instagram', t: 'text', ph: '인스타그램 URL', chk: 'url', full: true },
+        { k: 'notion', t: 'text', ph: '아카이브(노션) URL', chk: 'url', full: true },
         { k: 'address', t: 'text', ph: '푸터 주소', full: true }
       ]
     },
@@ -177,6 +177,12 @@
   });
   $('#btnLogout').addEventListener('click', function () { sessionStorage.removeItem('hanaro_admin'); location.reload(); });
   window.addEventListener('beforeunload', function (e) { if (dirty) { e.preventDefault(); e.returnValue = ''; } });
+  window.addEventListener('keydown', function (e) {
+    if ((e.ctrlKey || e.metaKey) && (e.key === 's' || e.key === 'S')) {
+      var app = $('#app'); if (!app || app.hidden) return;
+      e.preventDefault(); var b = $('#btnSave'); if (b && !b.disabled) b.click();
+    }
+  });
 
   /* ---------- data ---------- */
   function loadData() {
@@ -259,9 +265,21 @@
       var lab = (f.optLabels && f.optLabels[o]) || (o === '' ? '— 없음 —' : o);
       return '<option value="' + o + '"' + (o === val ? ' selected' : '') + '>' + lab + '</option>';
     }).join('') + '</select>';
-    else inp = '<input id="' + id + '" data-k="' + f.k + '" type="text" value="' + esc(val) + '" placeholder="' + (f.ph || '') + '">';
-    return '<div class="field' + (f.full ? ' full' : '') + '"><label for="' + id + '">' + (f.label || f.ph || f.k) + '</label>' + inp + '</div>';
+    else inp = '<input id="' + id + '" data-k="' + f.k + '"' + (f.chk ? ' data-chk="' + f.chk + '"' : '') + ' type="text" value="' + esc(val) + '" placeholder="' + (f.ph || '') + '">';
+    return '<div class="field' + (f.full ? ' full' : '') + '"><label for="' + id + '">' + (f.label || f.ph || f.k) + '</label>' + inp +
+      (f.chk ? '<span class="fhint" style="display:none"></span>' : '') + '</div>';
   }
+  function validateChk(el) {
+    var chk = el.getAttribute('data-chk'); if (!chk) return;
+    var hint = el.parentNode.querySelector('.fhint'); if (!hint) return;
+    var v = el.value.trim(), bad = '';
+    if (v) {
+      if (chk === 'url' && !/^https?:\/\//i.test(v)) bad = '링크는 https:// 로 시작해야 해요';
+      else if (chk === 'email' && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(v)) bad = '이메일 형식이 아니에요 (예: name@example.com)';
+    }
+    hint.textContent = bad; hint.style.display = bad ? 'block' : 'none';
+  }
+  function validateAll() { Array.prototype.forEach.call($('#editor').querySelectorAll('[data-chk]'), validateChk); }
 
   function renderEditor() {
     var sc = SCHEMA[active];
@@ -270,10 +288,12 @@
     if (sc.type === 'object') {
       var of = sc.fields.map(function (f) { return field(active, null, f); }).join('');
       $('#editor').innerHTML = '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + sc.label + '</b></div><div class="ed-grid">' + of + '</div></div>';
+      validateAll();
       return;
     }
     var arr = state[active];
-    var html = arr.map(function (x, i) {
+    var html = arr.length ? '' : '<p class="note" style="margin-bottom:12px">아직 등록된 ' + sc.label + '이(가) 없어요. 아래 [+ ' + sc.label + ' 추가]로 첫 항목을 만들어 보세요.</p>';
+    html += arr.map(function (x, i) {
       var fields = sc.fields.map(function (f) { return field(active, i, f); }).join('');
       return '<div class="panel ed-entry" data-i="' + i + '"><div class="ed-head"><span class="idx">#' + (i + 1) + '</span>' +
         '<b style="font-size:.95rem">' + esc(sc.title(x)) + '</b><span class="sp"></span>' +
@@ -284,6 +304,7 @@
     }).join('');
     html += '<button class="ed-add" data-act="add" type="button">+ ' + sc.label + ' 추가</button>';
     $('#editor').innerHTML = html;
+    validateAll();
   }
 
   /* ---------- page copy (content) editor ---------- */
@@ -339,12 +360,28 @@
     return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f) + '</label>' + inp + '</div>';
   }
   var openPages = {};
+  var contentQuery = '';
   function renderContentEditor() {
     if (!contentFields) { $('#editor').innerHTML = '<p class="note">페이지 문구를 불러오는 중…</p>'; return; }
     if (!contentFields.length) { $('#editor').innerHTML = '<p class="note">편집 가능한 문구를 찾지 못했습니다.</p>'; return; }
+    var searchBox = '<div class="field full" style="margin-bottom:12px"><input id="contentSearch" data-search="content" type="text" placeholder="🔍 문구 검색 (지금 사이트에 있는 내용으로 찾기)" value="' + esc(contentQuery) + '"></div>';
+    var q = contentQuery.trim().toLowerCase();
+    if (q) {
+      var matches = contentFields.filter(function (f) {
+        var base = (f.type === 'list') ? (Array.isArray(f.def) ? f.def.join(' ') : '') : f.def;
+        var ov = state.content[f.key];
+        var ovs = (typeof ov === 'string') ? ov : (Array.isArray(ov) ? ov.join(' ') : '');
+        return ((base || '') + ' ' + f.key + ' ' + (PAGE_LABEL[f.page] || '') + ' ' + ovs).toLowerCase().indexOf(q) >= 0;
+      });
+      var body = matches.length
+        ? '<div class="panel ed-entry" style="padding:14px 16px"><div class="ed-grid">' + matches.map(contentField).join('') + '</div></div>'
+        : '<p class="note">검색 결과가 없어요.</p>';
+      $('#editor').innerHTML = searchBox + '<p class="muted" style="font-size:.84rem;margin-bottom:12px">검색 결과 ' + matches.length + '개</p>' + body;
+      return;
+    }
     var pagesWith = PAGES.filter(function (pg) { return contentFields.some(function (f) { return f.page === pg; }); });
     if (!Object.keys(openPages).length) { openPages[pagesWith.indexOf(previewPage) >= 0 ? previewPage : pagesWith[0]] = true; }
-    var html = '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트에 박힌 설명 문구입니다. 페이지를 펼쳐 고치면 오른쪽 미리보기에 즉시 반영, <b>비우면 원래 문구</b>로 돌아갑니다.</p>';
+    var html = searchBox + '<p class="muted" style="font-size:.86rem;margin-bottom:14px">사이트에 박힌 설명 문구입니다. 페이지를 펼쳐 고치면 오른쪽 미리보기에 즉시 반영, <b>비우면 원래 문구</b>로 돌아갑니다.</p>';
     pagesWith.forEach(function (pg) {
       var fs = contentFields.filter(function (f) { return f.page === pg; });
       var open = !!openPages[pg];
@@ -444,11 +481,18 @@
     else focusFrameEl(ck);
   });
   $('#editor').addEventListener('input', function (e) {
+    if (e.target.getAttribute('data-search') === 'content') {
+      contentQuery = e.target.value; var pos = e.target.selectionStart;
+      renderEditor();
+      var sb = $('#contentSearch'); if (sb) { sb.focus(); try { sb.setSelectionRange(pos, pos); } catch (_) { } }
+      return;
+    }
     var ck = e.target.getAttribute('data-ckey');
     if (ck) { updateContent(ck, e.target); renderPreview(); return; }
     var k = e.target.getAttribute('data-k'); if (!k) return;
     var sc = SCHEMA[active];
     var v = e.target.getAttribute('data-t') === 'check' ? e.target.checked : e.target.value;
+    if (e.target.getAttribute('data-chk')) validateChk(e.target);
     if (sc.type === 'object') { state[active][k] = v; markDirty(); renderPreview(); return; }
     var entry = e.target.closest('.ed-entry'); if (!entry) return;
     var i = +entry.getAttribute('data-i');
@@ -533,9 +577,17 @@
     fetch(pg, { cache: 'no-store' }).then(function (r) { return r.ok ? r.text() : ''; }).then(function (html) {
       if (!html) return;
       var snap = JSON.stringify(previewState()).replace(/</g, '\\u003c');
-      var inject = '<base href="/">' +
+      var editCss = '<style>[data-cms-text],[data-cms-rich],[data-cms-list],[data-cms-img]{cursor:pointer}' +
+        '[data-cms-text]:hover,[data-cms-rich]:hover,[data-cms-list]:hover,[data-cms-img]:hover{outline:2px dashed #f5a623;outline-offset:2px}</style>';
+      var editJs = '<scr' + 'ipt>document.addEventListener("click",function(e){' +
+        'var el=e.target.closest("[data-cms-text],[data-cms-rich],[data-cms-list],[data-cms-img]");' +
+        'if(el){e.preventDefault();e.stopPropagation();var img=el.getAttribute("data-cms-img");' +
+        'var k=img||el.getAttribute("data-cms-text")||el.getAttribute("data-cms-rich")||el.getAttribute("data-cms-list");' +
+        'try{parent.__adminEdit(k,img?"img":"text");}catch(_){}return;}' +
+        'var a=e.target.closest("a");if(a)e.preventDefault();},true);</scr' + 'ipt>';
+      var inject = '<base href="/">' + editCss +
         '<style>.reveal{opacity:1!important;transform:none!important}</style>' +
-        '<scr' + 'ipt>window.HANARO_DATA=' + snap + ';</scr' + 'ipt>';
+        editJs + '<scr' + 'ipt>window.HANARO_DATA=' + snap + ';</scr' + 'ipt>';
       html = html.replace(/<head([^>]*)>/i, '<head$1>' + inject);
       var doc = f.contentDocument;
       doc.open(); doc.write(html); doc.close();
@@ -563,6 +615,27 @@
     clearTimeout(_pvTimer);
     _pvTimer = setTimeout(applyToFrame, 120);
   }
+  /* click an editable element in the live preview -> jump to & focus its editor field */
+  function adminEdit(key, kind) {
+    if (kind === 'img') {
+      active = 'images'; buildTabs(); renderEditor(); renderPreview();
+      setTimeout(function () {
+        var el = $('#editor [data-imgfile="' + key + '"]'); if (!el) return;
+        (el.closest('.field') || el).scrollIntoView({ block: 'center' });
+        var w = el.closest('.imgw'); if (w) { w.style.outline = '2px solid #f5a623'; setTimeout(function () { w.style.outline = ''; }, 1500); }
+      }, 90);
+      return;
+    }
+    active = 'content';
+    var f = contentFields && contentFields.filter(function (x) { return x.key === key; })[0];
+    if (f) openPages[f.page] = true;
+    buildTabs(); renderEditor(); renderPreview();
+    setTimeout(function () {
+      var el = $('#editor [data-ckey="' + key + '"]'); if (!el) return;
+      el.scrollIntoView({ block: 'center' }); el.focus();
+    }, 90);
+  }
+  window.__adminEdit = adminEdit;
 
   /* preview page controls */
   $('#cmsPage').addEventListener('change', function () { loadFrame(this.value); });
