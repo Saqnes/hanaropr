@@ -18,7 +18,9 @@
   },
   "projects": [
     {
-      "name": "Identity^2"
+      "name": "Identity^2",
+      "ko": "아덴스퀘어드",
+      "year": "2026"
     }
   ],
   "launches": [],
