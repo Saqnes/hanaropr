@@ -1,9 +1,26 @@
 {
-  "site": { "email": "", "instagram": "", "notion": "", "address": "" },
+  "site": {
+    "email": "",
+    "instagram": "",
+    "notion": "",
+    "address": ""
+  },
   "contacts": [],
-  "support": { "bank": "", "number": "", "holder": "", "foundation": "" },
-  "location": { "address": "", "mapEmbed": "" },
-  "projects": [],
+  "support": {
+    "bank": "",
+    "number": "",
+    "holder": "",
+    "foundation": ""
+  },
+  "location": {
+    "address": "",
+    "mapEmbed": ""
+  },
+  "projects": [
+    {
+      "name": "Identity^2"
+    }
+  ],
   "launches": [],
   "awards": [],
   "sponsors": []
