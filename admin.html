@@ -51,6 +51,11 @@
     .secret-row input { width: 150px; padding: 8px 10px; border-radius: 4px; border: 1px solid var(--line-2); background: rgba(255,255,255,.03); color: var(--ink-0); font: inherit; font-size: .82rem; }
     .save-state { font-family: var(--mono); font-size: .68rem; letter-spacing: .04em; color: var(--ink-2); padding: 4px 10px; border: 1px solid var(--line-2); border-radius: 20px; white-space: nowrap; }
     .save-state.unsaved { color: var(--coral); border-color: var(--coral); }
+    .adv { opacity: .68; }
+    .save-msg { margin: 12px var(--pad) 0; padding: 10px 14px; border-radius: 6px; font-size: .88rem; border: 1px solid var(--line-2); color: var(--ink-1); }
+    .save-msg.err { color: var(--coral); border-color: var(--coral); background: rgba(249, 138, 128, .08); }
+    .save-msg.ok { color: #86d6a6; border-color: #35714a; background: rgba(80, 200, 120, .08); }
+    .load-err { margin-bottom: 16px; padding: 12px 14px; border-radius: 6px; color: var(--coral); border: 1px solid var(--coral); background: rgba(249, 138, 128, .08); font-size: .9rem; line-height: 1.5; }
     .ck { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: .9rem; color: var(--ink-0); }
     .ck input { width: 16px; height: 16px; accent-color: var(--gold); }
     .imgw { border: 1px solid var(--line-2); border-radius: 6px; padding: 10px; display: flex; flex-direction: column; gap: 10px; }
@@ -96,19 +101,21 @@
       <span class="eyebrow no-rule" style="color:var(--ink-2)">콘텐츠 관리</span>
       <span id="saveState" class="save-state">저장됨</span>
       <span class="spacer"></span>
-      <div class="secret-row" title="Cloudflare Function 사용 시 서버 저장 암호">
-        <input id="apiSecret" type="password" placeholder="서버 저장 암호(선택)" autocomplete="off">
-        <button class="btn btn-line" id="btnSave" type="button">서버에 저장</button>
+      <div class="secret-row">
+        <input id="apiSecret" type="password" placeholder="저장 암호 (로그인 암호와 다름)" autocomplete="off" aria-label="저장 암호">
+        <button class="btn btn-solid" id="btnSave" type="button">사이트에 반영</button>
       </div>
-      <button class="btn btn-line" id="btnDownload" type="button">JSON 다운로드</button>
-      <button class="btn btn-line" id="btnCopy" type="button">복사</button>
-      <button class="btn btn-solid" id="btnLogout" type="button">로그아웃</button>
+      <button class="btn btn-line adv" id="btnDownload" type="button">JSON 백업</button>
+      <button class="btn btn-line adv" id="btnCopy" type="button">복사</button>
+      <button class="btn btn-line" id="btnLogout" type="button">로그아웃</button>
     </header>
+    <div id="saveMsg" class="save-msg" hidden></div>
 
     <div class="admin-wrap">
+      <div id="loadErr" class="load-err" hidden>⚠️ 현재 사이트 내용을 불러오지 못했습니다. 안전을 위해 저장을 잠갔어요(그대로 저장하면 사이트 내용이 지워질 수 있습니다). 인터넷을 확인한 뒤 <b>새로고침</b>해 주세요.</div>
       <p class="muted" style="font-size:.9rem;margin-bottom:16px">
-        아래에서 항목을 추가·수정하면 오른쪽 미리보기가 <b>실제 사이트와 동일한 포맷</b>으로 갱신됩니다.
-        저장 후 사이트에 반영하려면 <b>서버에 저장</b>(자동 커밋) 또는 <b>JSON 다운로드</b> 후 <code>assets/data.json</code>에 커밋하세요.
+        고친 내용은 오른쪽 미리보기에 바로 보여요. 실제 사이트에 반영하려면 위의 <b>[사이트에 반영]</b>을 누르세요(1~2분 뒤 반영됩니다).
+        <b>저장 암호</b>는 로그인 암호와 다른, 관리자에게 받은 값입니다. <b>JSON 백업</b>은 내용을 파일로 내려받는 용도예요.
       </p>
       <nav class="admin-tabs" id="adminTabs" role="tablist" aria-label="콘텐츠 종류"></nav>
       <div class="admin-cols">

@@ -50,7 +50,7 @@
         { k: 'name', t: 'text', ph: '로켓 이름' }, { k: 'ko', t: 'text', ph: '한글 이름(선택)' },
         { k: 'year', t: 'text', ph: '연도 (예: 2025)' }, { k: 'event', t: 'text', ph: '대회/라벨' },
         { k: 'team', t: 'text', ph: '담당 팀' },
-        { k: 'status', t: 'select', opts: ['', '설계', '제작', '시험', '발사', '완료'] },
+        { k: 'status', t: 'select', label: '진행 상태', opts: ['', '설계', '제작', '시험', '발사', '완료'] },
         { k: 'summary', t: 'textarea', ph: '목표·성과 요약', full: true },
         { k: 'image', t: 'image', label: '대표 사진', full: true },
         { k: 'featured', t: 'check', label: '메인(홈)에 대표 프로젝트로 노출', full: true }
@@ -62,7 +62,7 @@
       preview: function (a) { return '<div class="log">' + a.map(CMS.launchRow).join('') + '</div>'; },
       fields: [
         { k: 'year', t: 'text', ph: '연도' },
-        { k: 'status', t: 'select', opts: ['go', 'warn'], optLabels: { go: '성공(발사 완료)', warn: '부분/이상' } },
+        { k: 'status', t: 'select', label: '발사 결과', opts: ['go', 'warn'], optLabels: { go: '성공(발사 완료)', warn: '부분/이상' } },
         { k: 'name', t: 'text', ph: '기체 · 대회', full: true }, { k: 'desc', t: 'text', ph: '설명', full: true }
       ],
       title: function (x) { return (x.year ? x.year + ' · ' : '') + (x.name || '새 발사 기록'); }
@@ -129,13 +129,36 @@
   var imageSlots = null;    /* null = not loaded; else array of {key,label,page} */
   var pendingImg = {};      /* committed path -> local dataURL (for instant preview before redeploy) */
   var dirty = false;        /* unsaved changes present */
-  function markDirty() { dirty = true; updateSaveState(); }
-  function clearDirty() { dirty = false; updateSaveState(); }
+  var loadedOk = false;     /* did the current site data load OK? save is locked until it does */
+  var baseHash = '';        /* fingerprint of the data we loaded — detects a concurrent save */
+  var DRAFT_KEY = 'hanaro_admin_draft';
+  var _draftT = 0;
+
+  function markDirty() { dirty = true; updateSaveState(); saveDraft(); }
+  function clearDirty() { dirty = false; updateSaveState(); dropDraft(); }
   function updateSaveState() {
     var el = $('#saveState'); if (!el) return;
     el.textContent = dirty ? '● 저장 안 됨 — 변경사항 있음' : '저장됨';
     el.className = 'save-state' + (dirty ? ' unsaved' : '');
   }
+  function hashStr(s) { var h = 5381, i = s.length; while (i) h = (h * 33) ^ s.charCodeAt(--i); return (h >>> 0).toString(16); }
+  function canonHash(obj) { try { return hashStr(JSON.stringify(obj)); } catch (e) { return ''; } }
+  function setLoadError(on) {
+    var el = $('#loadErr'); if (el) el.hidden = !on;
+    var sv = $('#btnSave'); if (sv) sv.disabled = !!on;
+  }
+  function setSaveMsg(msg, kind) {
+    var el = $('#saveMsg'); if (!el) return;
+    if (!msg) { el.hidden = true; el.textContent = ''; return; }
+    el.hidden = false; el.textContent = msg; el.className = 'save-msg' + (kind ? ' ' + kind : '');
+  }
+  function saveDraft() {
+    clearTimeout(_draftT);
+    _draftT = setTimeout(function () {
+      try { localStorage.setItem(DRAFT_KEY, JSON.stringify({ t: Date.now(), state: state })); } catch (e) { /* quota / private mode — skip */ }
+    }, 700);
+  }
+  function dropDraft() { try { localStorage.removeItem(DRAFT_KEY); } catch (e) { } }
 
   /* ---------- gate ---------- */
   function sha256(str) {
@@ -157,17 +180,40 @@
 
   /* ---------- data ---------- */
   function loadData() {
-    fetch(DATA_URL, { cache: 'no-store' }).then(function (r) { return r.ok ? r.json() : null; })
-      .then(function (d) {
+    fetch(DATA_URL, { cache: 'no-store' })
+      .then(function (r) {
+        if (r.status === 404) return '{}';            // no file yet — genuine empty setup
+        if (!r.ok) throw new Error('http ' + r.status); // 5xx etc — do NOT treat as empty
+        return r.text();
+      })
+      .then(function (text) {
+        var d = JSON.parse(text);                     // corrupt file -> caught below -> locked (never silently blanked)
+        loadedOk = true; setLoadError(false);
         d = d || {};
         ORDER.forEach(function (k) {
           var t = SCHEMA[k].type;
           if (t === 'object' || t === 'content' || t === 'images') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
           else state[k] = Array.isArray(d[k]) ? d[k] : [];
         });
-        buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage();
+        baseHash = hashStr(JSON.stringify(d));         // canonical fingerprint of the loaded file
+        maybeRestoreDraft();
+        buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage(); updateSaveState();
       })
-      .catch(function () { buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage(); });
+      .catch(function () {
+        loadedOk = false; setLoadError(true);
+        buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage();
+      });
+  }
+  function maybeRestoreDraft() {
+    var raw; try { raw = localStorage.getItem(DRAFT_KEY); } catch (e) { return; }
+    if (!raw) return;
+    var d; try { d = JSON.parse(raw); } catch (e) { dropDraft(); return; }
+    if (!d || !d.state) { dropDraft(); return; }
+    if (canonHash(d.state) === canonHash(state)) { dropDraft(); return; } // same as server — nothing to restore
+    if (window.confirm('저장하지 않은 편집 내용이 남아 있어요. 이어서 편집할까요?\n(취소하면 현재 사이트 내용으로 새로 시작합니다)')) {
+      ORDER.forEach(function (k) { if (d.state[k] != null) state[k] = d.state[k]; });
+      markDirty();
+    } else { dropDraft(); }
   }
 
   /* ---------- tabs ---------- */
@@ -214,7 +260,7 @@
       return '<option value="' + o + '"' + (o === val ? ' selected' : '') + '>' + lab + '</option>';
     }).join('') + '</select>';
     else inp = '<input id="' + id + '" data-k="' + f.k + '" type="text" value="' + esc(val) + '" placeholder="' + (f.ph || '') + '">';
-    return '<div class="field' + (f.full ? ' full' : '') + '"><label for="' + id + '">' + f.k + '</label>' + inp + '</div>';
+    return '<div class="field' + (f.full ? ' full' : '') + '"><label for="' + id + '">' + (f.label || f.ph || f.k) + '</label>' + inp + '</div>';
   }
 
   function renderEditor() {
@@ -265,26 +311,32 @@
     for (var i = 0; i < a.length; i++) if (a[i] !== b[i]) return false;
     return true;
   }
+  function snippet(s, n) { n = n || 26; s = String(s == null ? '' : s).replace(/\s+/g, ' ').trim(); return s.length > n ? s.slice(0, n) + '…' : s; }
+  function cLabel(f) {
+    var base = (f.type === 'list') ? (Array.isArray(f.def) ? f.def.join(', ') : '') : f.def;
+    return (PAGE_LABEL[f.page] || '') + ' · ' + (snippet(base) || f.key);
+  }
+  function cHint(f, extra) {
+    return ' <span class="mono" style="opacity:.42;text-transform:none;letter-spacing:0">' + (extra ? extra + ' · ' : '') + esc(f.key) + '</span>';
+  }
   function contentField(f) {
     var id = 'c-' + f.key.replace(/[^a-z0-9]/gi, '-');
     var ov = state.content[f.key];
     if (f.type === 'list') {
       var arr = Array.isArray(ov) ? ov : f.def;
-      return '<div class="field full"><label for="' + id + '">' + esc(f.key) +
-        ' <span class="mono" style="opacity:.5;text-transform:none;letter-spacing:0">· 목록 (한 줄에 하나)</span></label>' +
+      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '목록 (한 줄에 하나)') + '</label>' +
         '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="list" rows="' + Math.max(2, arr.length) + '">' + esc(arr.join('\n')) + '</textarea></div>';
     }
     if (f.type === 'rich') {
       var rv = (typeof ov === 'string') ? ov : f.def;
-      return '<div class="field full"><label for="' + id + '">' + esc(f.key) +
-        ' <span class="mono" style="opacity:.5;text-transform:none;letter-spacing:0">· 강조 *별표* · 줄바꿈 Enter</span></label>' +
+      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '강조 *별표* · 줄바꿈 Enter') + '</label>' +
         '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="rich" rows="' + Math.max(2, Math.ceil(rv.length / 40)) + '">' + esc(rv) + '</textarea></div>';
     }
     var tv = (typeof ov === 'string') ? ov : f.def;
     var inp = tv.length > 56
       ? '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" rows="3">' + esc(tv) + '</textarea>'
       : '<input id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" type="text" value="' + esc(tv) + '">';
-    return '<div class="field full"><label for="' + id + '">' + esc(f.key) + '</label>' + inp + '</div>';
+    return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f) + '</label>' + inp + '</div>';
   }
   var openPages = {};
   function renderContentEditor() {
@@ -336,15 +388,15 @@
           if (res.ok && res.j && res.j.ok && res.j.path) {
             var p = res.j.path.replace(/^\/+/, '');
             pendingImg[p] = dataUrl; // instant preview until redeploy
-            toast('사진 업로드됨 · 저장 후 재배포되면 사이트 반영');
+            toast('사진을 올렸어요 · [사이트에 반영]을 누르면 실제 사이트에 나타나요');
             return p;
           }
-          if (dataUrl.length < 900000) { toast('업로드 서버 미설정 — 사진을 파일에 직접 저장(용량 주의)', true); return dataUrl; }
-          toast('사진 업로드 실패: ' + ((res.j && res.j.error) || '서버 확인') + ' (사진이 너무 큼)', true);
+          if (dataUrl.length < 900000) { toast('사진을 임시로 담았어요 · 큰 사진은 실패할 수 있으니 작게 올려 주세요', true); return dataUrl; }
+          toast('사진이 너무 큽니다 · 더 작은 사진(5MB 이하)으로 올려 주세요', true);
           return null;
         }).catch(function () {
-          if (dataUrl.length < 900000) { toast('업로드 서버 미설정 — 사진을 파일에 직접 저장(용량 주의)', true); return dataUrl; }
-          toast('사진 업로드 실패 (사진이 너무 큼)', true); return null;
+          if (dataUrl.length < 900000) { toast('사진을 임시로 담았어요 · 큰 사진은 실패할 수 있으니 작게 올려 주세요', true); return dataUrl; }
+          toast('사진이 너무 큽니다 · 더 작은 사진(5MB 이하)으로 올려 주세요', true); return null;
         });
     });
   }
@@ -429,6 +481,7 @@
     }
     var del = e.target.closest('[data-imgdel]');
     if (del) {
+      if (!window.confirm('이 사진을 지울까요? 저장하면 사이트에서도 사라집니다.')) return;
       var dk = del.getAttribute('data-imgdel');
       var entry0 = del.closest('.ed-entry');
       setImageValue(dk, '', (entry0 && active !== 'images') ? { entry: entry0 } : { slot: true });
@@ -526,25 +579,36 @@
     a.href = URL.createObjectURL(new Blob([serialize()], { type: 'application/json' }));
     a.download = 'data.json'; a.click(); URL.revokeObjectURL(a.href);
     clearDirty();
-    toast('data.json 다운로드됨 · assets/ 에 커밋하세요');
+    toast('data.json 파일로 백업했어요');
   });
   $('#btnCopy').addEventListener('click', function () {
     (navigator.clipboard ? navigator.clipboard.writeText(serialize()) : Promise.reject())
-      .then(function () { toast('JSON 복사됨'); })
-      .catch(function () { toast('복사 실패 — 다운로드를 사용하세요', true); });
+      .then(function () { toast('내용을 복사했어요'); })
+      .catch(function () { toast('복사하지 못했어요 · [JSON 백업]을 사용해 주세요', true); });
   });
   $('#btnSave').addEventListener('click', function () {
-    $('#btnSave').disabled = true;
+    if (!loadedOk) { setSaveMsg('현재 사이트 내용을 불러오지 못해 저장이 잠겨 있어요. 새로고침해 주세요.', 'err'); return; }
+    var secret = $('#apiSecret').value;
+    if (!secret) { setSaveMsg('저장 암호를 입력해 주세요 (로그인 암호와 다릅니다).', 'err'); var s = $('#apiSecret'); if (s) s.focus(); return; }
+    var btn = $('#btnSave'); var label = btn.textContent;
+    btn.disabled = true; btn.textContent = '저장 중…'; setSaveMsg('');
     fetch(SAVE_API, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-admin-secret': $('#apiSecret').value },
+      headers: { 'Content-Type': 'application/json', 'x-admin-secret': secret, 'x-base-hash': baseHash },
       body: serialize()
-    }).then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+    }).then(function (r) { return r.json().then(function (j) { return { status: r.status, ok: r.ok, j: j }; }, function () { return { status: r.status, ok: false, j: {} }; }); })
       .then(function (res) {
-        if (res.ok && res.j.ok) { clearDirty(); toast('서버에 저장됨 · 재배포 중 (1–2분)'); }
-        else toast('서버 저장 실패: ' + ((res.j && (res.j.error || res.j.detail)) || '설정 확인'), true);
+        if (res.ok && res.j.ok) {
+          baseHash = canonHash(state); clearDirty();
+          setSaveMsg('사이트에 반영했어요 · 실제 사이트에는 1~2분 뒤 나타납니다.', 'ok');
+          return;
+        }
+        if (res.status === 409) { setSaveMsg('다른 관리자가 먼저 저장했어요. 새로고침해서 최신 내용을 받은 뒤 다시 저장해 주세요.', 'err'); return; }
+        if (res.status === 401) { setSaveMsg('저장 암호가 맞는지 확인해 주세요 (로그인 암호와 다릅니다).', 'err'); return; }
+        if (res.status === 403) { setSaveMsg('저장 서버가 아직 설정되지 않았어요 · 사이트를 처음 만든 분에게 저장 설정을 요청해 주세요.', 'err'); return; }
+        setSaveMsg('저장하지 못했어요 · ' + ((res.j && (res.j.error || res.j.detail)) || '잠시 후 다시 시도해 주세요') + '.', 'err');
       })
-      .catch(function () { toast('서버 저장 안 됨 — 백엔드 미설정 시 JSON 다운로드를 사용하세요', true); })
-      .finally(function () { $('#btnSave').disabled = false; });
+      .catch(function () { setSaveMsg('저장하지 못했어요 · 인터넷 연결을 확인하고 다시 시도해 주세요.', 'err'); })
+      .finally(function () { btn.disabled = false; btn.textContent = label; });
   });
 })();

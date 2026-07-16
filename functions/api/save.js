@@ -37,6 +37,14 @@ function b64utf8(str) {
   for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
   return btoa(bin);
 }
+/* same simple fingerprint the admin editor uses; over the CANONICAL json (JSON.stringify(JSON.parse(...))) */
+function hashStr(s) { let h = 5381, i = s.length; while (i) h = (h * 33) ^ s.charCodeAt(--i); return (h >>> 0).toString(16); }
+function b64ToUtf8(b64) {
+  const bin = atob(String(b64 || '').replace(/\n/g, ''));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
 
 /* Verify a Cloudflare Access JWT. Returns {skip} if not configured, else {ok, reason}. */
 async function verifyAccess(request, env) {
@@ -104,11 +112,22 @@ export async function onRequestPost(context) {
     'X-GitHub-Api-Version': '2022-11-28'
   };
 
-  let sha;
+  let sha, curHash = null;
   try {
     const cur = await fetch(`${api}?ref=${encodeURIComponent(branch)}`, { headers: gh });
-    if (cur.ok) sha = (await cur.json()).sha;
+    if (cur.ok) {
+      const cj = await cur.json();
+      sha = cj.sha;
+      if (cj.content) { try { curHash = hashStr(JSON.stringify(JSON.parse(b64ToUtf8(cj.content)))); } catch (e) { /* unparseable current file */ } }
+    }
   } catch (e) { /* first write */ }
+
+  // optimistic concurrency: if the client based its edits on a different version than what's live now,
+  // another admin saved in between — refuse instead of silently overwriting their work.
+  const baseHash = request.headers.get('x-base-hash');
+  if (baseHash && curHash && baseHash !== curHash) {
+    return json({ error: 'conflict' }, 409);
+  }
 
   const put = await fetch(api, {
     method: 'PUT',
