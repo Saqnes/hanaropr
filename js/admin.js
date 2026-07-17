@@ -309,6 +309,7 @@
         '<b style="font-size:.95rem">' + esc(sc.title(x)) + '</b><span class="sp"></span>' +
         '<button class="ed-btn" data-act="up" title="위로">↑</button>' +
         '<button class="ed-btn" data-act="down" title="아래로">↓</button>' +
+        '<button class="ed-btn" data-act="dup" title="복제">복제</button>' +
         '<button class="ed-btn danger" data-act="del" title="삭제">삭제</button></div>' +
         '<div class="ed-grid">' + fields + '</div></div>';
     }).join('');
@@ -350,24 +351,29 @@
   function cHint(f, extra) {
     return ' <span class="mono" style="opacity:.42;text-transform:none;letter-spacing:0">' + (extra ? extra + ' · ' : '') + esc(f.key) + '</span>';
   }
+  function cReset(f) {
+    var on = Object.prototype.hasOwnProperty.call(state.content, f.key);
+    return ' <button type="button" class="creset" data-creset="' + esc(f.key) + '" title="원래 문구로 되돌리기"' +
+      (on ? '' : ' style="display:none"') + '>↺ 원래대로</button>';
+  }
   function contentField(f) {
     var id = 'c-' + f.key.replace(/[^a-z0-9]/gi, '-');
     var ov = state.content[f.key];
     if (f.type === 'list') {
       var arr = Array.isArray(ov) ? ov : f.def;
-      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '목록 (한 줄에 하나)') + '</label>' +
+      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '목록 (한 줄에 하나)') + cReset(f) + '</label>' +
         '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="list" rows="' + Math.max(2, arr.length) + '">' + esc(arr.join('\n')) + '</textarea></div>';
     }
     if (f.type === 'rich') {
       var rv = (typeof ov === 'string') ? ov : f.def;
-      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '강조 *별표* · 줄바꿈 Enter') + '</label>' +
+      return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f, '강조 *별표* · 줄바꿈 Enter') + cReset(f) + '</label>' +
         '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="rich" rows="' + Math.max(2, Math.ceil(rv.length / 40)) + '">' + esc(rv) + '</textarea></div>';
     }
     var tv = (typeof ov === 'string') ? ov : f.def;
     var inp = tv.length > 56
       ? '<textarea id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" rows="3">' + esc(tv) + '</textarea>'
       : '<input id="' + id + '" data-ckey="' + esc(f.key) + '" data-ctype="text" type="text" value="' + esc(tv) + '">';
-    return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f) + '</label>' + inp + '</div>';
+    return '<div class="field full"><label for="' + id + '">' + esc(cLabel(f)) + cHint(f) + cReset(f) + '</label>' + inp + '</div>';
   }
   var openPages = {};
   var contentQuery = '';
@@ -416,6 +422,8 @@
       if ((f && v === f.def) || v.trim() === '') delete state.content[key];
       else state.content[key] = v;
     }
+    var fld = el.closest('.field'), btn = fld && fld.querySelector('.creset');
+    if (btn) btn.style.display = Object.prototype.hasOwnProperty.call(state.content, key) ? '' : 'none';
     markDirty(); buildTabs();
   }
 
@@ -533,6 +541,12 @@
       renderEditor();
       return;
     }
+    var cr = e.target.closest('[data-creset]');
+    if (cr) {
+      delete state.content[cr.getAttribute('data-creset')];
+      markDirty(); buildTabs(); renderEditor(); renderPreview();
+      return;
+    }
     var del = e.target.closest('[data-imgdel]');
     if (del) {
       if (!window.confirm('이 사진을 지울까요? 저장하면 사이트에서도 사라집니다.')) return;
@@ -550,6 +564,7 @@
       if (!window.confirm('이 항목을 삭제할까요? 저장하면 사이트에서도 사라집니다.')) return;
       arr.splice(i, 1);
     }
+    else if (act === 'dup') { var copy; try { copy = JSON.parse(JSON.stringify(arr[i])); } catch (_) { copy = {}; } arr.splice(i + 1, 0, copy); }
     else if (act === 'up' && i > 0) arr.splice(i - 1, 0, arr.splice(i, 1)[0]);
     else if (act === 'down' && i < arr.length - 1) arr.splice(i + 1, 0, arr.splice(i, 1)[0]);
     markDirty(); buildTabs(); renderEditor(); renderPreview();
