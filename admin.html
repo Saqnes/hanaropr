@@ -35,6 +35,10 @@
     @media (max-width: 860px) { .cms-frame { height: 62vh; } }
     .ed-entry { position: relative; margin-bottom: 14px; }
     .ed-entry .ed-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+    .ed-entry .ed-head b { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .admin-cols, #editor, .preview, .field { min-width: 0; }
+    .field input, .field textarea, .field select { max-width: 100%; box-sizing: border-box; }
+    .field label { overflow-wrap: anywhere; }
     .ed-entry .ed-head .idx { font-family: var(--mono); font-size: .7rem; color: var(--gold); letter-spacing: .1em; }
     .ed-entry .ed-head .sp { flex: 1; }
     .ed-btn { font-family: var(--mono); font-size: .68rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--line-2); border-radius: 4px; padding: 5px 9px; transition: color .2s, border-color .2s; }
