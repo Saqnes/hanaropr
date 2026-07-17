@@ -253,7 +253,7 @@
   function imgWidget(k, src) {
     var pv = pendingImg[src] || src;
     return '<div class="imgw">' +
-      (src ? '<img class="imgw-pv" src="' + esc(pv) + '" alt="">' : '<div class="imgw-pv empty">사진 없음</div>') +
+      (src ? '<img class="imgw-pv" src="' + esc(pv) + '" alt="">' : '<div class="imgw-pv empty">사진 없음 · 여기로 끌어다 놓기</div>') +
       '<div class="imgw-act">' +
       '<label class="btn btn-line imgw-file">사진 선택<input type="file" accept="image/*" data-imgfile="' + esc(k) + '" hidden></label>' +
       (src ? '<button type="button" class="btn btn-line imgw-del" data-imgdel="' + esc(k) + '">제거</button>' : '') +
@@ -531,6 +531,20 @@
       if (w) w.classList.remove('busy');
       if (url) setImageValue(k, url, ctx);
     });
+  });
+  /* drag & drop a photo onto any image widget */
+  $('#editor').addEventListener('dragover', function (e) { var w = e.target.closest('.imgw'); if (w) { e.preventDefault(); w.classList.add('drag'); } });
+  $('#editor').addEventListener('dragleave', function (e) { var w = e.target.closest('.imgw'); if (w && !w.contains(e.relatedTarget)) w.classList.remove('drag'); });
+  $('#editor').addEventListener('drop', function (e) {
+    var w = e.target.closest('.imgw'); if (!w) return;
+    e.preventDefault(); w.classList.remove('drag');
+    var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]; if (!file) return;
+    var fi = w.querySelector('[data-imgfile]'); if (!fi) return;
+    var k = fi.getAttribute('data-imgfile');
+    var entry = w.closest('.ed-entry');
+    var ctx = (entry && active !== 'images') ? { entry: entry } : { slot: true };
+    w.classList.add('busy');
+    uploadFile(file).then(function (url) { w.classList.remove('busy'); if (url) setImageValue(k, url, ctx); });
   });
   $('#editor').addEventListener('click', function (e) {
     var acc = e.target.closest('[data-accpg]');
