@@ -35,7 +35,7 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
   "site":     {"email","instagram","notion","address","apply"},   // 푸터/문의폼 · apply=입부 지원 구글폼 URL
   "contacts": [{"role","name","email","phone"}],                 // 회장단
   "support":  {"bank","number","holder","foundation"},           // 후원 계좌/재단링크
-  "location": {"address","mapEmbed"},                            // 지도 iframe src
+  "location": {"address","mapEmbed"},                            // mapEmbed=지도 iframe src(설정 시 우선). 미설정이면 contact.html에 박힌 카카오맵(Daum 지도퍼가기, daumcdn 로더) 사용 — 지도 하나뿐인 외부 리소스 예외
   "projects": [{"name","ko","year","event","team","status","summary","image","featured"}],
   "launches": [{"date"(YYYY-MM-DD),"status"(go|warn),"name","desc"}], // date→연도(크게)+월.일(작게), 구형 "year"도 표시
   "awards":   [{"year","rank","name","desc"}],

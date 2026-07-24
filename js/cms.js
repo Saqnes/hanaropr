@@ -258,9 +258,13 @@
     Array.prototype.forEach.call(qsa('#cms-address'), function (el) { el.textContent = loc.address || ''; });
     var m = qs('#cms-map');
     if (m) {
-      m.innerHTML = loc.mapEmbed
-        ? '<iframe src="' + esc(loc.mapEmbed) + '" loading="lazy" title="위치 지도" style="width:100%;height:100%;min-height:220px;border:0;display:block"></iframe>'
-        : '<div style="min-height:220px;display:grid;place-items:center"><p class="ph-note">지도 임베드 미입력</p></div>';
+      if (loc.mapEmbed) {
+        /* 관리자가 지도 임베드 URL을 넣으면 iframe 지도로 덮어씀 */
+        m.innerHTML = '<iframe src="' + esc(loc.mapEmbed) + '" loading="lazy" title="위치 지도" style="width:100%;height:100%;min-height:220px;border:0;display:block"></iframe>';
+      } else if (!m.firstElementChild) {
+        /* 비어 있을 때만 안내 문구 — HTML에 박힌 지도(카카오맵 등)는 그대로 유지 */
+        m.innerHTML = '<div style="min-height:220px;display:grid;place-items:center"><p class="ph-note">지도 임베드 미입력</p></div>';
+      }
     }
   }
 

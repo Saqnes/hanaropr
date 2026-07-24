@@ -360,6 +360,8 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .ph-block .eyebrow { color: var(--coral); margin-bottom: 10px; }
 .ph-block .eyebrow::before { background: var(--coral); }
 .ph-note { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-2); letter-spacing: 0.04em; }
+/* 카카오맵(Daum 지도퍼가기) — 고정폭 위젯을 박스 안에서 가운데 정렬, 모바일은 가로 스크롤 */
+#cms-map .root_daum_roughmap { margin: 0 auto; }
 .gallery .ph-img { color: var(--ink-2); font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; }
 
 /* ---------- legend / tags ---------- */

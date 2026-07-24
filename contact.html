@@ -119,7 +119,28 @@
           <h2 class="h-lg title-ko" data-cms-rich="contact.location.title">동아리방 <span class="g">오시는 길</span></h2>
           <p class="lead"><span id="cms-address"></span></p>
         </div>
-        <div class="reveal" id="cms-map" style="border:1px solid var(--line);border-radius:var(--r);overflow:hidden;background:var(--paper-2)"></div>
+        <div class="reveal" id="cms-map" style="border:1px solid var(--line);border-radius:var(--r);overflow:auto;background:var(--paper-2)">
+          <!-- 카카오맵 (Daum 지도퍼가기). 관리자에서 '지도 임베드 URL'을 넣으면 이 지도를 덮어씀 -->
+          <div id="daumRoughmapContainer1784871253256" class="root_daum_roughmap root_daum_roughmap_landing"></div>
+          <script charset="UTF-8" class="daum_roughmap_loader_script" src="https://ssl.daumcdn.net/dmaps/map_js_init/roughmapLoader.js"></script>
+          <script charset="UTF-8">
+            (function () {
+              function render() {
+                new daum.roughmap.Lander({
+                  "timestamp": "1784871253256",
+                  "key": "rpxv3jdqkrq",
+                  "mapWidth": "640",
+                  "mapHeight": "360"
+                }).render();
+              }
+              if (window.daum && window.daum.roughmap) { render(); return; }
+              var n = 0, t = setInterval(function () {
+                if (window.daum && window.daum.roughmap) { clearInterval(t); render(); }
+                else if (++n > 50) { clearInterval(t); }
+              }, 100);
+            })();
+          </script>
+        </div>
       </div>
     </section>
 
