@@ -28,6 +28,14 @@
   "launches": [],
   "awards": [],
   "sponsors": [],
-  "content": {},
+  "content": {
+    "index.hero.sub": "*하*늘을 *나*는 *로*켓",
+    "index.hero.desc": "\n서울대학교 로켓동아리 하나로\n(하늘을 나는 로켓, SNU ROCKET Team HANARO)는 1995년 설립된 서울대학교 로켓동아리이자 비영리 임의 단체로, 현재 총 100명이 활동하고 있습니다. 하나로는 로켓에 관심 있는 교내 학생들의 구심점으로서 매년 로켓 관련 연구와 비행 시험을 진행하고 있습니다.\n",
+    "index.spec.title": "Identity^2 제원",
+    "index.spec.lead": "Identity^2 의 설계 상 제원입니다.",
+    "index.intro.title": "책상에서 공부한 내용을 *하늘*로.",
+    "index.intro.desc1": "하나로는 서울대학교 학생들이 자율적으로 운영하는 사운딩 로켓 팀입니다. 다양한 팀으로 나뉘어 실제 사운딩 로켓을 개발하고, 설정한 미션을 수행합니다.",
+    "index.intro.desc2": "전공 수업에서 배우기 어려운 실습의 기회를 스스로 만들고, 매 비행의 데이터를 기록으로 남겨 다음 기체의 출발점으로 삼습니다."
+  },
   "images": {}
 }
