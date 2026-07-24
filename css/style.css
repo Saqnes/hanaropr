@@ -424,6 +424,8 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
 
 /* ---------- responsive ---------- */
 @media (max-width: 980px) {
+  .nav-links, .nav-cta { display: none; }   /* tablet & below → hamburger menu */
+  html.js .nav-toggle { display: flex; }
   .hero-grid { grid-template-columns: 1fr; gap: 32px; }
   .schematic { order: -1; }
   .schematic .rocket { height: min(46vh, 380px); }
@@ -434,8 +436,6 @@ html:not(.js) .reveal { opacity: 1; transform: none; }
   .footer-grid { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
-  .nav-links, .nav-cta { display: none; }
-  html.js .nav-toggle { display: flex; }
   .log-row { grid-template-columns: 60px 1fr; grid-template-areas: 'yr main' 'yr mt'; row-gap: 8px; }
   .log-row .yr { grid-area: yr; } .log-row .mt { grid-area: mt; justify-self: start; }
 }
