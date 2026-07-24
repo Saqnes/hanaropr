@@ -324,6 +324,11 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 [data-cms-img].has-photo .eyebrow { text-shadow: 0 1px 8px rgba(0, 0, 0, 0.8); }
 .panel.has-photo .ph-note { display: none; }
 .gallery .ph-img.has-photo { color: transparent; }
+/* 도면 자리(figure/schematic): 사진 업로드 시 기본 도면을 감추고 사진이 프레임을 채움
+   (visibility로 자리 높이는 유지 → 레이아웃 붕괴 방지) */
+.figure-schematic.has-photo, .schematic.has-photo { overflow: hidden; border-radius: var(--r); }
+.figure-schematic.has-photo .rocket-mini, .schematic.has-photo .rocket { visibility: hidden; }
+.figure-schematic.has-photo .cap { display: none; }
 
 /* ---------- tiers ---------- */
 .tiers { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; }

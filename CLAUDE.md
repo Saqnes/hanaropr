@@ -27,7 +27,7 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
    - `data-cms-text="키"` — 단일 텍스트(textContent)
    - `data-cms-rich="키"` — 텍스트+강조/줄바꿈. 마크업: `*금색*`,`~코랄~`, 줄바꿈=`<br>` (`markupToHtml`이 항상 이스케이프 → XSS 안전)
    - `data-cms-list="키"` (+`data-cms-item="span"`) — 목록(li/span)
-   - `data-cms-img="키"` — 사진 자리(placeholder 패널). `data.images[키]`가 있으면 `<img class="slot-img">` 채움
+   - `data-cms-img="키"` — 사진 자리. placeholder 패널이든 도면(figure/schematic, `rocket.svg` 기본)이든 `data.images[키]`가 있으면 사진으로 교체(`<img class="slot-img">` 오버레이, 기본 도면은 `.has-photo` CSS로 숨김). 관리자 라벨은 `data-cms-img-label="사람이 읽는 이름"`(없으면 eyebrow/ph-note/figcaption/alt 순 폴백)
 
 ### `data.json` 스키마
 ```jsonc

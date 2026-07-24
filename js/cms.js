@@ -244,9 +244,11 @@
   function readImageSlots(root) {
     var out = [];
     Array.prototype.forEach.call((root || document).querySelectorAll('[data-cms-img]'), function (el) {
-      var lbl = '';
-      var eb = el.querySelector('.eyebrow'); if (eb) lbl = norm(eb.textContent);
+      var lbl = el.getAttribute('data-cms-img-label') || '';
+      if (!lbl) { var eb = el.querySelector('.eyebrow'); if (eb) lbl = norm(eb.textContent); }
       if (!lbl) { var ph = el.querySelector('.ph-note'); if (ph) lbl = norm(ph.textContent); }
+      if (!lbl) { var cap = el.querySelector('figcaption, .cap'); if (cap) lbl = norm(cap.textContent); }
+      if (!lbl) { var im = el.tagName === 'IMG' ? el : el.querySelector('img'); if (im && im.getAttribute('alt')) lbl = norm(im.getAttribute('alt')); }
       out.push({ key: el.getAttribute('data-cms-img'), label: lbl });
     });
     return out;
