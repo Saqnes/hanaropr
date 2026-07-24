@@ -5,7 +5,14 @@
     "notion": "",
     "address": ""
   },
-  "contacts": [],
+  "contacts": [
+    {
+      "role": "회장",
+      "name": "이강혁",
+      "email": "ghyuk.lee@snu.ac.kr",
+      "phone": "010-4128-8276"
+    }
+  ],
   "support": {
     "bank": "",
     "number": "",
@@ -35,7 +42,15 @@
     "index.spec.lead": "Identity^2 의 설계 상 제원입니다.",
     "index.intro.title": "책상에서 공부한 내용을 *하늘*로.",
     "index.intro.desc1": "하나로는 서울대학교 학생들이 자율적으로 운영하는 사운딩 로켓 팀입니다. 다양한 팀으로 나뉘어 실제 사운딩 로켓을 개발하고, 설정한 미션을 수행합니다.",
-    "index.intro.desc2": "전공 수업에서 배우기 어려운 실습의 기회를 스스로 만들고, 매 비행의 데이터를 기록으로 남겨 다음 기체의 출발점으로 삼습니다."
+    "index.intro.desc2": "전공 수업에서 배우기 어려운 실습의 기회를 스스로 만들고, 매 비행의 데이터를 기록으로 남겨 다음 기체의 출발점으로 삼습니다.",
+    "index.sub.title": "Identity^2 팀 구성",
+    "index.sub.lead": "로켓을 하늘에 띄우는 네 개의 팀",
+    "index.div2.desc": "공력 설계와 구조 해석, 복합재 기체·노즈콘·핀 제작으로 비행의 안정성을 책임집니다.",
+    "index.div4.desc": "사출과 낙하산 전개. 로켓과 페이로드가 무사히 지상으로 돌아오게 합니다.",
+    "index.process2.desc": "동체 성형과 기계 가공, 엔진·전자부 조립.",
+    "index.process3.desc": "지상 연소 시험과 낙하산 사출 테스트(공전회)로 시스템 검증.",
+    "index.process4.desc": "시험 발사, 비행 데이터 수집과 회수 후 분석.",
+    "index.support.lead": "로켓 한 대의 발사에는 많은 지원이 필요합니다. 학생들의 도전에 연료가 되어 주세요."
   },
   "images": {}
 }
