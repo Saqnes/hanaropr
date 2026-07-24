@@ -157,6 +157,7 @@ p.body { color: var(--ink-1); }
 .nav-in { height: var(--nav-h); display: flex; align-items: center; justify-content: space-between; gap: 20px; }
 .brand { display: inline-flex; align-items: center; gap: 11px; }
 .brand svg { width: 26px; height: 30px; flex: none; }
+.brand img.mark { width: 34px; height: 34px; flex: none; display: block; }
 .brand .bt { display: flex; flex-direction: column; line-height: 1.08; }
 .brand b { font-size: 1.12rem; font-weight: 800; letter-spacing: 0.16em; }
 .brand em { font-style: normal; font-family: var(--mono); font-size: 0.5rem; letter-spacing: 0.24em; color: var(--ink-2); text-transform: uppercase; margin-top: 2px; }
@@ -236,6 +237,12 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .telemetry b { color: var(--gold); font-weight: 600; }
 .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
 .chips span { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-2); border: 1px solid var(--line); padding: 6px 11px; border-radius: 3px; }
+
+/* project year filter (rendered by cms.js fillProjects) */
+.filter { display: flex; flex-wrap: wrap; gap: 8px; margin: 24px 0 8px; }
+.chip { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-2); background: transparent; border: 1px solid var(--line-2); padding: 7px 14px; border-radius: 4px; cursor: pointer; transition: color .2s, border-color .2s, background-color .2s; }
+.chip:hover { color: var(--ink-0); border-color: var(--gold); }
+.chip[aria-pressed="true"] { color: #12161f; background: var(--gold); border-color: var(--gold); font-weight: 700; }
 
 /* rocket schematic column */
 .schematic { position: relative; display: flex; justify-content: center; align-items: stretch; }
