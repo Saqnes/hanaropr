@@ -1,4 +1,4 @@
-# HANARO — 서울대학교 로켓동아리 웹사이트 (`snu-hanaro/website`)
+# HANARO — 서울대학교 로켓동아리 웹사이트 (`saqnes/hanaropr`)
 
 과학로켓을 직접 설계·제작·시험·발사하는 SNU 학생 팀 **HANARO**의 공식 웹사이트 +
 **비개발자 관리자용 CMS**. 순수 정적 사이트(빌드/프레임워크/외부 의존성 없음)이며
@@ -61,15 +61,15 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
 | 변수 | 값 | 비고 |
 | --- | --- | --- |
 | `ADMIN_SECRET` | 임의의 긴 문자열 | 편집기 "저장 암호"에 입력 |
-| `GH_TOKEN` | 파인그레인드 PAT(Contents R/W) | **이 조직 리포에 쓰기 권한 필요** |
-| `GH_REPO` | `snu-hanaro/website` | ⚠️ 이관됐으니 이 값이어야 함 |
-| `GH_BRANCH` | 배포 브랜치(예 `main`) | |
+| `GH_TOKEN` | 파인그레인드 PAT(Contents R/W) | `saqnes/hanaropr` 쓰기 권한 |
+| `GH_REPO` | `saqnes/hanaropr` | 배포 리포 |
+| `GH_BRANCH` | `claude/aerospace-website-design-9f5g2m` | 현재 배포/커밋 브랜치 |
 | `GH_PATH` | `assets/data.json` | 기본값 |
 | `ACCESS_TEAM_DOMAIN`,`ACCESS_AUD` | (선택) | Access JWT 검증 활성화 |
 
 ## 배포 (Cloudflare Pages)
 - **빌드 명령 없음**, 출력 디렉터리 = 루트. `404.html`은 Pages가 자동으로 없는 경로에 노출.
-- ⚠️ **이관 후속(중요)**: 배포가 예전엔 `saqnes/hanaropr`에 연결돼 있었음. 이 리포(`snu-hanaro/website`)로 **Pages 프로젝트 새로 연결/소스 변경** + 위 환경변수(특히 `GH_REPO`, 조직 쓰기 가능한 `GH_TOKEN`) 재설정 + 커스텀 도메인/Access 재연결 필요.
+- 현재 **Cloudflare Pages(하나로 계정) ↔ `saqnes/hanaropr`** 연결. 프로덕션 브랜치 = `claude/aerospace-website-design-9f5g2m`. 위 환경변수 설정 시 관리자 저장/업로드 동작.
 - Cloudflare **Access가 `/admin.html`·`/api/*`** 를 막아야 실제 접근 제한(관리자 이메일만). `.pages.dev`엔 Access가 안 걸리니 **커스텀 도메인** 필요.
 
 ## 로컬 개발 & 검증
@@ -96,10 +96,9 @@ ADMIN.md             관리자/보안/환경변수 상세 가이드
 - 미리보기 iframe은 `fetch`+`document.write`로 `<base href="/">`와 `window.HANARO_DATA` 스냅샷을 주입 → 실제 페이지 그대로 + 즉시 반영. 방금 올린 사진은 재배포 전이라 `pendingImg`로 로컬 dataURL 대체.
 - 새 편집 문구/사진 슬롯을 추가하려면 **HTML에 마커 속성**을 달면 관리자 편집기가 페이지를 읽어 **자동 발견**함(스키마 수정 불필요).
 - 목록 항목 `title()`에 `★`=featured 표시(프로젝트). 긴 무공백 문자열 대비 CSS에 말줄임/`min-width:0`/`overflow-wrap` 방어 있음.
-- 한 세션엔 한 소유자의 리포만 붙음(saqnes↔snu-hanaro 교차 불가). 그래서 이관은 GitHub Import로 진행함.
 
 ## 지금 상태 / 다음 할 일
-- 사이트·관리자 기능 완성 상태로 이관됨(안전·명료·모바일·XSS 안전·검증 완료).
-- **최우선 후속**: 위 "배포 이관 후속" — Cloudflare Pages를 이 리포에 연결하고 `GH_REPO=snu-hanaro/website` 등 환경변수·Access·도메인 재설정.
+- 사이트·관리자 기능 완성(안전·명료·모바일·XSS 안전·Playwright 검증 완료). **`saqnes/hanaropr`에서 계속 개발**(조직 리포 이관은 취소).
+- 배포: **하나로 계정 Cloudflare Pages ↔ `saqnes/hanaropr`** 연결 중. 테스트 페이즈라 Cloudflare **Access는 OFF**, 편집기 소프트 암호 **`REQUIRE_PASS=true`**(공유 암호로 팀 진입).
 - 콘텐츠는 아직 플레이스홀더 — 팀이 `admin.html`에서 실제 데이터/사진을 채우는 단계.
-- 권장: 운영 시작 시 `PASS_HASH`(또는 Access)와 `ADMIN_SECRET`을 팀 전용 값으로 설정.
+- 권장: 운영 시작 시 Access 다시 켜기 + `PASS_HASH`/`ADMIN_SECRET`을 팀 전용 값으로.
