@@ -66,11 +66,11 @@
       type: 'array', label: '발사 기록', empty: '등록된 발사 기록이 없습니다.',
       preview: function (a) { return '<div class="log">' + a.map(CMS.launchRow).join('') + '</div>'; },
       fields: [
-        { k: 'year', t: 'text', ph: '연도' },
+        { k: 'date', t: 'text', itype: 'date', label: '발사 날짜' },
         { k: 'status', t: 'select', label: '발사 결과', opts: ['go', 'warn'], optLabels: { go: '성공(발사 완료)', warn: '부분/이상' } },
         { k: 'name', t: 'text', ph: '기체 · 대회', full: true }, { k: 'desc', t: 'text', ph: '설명', full: true }
       ],
-      title: function (x) { return (x.year ? x.year + ' · ' : '') + (x.name || '새 발사 기록'); }
+      title: function (x) { var d = CMS.launchLabel(x); return (d ? d + ' · ' : '') + (x.name || '새 발사 기록'); }
     },
     awards: {
       type: 'array', label: '수상', empty: '등록된 수상 내역이 없습니다.',
@@ -116,6 +116,7 @@
         { k: 'email', t: 'text', ph: '대표 이메일 (문의 폼 수신·공개됨)', chk: 'email', full: true },
         { k: 'instagram', t: 'text', ph: '인스타그램 URL', chk: 'url', full: true },
         { k: 'notion', t: 'text', ph: '아카이브(노션) URL', chk: 'url', full: true },
+        { k: 'apply', t: 'text', label: '입부 지원서 링크', ph: '구글폼 URL (예: https://forms.gle/…)', chk: 'url', full: true },
         { k: 'address', t: 'text', ph: '푸터 주소', full: true }
       ]
     },
@@ -275,7 +276,7 @@
       var lab = (f.optLabels && f.optLabels[o]) || (o === '' ? '— 없음 —' : o);
       return '<option value="' + o + '"' + (o === val ? ' selected' : '') + '>' + lab + '</option>';
     }).join('') + '</select>';
-    else inp = '<input id="' + id + '" data-k="' + f.k + '"' + (f.chk ? ' data-chk="' + f.chk + '"' : '') + ' type="text" value="' + esc(val) + '" placeholder="' + (f.ph || '') + '">';
+    else inp = '<input id="' + id + '" data-k="' + f.k + '"' + (f.chk ? ' data-chk="' + f.chk + '"' : '') + ' type="' + (f.itype || 'text') + '" value="' + esc(val) + '" placeholder="' + (f.ph || '') + '">';
     return '<div class="field' + (f.full ? ' full' : '') + '"><label for="' + id + '">' + (f.label || f.ph || f.k) + '</label>' + inp +
       (f.chk ? '<span class="fhint" style="display:none"></span>' : '') + '</div>';
   }

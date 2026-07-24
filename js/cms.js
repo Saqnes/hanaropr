@@ -18,10 +18,27 @@
   var qsa = function (s) { return document.querySelectorAll(s); };
 
   /* ---- collection item renderers (match css/style.css components exactly) ---- */
+  /* "2025-05-17" → {y:'2025', m:'05', d:'17'} ; 그 외 형식이면 null */
+  function parseDate(s) {
+    var m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s == null ? '' : s).trim());
+    return m ? { y: m[1], m: m[2], d: m[3] } : null;
+  }
+  /* 발사 기록 날짜 셀: ISO 날짜면 연도(크게)+월.일(작게), 아니면 date/year 원문 */
+  function launchYearCell(x) {
+    var dt = parseDate(x.date);
+    if (dt) return '<span class="yr mono">' + dt.y + '<small>' + dt.m + '.' + dt.d + '</small></span>';
+    return '<span class="yr mono">' + esc(x.date || x.year || '') + '</span>';
+  }
+  /* 관리자 아코디언 헤더용 짧은 라벨 */
+  function launchLabel(x) {
+    var dt = parseDate(x.date);
+    if (dt) return dt.y + '.' + dt.m + '.' + dt.d;
+    return x.date || x.year || '';
+  }
   function launchRow(x) {
     var cls = x.status === 'warn' ? 'warn' : 'go';
     var label = x.statusLabel || (x.status === 'warn' ? '부분 성공' : '발사 완료');
-    return '<div class="log-row"><span class="yr mono">' + esc(x.year) + '</span>' +
+    return '<div class="log-row">' + launchYearCell(x) +
       '<div><p class="nm">' + esc(x.name) + '</p>' + (x.desc ? '<p class="ds">' + esc(x.desc) + '</p>' : '') + '</div>' +
       '<div class="mt"><span class="pill ' + cls + '">' + esc(label) + '</span></div></div>';
   }
@@ -105,6 +122,9 @@
         if (v) { el.textContent = v; if (el.tagName === 'A') el.href = 'mailto:' + v; el.hidden = false; } else { el.hidden = true; }
       } else if (k === 'instagram' || k === 'notion') {
         if (v) { el.href = v; el.hidden = false; } else { el.hidden = true; }
+      } else if (k === 'apply') {
+        /* 입부 지원 링크(구글폼) — 값이 있으면 덮어쓰고, 없으면 HTML의 기본 링크 유지 */
+        if (v) el.href = v;
       } else if (k === 'address') {
         el.textContent = v; el.hidden = !v;
       }
@@ -275,7 +295,7 @@
   }
 
   window.HANARO_CMS = {
-    esc: esc, launchRow: launchRow, awardRow: awardRow, projectCard: projectCard,
+    esc: esc, launchRow: launchRow, launchLabel: launchLabel, awardRow: awardRow, projectCard: projectCard,
     sponsorItem: sponsorItem, contactCard: contactCard, apply: apply, hydrate: hydrate,
     applyContent: applyContent, readContentDefaults: readContentDefaults,
     applyImages: applyImages, readImageSlots: readImageSlots

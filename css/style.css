@@ -295,7 +295,8 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .log { display: grid; gap: 12px; }
 .log-row { display: grid; grid-template-columns: 84px 1fr auto; gap: clamp(12px, 3vw, 28px); align-items: center; border: 1px solid var(--line); border-radius: var(--r); padding: clamp(15px, 2vw, 22px) clamp(16px, 2.4vw, 26px); background: rgba(255,255,255,.018); transition: border-color .2s, transform .2s var(--ease); }
 .log-row:hover { border-color: var(--line-2); transform: translateX(3px); }
-.log-row .yr { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: clamp(1.1rem, 2.2vw, 1.45rem); font-weight: 600; color: var(--gold-hi); }
+.log-row .yr { font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: clamp(1.1rem, 2.2vw, 1.45rem); font-weight: 600; color: var(--gold-hi); display: flex; flex-direction: column; line-height: 1.08; }
+.log-row .yr small { font-size: 0.64rem; font-weight: 500; letter-spacing: 0.06em; color: var(--ink-2); margin-top: 3px; }
 .log-row > div { min-width: 0; }
 .log-row .nm { font-size: 1rem; font-weight: 700; overflow-wrap: anywhere; }
 .log-row .ds { margin-top: 3px; color: var(--ink-2); font-size: 0.85rem; overflow-wrap: anywhere; }
