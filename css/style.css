@@ -479,9 +479,25 @@ a.panel:hover { border-color: var(--line-2); transform: translateY(-3px); }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: clamp(28px, 5vw, 60px); padding-bottom: 40px; }
 .footer-brand p { color: var(--ink-2); font-size: 0.9rem; max-width: 34ch; margin-top: 14px; }
 .footer h4 { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-2); margin-bottom: 16px; font-weight: 500; }
-.footer-links { display: grid; gap: 9px; }
-.footer-links a, .footer-links span { color: var(--ink-1); font-size: 0.92rem; transition: color .2s; }
-.footer-links a:hover { color: var(--gold-ink); }
+.footer-links { display: grid; gap: 2px; }
+/* 손가락으로 누르기 충분한 높이(WCAG 2.5.8) — 링크가 촘촘히 붙어 오탭되던 문제 */
+.footer-links a, .footer-links span { color: var(--ink-1); font-size: 0.92rem; transition: color .2s;
+  display: inline-flex; align-items: center; min-height: 32px; overflow-wrap: anywhere; }
+.footer-links a { text-underline-offset: 3px; }
+.footer-links a:hover, .footer-links a:focus-visible { color: var(--gold-ink); text-decoration: underline; }
+
+/* ---------- 연락처 카드 (회장단) ---------- */
+.contact-card h3 { font-size: 1.25rem; }
+.contact-actions { display: grid; gap: 8px; margin-top: 14px; }
+.cbtn {
+  display: flex; align-items: center; gap: 10px; min-height: 44px;   /* 터치 타깃 */
+  padding: 9px 13px; border: 1px solid var(--line-2); border-radius: var(--r);
+  background: var(--surface); color: var(--ink-0);
+  font-family: var(--mono); font-size: 0.86rem; letter-spacing: .01em;
+  overflow-wrap: anywhere; transition: border-color .2s, background-color .2s, color .2s;
+}
+.cbtn .ci { width: 17px; height: 17px; flex: none; color: var(--gold-ink); }
+.cbtn:hover, .cbtn:focus-visible { border-color: var(--gold); background: var(--gold-soft); color: var(--ink-0); }
 .footer-bot { border-top: 1px solid var(--line); padding-top: 24px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; color: var(--ink-2); font-size: 0.8rem; }
 .footer-bot .mono { letter-spacing: 0.06em; }
 

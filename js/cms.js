@@ -76,13 +76,24 @@
     return '<div class="node lead"><span class="role">' + esc(x.role || '회장단') + '</span>' +
       '<div class="who">' + esc(x.name || '') + '</div></div>';
   }
+  /* 아이콘은 장식 — 스크린리더는 aria-label의 문장을 읽는다 */
+  var IC_MAIL = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2.8" y="4.8" width="18.4" height="14.4" rx="2.2"/><path d="m3.4 6.6 8.6 6 8.6-6"/></svg>';
+  var IC_TEL = '<svg class="ci" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M7.2 3.4 9.6 8l-2 2.2a12.5 12.5 0 0 0 6.2 6.2l2.2-2 4.6 2.4-1 3.2a1.6 1.6 0 0 1-1.7 1.1C10.4 20.4 3.6 13.6 2.5 5.1A1.6 1.6 0 0 1 3.6 3.4Z"/></svg>';
   function contactCard(x) {
+    var who = x.name || x.role || '담당자';
     var links = '';
-    if (x.email) links += '<a href="mailto:' + esc(x.email) + '">✉&nbsp; ' + esc(x.email) + '</a>';
-    if (x.phone) links += '<a href="tel:' + esc(tel(x.phone)) + '">☎&nbsp; ' + esc(x.phone) + '</a>';
-    return '<div class="panel"><span class="eyebrow no-rule">' + esc(x.role || '연락처') + '</span>' +
+    if (x.email) {
+      links += '<a class="cbtn" href="mailto:' + esc(x.email) + '" aria-label="' + esc(who) + '에게 이메일 보내기 — ' + esc(x.email) + '">' +
+        IC_MAIL + '<span>' + esc(x.email) + '</span></a>';
+    }
+    if (x.phone) {
+      links += '<a class="cbtn" href="tel:' + esc(tel(x.phone)) + '" aria-label="' + esc(who) + '에게 전화 걸기 — ' + esc(x.phone) + '">' +
+        IC_TEL + '<span>' + esc(x.phone) + '</span></a>';
+    }
+    return '<div class="panel contact-card"><span class="eyebrow no-rule">' + esc(x.role || '연락처') + '</span>' +
       '<h3 style="margin-top:6px">' + esc(x.name) + '</h3>' +
-      (links ? '<div class="footer-links" style="margin-top:12px">' + links + '</div>' : '') + '</div>';
+      (links ? '<div class="contact-actions">' + links + '</div>'
+             : '<p class="ph-note" style="margin-top:12px">연락처 미입력</p>') + '</div>';
   }
 
   function fill(sel, arr, fn, empty) {
@@ -133,6 +144,11 @@
       } else if (k === 'apply') {
         /* 입부 지원 링크(구글폼) — 값이 있으면 덮어쓰고, 없으면 HTML의 기본 링크 유지 */
         if (v) el.href = v;
+      } else if (k === 'mailto') {
+        /* 라벨은 그대로 두고 mailto 주소만 연결. 이메일이 없으면 버튼을 감춘다
+           (빈 링크를 눌렀는데 아무 일도 안 일어나는 상황 방지) */
+        var em = site.email || '';
+        if (em) { el.href = 'mailto:' + em; el.hidden = false; } else { el.hidden = true; }
       } else if (k === 'address') {
         el.textContent = v; el.hidden = !v;
       }
