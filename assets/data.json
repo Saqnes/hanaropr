@@ -50,7 +50,8 @@
     "index.process2.desc": "동체 성형과 기계 가공, 엔진·전자부 조립.",
     "index.process3.desc": "지상 연소 시험과 낙하산 사출 테스트(공전회)로 시스템 검증.",
     "index.process4.desc": "시험 발사, 비행 데이터 수집과 회수 후 분석.",
-    "index.support.lead": "로켓 한 대의 발사에는 많은 지원이 필요합니다. 학생들의 도전에 연료가 되어 주세요."
+    "index.support.lead": "로켓 한 대의 발사에는 많은 지원이 필요합니다. 학생들의 도전에 연료가 되어 주세요.",
+    "index.cta.title": "역경을 헤치고, *별*을 향하여"
   },
   "images": {}
 }
