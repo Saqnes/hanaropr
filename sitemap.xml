@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HANARO 공개 페이지 목록. 도메인이 바뀌면 이 파일과 robots.txt,
+     각 페이지의 og:url/canonical을 함께 갱신하세요. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://hanarowebsite.pages.dev/</loc><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/about</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/projects</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/teams</loc><changefreq>yearly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/archive</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/support</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://hanarowebsite.pages.dev/contact</loc><changefreq>yearly</changefreq><priority>0.7</priority></url>
+</urlset>

@@ -32,7 +32,9 @@
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && document.body.classList.contains('menu-open')) { setMenu(false); toggle.focus(); }
     });
-    var mq = window.matchMedia('(min-width: 721px)');
+    /* 981px = css/style.css의 햄버거 분기점(max-width:980px)과 반드시 일치시킬 것.
+       데스크톱 메뉴로 돌아갈 때만 모바일 메뉴를 닫는다. */
+    var mq = window.matchMedia('(min-width: 981px)');
     if (mq.addEventListener) mq.addEventListener('change', function (e) { if (e.matches) setMenu(false); });
   }
 
