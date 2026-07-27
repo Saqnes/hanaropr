@@ -58,7 +58,8 @@
       pill = '<div style="margin-top:14px"><span class="pill ' + cls + '">' + esc(x.status) + '</span></div>';
     }
     return '<article class="panel' + (x.image ? ' has-img' : '') + '" data-year="' + esc(x.year || '') + '">' +
-      (x.image ? '<img class="p-img" src="' + esc(x.image) + '" alt="' + esc(x.name || '') + '" loading="lazy">' : '') +
+      (x.image ? '<img class="p-img" src="' + esc(x.image) + '" alt="' + esc(x.name || '') + '" loading="lazy"' +
+        (safePos(x.imagePos) ? ' style="object-position:' + safePos(x.imagePos) + '"' : '') + '>' : '') +
       '<span class="eyebrow no-rule">' + esc(x.event || 'Project') + '</span>' +
       '<h3 style="margin-top:6px">' + esc(x.name) + '</h3>' +
       (x.ko ? '<p class="muted" style="margin-top:2px;font-size:.9rem">' + esc(x.ko) + '</p>' : '') +
@@ -239,17 +240,23 @@
     return out;
   }
 
+  /* 사진 초점(크롭 기준점) — "50% 30%" 형태만 허용. 잘못된 값은 무시하고 가운데. */
+  function safePos(v) {
+    return /^\s*\d{1,3}(\.\d+)?%\s+\d{1,3}(\.\d+)?%\s*$/.test(String(v || '')) ? String(v).trim() : '';
+  }
   /* ---- photo slots (data-cms-img) — uploaded image fills the placeholder panel ---- */
-  function applyImages(imgs) {
-    imgs = imgs || {};
+  function applyImages(imgs, pos) {
+    imgs = imgs || {}; pos = pos || {};
     Array.prototype.forEach.call(qsa('[data-cms-img]'), function (el) {
-      var url = imgs[el.getAttribute('data-cms-img')];
+      var key = el.getAttribute('data-cms-img');
+      var url = imgs[key];
       var old = el.querySelector('img.slot-img'); if (old) old.remove();
       var ph = el.querySelector('.ph-note');
       if (!url) { el.classList.remove('has-photo'); if (ph) ph.style.display = ''; return; }
       if (ph) ph.style.display = 'none';
       var img = document.createElement('img');
       img.className = 'slot-img'; img.src = url; img.alt = ''; img.loading = 'lazy';
+      var p = safePos(pos[key]); if (p) img.style.objectPosition = p;
       el.insertBefore(img, el.firstChild);
       el.classList.add('has-photo');
     });
@@ -307,7 +314,7 @@
     if (hpSec) hpSec.hidden = !featured.length;
     applySupport(data.support);
     applyLocation(data.location);
-    applyImages(data.images);
+    applyImages(data.images, data.imagePos);
     var cnt = qs('#cms-launch-count');
     if (cnt) cnt.textContent = (data.launches && data.launches.length) || 0;
   }

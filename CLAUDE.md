@@ -44,7 +44,8 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
   "awards":   [{"year","rank","name","desc"}],
   "sponsors": [{"name","kind"}],
   "content":  {"<page.section.field>": "덮어쓴 문구", ...},        // 바꾼 문구만 저장
-  "images":   {"<slot-key>": "assets/uploads/…"}                 // 올린 사진만
+  "images":   {"<slot-key>": "assets/uploads/…"},                // 올린 사진만
+  "imagePos": {"<slot-key>": "20% 80%"}                          // 사진 초점(크롭 기준점). 프로젝트 사진은 항목 안 "imagePos"
 }
 ```
 > `assets/data.json`은 **공개 파일**(누구나 읽음) — 비밀/미공개 개인정보 넣지 말 것.
@@ -55,6 +56,7 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
 - **라이브 미리보기**: 우측 iframe에 실제 페이지를 띄우고 편집 상태를 그대로 반영(`loadFrame`이 `window.HANARO_DATA` 주입 + `applyToFrame`). **미리보기에서 문구/사진 클릭 → 해당 편집칸으로 점프**(`window.__adminEdit`). 모바일은 편집/미리보기 **토글**(`#mobileToggle`, `body.pv-mode`).
 - **저장**: `사이트에 반영` → `POST /api/save` (헤더 `x-admin-secret`=ADMIN_SECRET, `x-base-hash`=동시편집 감지). 백엔드 없으면 `JSON 백업`(다운로드). 상세 안내는 `ADMIN.md`.
 - **사진 업로드**: 위젯 클릭 또는 **드래그&드롭** → `POST /api/upload` → `assets/uploads/`에 커밋. 백엔드 없으면 소용량은 data URI 폴백.
+- **크롭 초점**: 사진 위젯에서 왼쪽(원본 전체)을 클릭하면 그 지점이 잘리지 않게 `object-position`을 저장(오른쪽에 실제 표시 미리보기, "가운데로"로 초기화). 슬롯은 `imagePos[key]`, 목록 항목은 `<필드>Pos`. 값 형식은 `"NN% NN%"`만 허용(`safePos`/`normPos`가 검증).
 - **안전장치**: 로드 실패 시 저장잠금(빈화면 저장으로 사이트 삭제 방지) · 초안 자동복원(localStorage) · 삭제/사진제거 확인 · 미저장 이탈 경고 · 저장상태 표시.
 - **접근 잠금 `REQUIRE_PASS`** (`js/admin.js` 상단): `true`면 진입 시 소프트 암호(`PASS_HASH`=SHA-256, 기본 "hanaro2026"). Cloudflare **Access**(이메일 로그인)로 `/admin.html`을 막으면 `false`로 꺼도 됨(로그아웃=Access 로그아웃). **이 암호는 보조 잠금** — 진짜 쓰기 보호는 `ADMIN_SECRET`.
 
@@ -100,6 +102,7 @@ ADMIN.md             관리자/보안/환경변수 상세 가이드
 - `.ph`(점선 플레이스홀더 서식)는 값이 채워지면 `applyContent`가 자동으로 벗김(`data-ph`로 원복 가능) — 실제 내용이 "입력하세요" 박스처럼 보이지 않게.
 - 미리보기 iframe은 `fetch`+`document.write`로 `<base href="/">`와 `window.HANARO_DATA` 스냅샷을 주입 → 실제 페이지 그대로 + 즉시 반영. 방금 올린 사진은 재배포 전이라 `pendingImg`로 로컬 dataURL 대체.
 - 새 편집 문구/사진 슬롯을 추가하려면 **HTML에 마커 속성**을 달면 관리자 편집기가 페이지를 읽어 **자동 발견**함(스키마 수정 불필요).
+- **사진 자리는 전부 같은 비율**(`--photo-ratio`, 기본 4/3) — 사진이 있든 없든 박스 크기가 같아 채운 자리와 빈 자리가 섞여도 줄이 안 어긋난다. 새 사진 자리를 만들 때도 이 토큰을 쓸 것.
 - 목록 항목 `title()`에 `★`=featured 표시(프로젝트). 긴 무공백 문자열 대비 CSS에 말줄임/`min-width:0`/`overflow-wrap` 방어 있음.
 
 ## 지금 상태 / 다음 할 일

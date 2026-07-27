@@ -74,8 +74,21 @@
     .imgw.drag { border-color: var(--gold); background: rgba(245, 166, 35, .07); }
     .imgw-pv { width: 100%; max-height: 200px; object-fit: cover; border-radius: 4px; display: block; background: var(--paper-2); }
     .imgw-pv.empty { min-height: 88px; display: grid; place-items: center; color: var(--ink-2); font-family: var(--mono); font-size: .72rem; }
-    .imgw-act { display: flex; gap: 8px; }
+    .imgw-act { display: flex; gap: 8px; flex-wrap: wrap; }
     .imgw-act .btn { padding: 7px 12px; font-size: .8rem; cursor: pointer; }
+    /* 크롭 초점 고르기: 왼쪽=사진 전체(클릭해서 지정), 오른쪽=실제로 잘려 나올 모습 */
+    .imgw-crop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: start; }
+    @media (max-width: 560px) { .imgw-crop { grid-template-columns: 1fr; } }
+    .imgw-full { position: relative; cursor: crosshair; border: 1px solid var(--line-2); border-radius: 4px; background: var(--paper-2); overflow: hidden; aspect-ratio: 4/3; }
+    .imgw-full img { width: 100%; height: 100%; object-fit: contain; display: block; user-select: none; }
+    .imgw-full:hover { border-color: var(--gold); }
+    .imgw-dot { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%;
+      border: 2px solid var(--gold); background: rgba(245,166,35,.35); box-shadow: 0 0 0 2px rgba(0,0,0,.55); pointer-events: none; }
+    .imgw-out { position: relative; border: 1px solid var(--line-2); border-radius: 4px; overflow: hidden; aspect-ratio: 4/3; background: var(--paper-2); }
+    .imgw-out img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .imgw-cap { position: absolute; left: 0; bottom: 0; padding: 3px 7px; font-family: var(--mono); font-size: .62rem;
+      letter-spacing: .1em; background: rgba(9,12,17,.78); color: var(--ink-1); border-top-right-radius: 4px; }
+    .imgw-hint { font-size: .78rem; color: var(--ink-2); margin: -2px 0 0; }
     /* accordion (page-copy groups) */
     .acc-head { display: flex; align-items: center; gap: 8px; width: 100%; text-align: left; padding: 12px 4px; border-bottom: 1px solid var(--line); color: var(--ink-0); font-weight: 600; font-size: .95rem; }
     .acc-head .pg { font-family: var(--mono); opacity: .45; font-size: .68rem; font-weight: 400; }

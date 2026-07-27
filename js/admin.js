@@ -127,7 +127,9 @@
   };
   var ORDER = ['projects', 'launches', 'awards', 'sponsors', 'contacts', 'support', 'location', 'site', 'content', 'images'];
 
-  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [], content: {}, images: {} };
+  var state = { site: {}, contacts: [], support: {}, location: {}, projects: [], launches: [], awards: [], sponsors: [], content: {}, images: {}, imagePos: {} };
+  /* imagePos는 탭이 없는(사진 위젯 안에서만 편집되는) 값이라 ORDER와 따로 관리 */
+  var STATE_KEYS = ORDER.concat(['imagePos']);
   var active = 'projects';
 
   /* page copy (data-cms-text / data-cms-list) discovery */
@@ -214,6 +216,7 @@
           if (t === 'object' || t === 'content' || t === 'images') state[k] = (d[k] && typeof d[k] === 'object' && !Array.isArray(d[k])) ? d[k] : {};
           else state[k] = Array.isArray(d[k]) ? d[k] : [];
         });
+        state.imagePos = (d.imagePos && typeof d.imagePos === 'object' && !Array.isArray(d.imagePos)) ? d.imagePos : {};
         baseHash = hashStr(JSON.stringify(d));         // canonical fingerprint of the loaded file
         maybeRestoreDraft();
         buildTabs(); renderEditor(); renderPreview(); ensurePreviewPage(); updateSaveState();
@@ -230,7 +233,7 @@
     if (!d || !d.state) { dropDraft(); return; }
     if (canonHash(d.state) === canonHash(state)) { dropDraft(); return; } // same as server — nothing to restore
     if (window.confirm('저장하지 않은 편집 내용이 남아 있어요. 이어서 편집할까요?\n(취소하면 현재 사이트 내용으로 새로 시작합니다)')) {
-      ORDER.forEach(function (k) { if (d.state[k] != null) state[k] = d.state[k]; });
+      STATE_KEYS.forEach(function (k) { if (d.state[k] != null) state[k] = d.state[k]; });
       markDirty();
     } else { dropDraft(); }
   }
@@ -253,13 +256,34 @@
   }
 
   /* ---------- editor ---------- */
-  function imgWidget(k, src) {
+  /* 초점(크롭 기준점) — "50% 30%" 형식. 잘못된 값은 가운데로. */
+  function normPos(v) {
+    var m = /^\s*(\d{1,3}(?:\.\d+)?)%\s+(\d{1,3}(?:\.\d+)?)%\s*$/.exec(String(v || ''));
+    return m ? { x: Math.min(100, +m[1]), y: Math.min(100, +m[2]) } : { x: 50, y: 50 };
+  }
+  function posStr(p) { return Math.round(p.x) + '% ' + Math.round(p.y) + '%'; }
+  function imgWidget(k, src, pos) {
     var pv = pendingImg[src] || src;
+    if (!src) {
+      return '<div class="imgw"><div class="imgw-pv empty">사진 없음 · 여기로 끌어다 놓기</div>' +
+        '<div class="imgw-act"><label class="btn btn-line imgw-file">사진 선택' +
+        '<input type="file" accept="image/*" data-imgfile="' + esc(k) + '" hidden></label></div></div>';
+    }
+    var p = normPos(pos);
     return '<div class="imgw">' +
-      (src ? '<img class="imgw-pv" src="' + esc(pv) + '" alt="">' : '<div class="imgw-pv empty">사진 없음 · 여기로 끌어다 놓기</div>') +
+      '<div class="imgw-crop">' +
+        '<div class="imgw-full" data-imgpos="' + esc(k) + '" title="꼭 보여야 할 지점을 클릭하세요">' +
+          '<img src="' + esc(pv) + '" alt="" draggable="false">' +
+          '<i class="imgw-dot" style="left:' + p.x + '%;top:' + p.y + '%"></i>' +
+        '</div>' +
+        '<div class="imgw-out"><img src="' + esc(pv) + '" alt="" style="object-position:' + posStr(p) + '">' +
+          '<span class="imgw-cap">실제 표시</span></div>' +
+      '</div>' +
+      '<p class="imgw-hint">왼쪽 사진에서 <b>꼭 보여야 할 지점</b>을 클릭하면, 그 부분이 잘리지 않게 맞춰집니다. 오른쪽이 사이트에 나올 모습이에요.</p>' +
       '<div class="imgw-act">' +
-      '<label class="btn btn-line imgw-file">사진 선택<input type="file" accept="image/*" data-imgfile="' + esc(k) + '" hidden></label>' +
-      (src ? '<button type="button" class="btn btn-line imgw-del" data-imgdel="' + esc(k) + '">제거</button>' : '') +
+      '<label class="btn btn-line imgw-file">사진 교체<input type="file" accept="image/*" data-imgfile="' + esc(k) + '" hidden></label>' +
+      '<button type="button" class="btn btn-line" data-imgcenter="' + esc(k) + '">가운데로</button>' +
+      '<button type="button" class="btn btn-line imgw-del" data-imgdel="' + esc(k) + '">제거</button>' +
       '</div></div>';
   }
   function field(colKey, i, f) {
@@ -270,7 +294,8 @@
       return '<div class="field full"><label class="ck"><input id="' + id + '" data-k="' + f.k + '" data-t="check" type="checkbox"' + (raw ? ' checked' : '') + '><span>' + (f.label || f.k) + '</span></label></div>';
     }
     if (f.t === 'image') {
-      return '<div class="field full"><label>' + (f.label || '사진') + '</label>' + imgWidget(f.k, val) + '</div>';
+      var ipos = (i === null ? state[colKey][f.k + 'Pos'] : state[colKey][i][f.k + 'Pos']);
+      return '<div class="field full"><label>' + (f.label || '사진') + '</label>' + imgWidget(f.k, val, ipos) + '</div>';
     }
     var inp;
     if (f.t === 'textarea') inp = '<textarea id="' + id + '" data-k="' + f.k + '" placeholder="' + (f.ph || '') + '">' + esc(val) + '</textarea>';
@@ -459,6 +484,18 @@
         });
     });
   }
+  /* 초점 저장. 사진 슬롯은 state.imagePos[key], 목록 항목(프로젝트 등)은 <필드키>Pos.
+     빈 값이면 '가운데'로 되돌린다. */
+  function setImagePos(k, pos, entry) {
+    if (entry && active !== 'images') {
+      var i = +entry.getAttribute('data-i');
+      var tgt = SCHEMA[active].type === 'object' ? state[active] : state[active][i];
+      if (pos) tgt[k + 'Pos'] = pos; else delete tgt[k + 'Pos'];
+    } else {
+      if (pos) state.imagePos[k] = pos; else delete state.imagePos[k];
+    }
+    markDirty(); renderEditor(); renderPreview();
+  }
   function setImageValue(k, url, ctx) {
     if (ctx.slot) { if (url) state.images[k] = url; else delete state.images[k]; }
     else if (ctx.entry) {
@@ -490,7 +527,7 @@
         ss.map(function (s) {
           return '<div class="field full"><label>' + esc(s.label || s.key) +
             ' <span class="mono" style="opacity:.4;text-transform:none;letter-spacing:0">' + esc(s.key) + '</span></label>' +
-            imgWidget(s.key, state.images[s.key] || '') + '</div>';
+            imgWidget(s.key, state.images[s.key] || '', state.imagePos[s.key]) + '</div>';
         }).join('') + '</div></div>';
     });
     $('#editor').innerHTML = html;
@@ -565,6 +602,24 @@
       markDirty(); buildTabs(); renderEditor(); renderPreview();
       return;
     }
+    /* 초점 클릭 — 사진에서 꼭 보여야 할 지점 지정 */
+    var full = e.target.closest('[data-imgpos]');
+    if (full) {
+      var box = full.getBoundingClientRect();
+      var im = full.querySelector('img');
+      /* 이미지는 letterbox될 수 있으니 표시된 이미지 영역 기준으로 % 계산 */
+      var iw = im.naturalWidth || 1, ih = im.naturalHeight || 1;
+      var scale = Math.min(box.width / iw, box.height / ih);
+      var dw = iw * scale, dh = ih * scale;
+      var ox = (box.width - dw) / 2, oy = (box.height - dh) / 2;
+      var px = ((e.clientX - box.left - ox) / dw) * 100;
+      var py = ((e.clientY - box.top - oy) / dh) * 100;
+      px = Math.max(0, Math.min(100, px)); py = Math.max(0, Math.min(100, py));
+      setImagePos(full.getAttribute('data-imgpos'), posStr({ x: px, y: py }), full.closest('.ed-entry'));
+      return;
+    }
+    var ctr = e.target.closest('[data-imgcenter]');
+    if (ctr) { setImagePos(ctr.getAttribute('data-imgcenter'), '', ctr.closest('.ed-entry')); return; }
     var del = e.target.closest('[data-imgdel]');
     if (del) {
       if (!window.confirm('이 사진을 지울까요? 저장하면 사이트에서도 사라집니다.')) return;
