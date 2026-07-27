@@ -12,6 +12,8 @@
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
+  /* 이스케이프 + 줄바꿈 보존(관리자가 여러 줄로 입력한 설명을 그대로 표시) */
+  function escLines(s) { return esc(s).replace(/\r?\n/g, '<br>'); }
   function tel(s) { return String(s || '').replace(/[^0-9+]/g, ''); }
   var DONE = /(완료|성공|success)/i;
   var qs = function (s) { return document.querySelector(s); };
@@ -39,12 +41,12 @@
     var cls = x.status === 'warn' ? 'warn' : 'go';
     var label = x.statusLabel || (x.status === 'warn' ? '부분 성공' : '발사 완료');
     return '<div class="log-row">' + launchYearCell(x) +
-      '<div><p class="nm">' + esc(x.name) + '</p>' + (x.desc ? '<p class="ds">' + esc(x.desc) + '</p>' : '') + '</div>' +
+      '<div><p class="nm">' + esc(x.name) + '</p>' + (x.desc ? '<p class="ds">' + escLines(x.desc) + '</p>' : '') + '</div>' +
       '<div class="mt"><span class="pill ' + cls + '">' + esc(label) + '</span></div></div>';
   }
   function awardRow(x) {
     return '<div class="log-row"><span class="yr mono">' + esc(x.year) + '</span>' +
-      '<div><p class="nm">' + esc(x.name) + '</p>' + (x.desc ? '<p class="ds">' + esc(x.desc) + '</p>' : '') + '</div>' +
+      '<div><p class="nm">' + esc(x.name) + '</p>' + (x.desc ? '<p class="ds">' + escLines(x.desc) + '</p>' : '') + '</div>' +
       '<div class="mt"><span class="pill go">' + esc(x.rank || '수상') + '</span></div></div>';
   }
   function projectCard(x) {
@@ -60,13 +62,18 @@
       '<span class="eyebrow no-rule">' + esc(x.event || 'Project') + '</span>' +
       '<h3 style="margin-top:6px">' + esc(x.name) + '</h3>' +
       (x.ko ? '<p class="muted" style="margin-top:2px;font-size:.9rem">' + esc(x.ko) + '</p>' : '') +
-      (x.summary ? '<p style="margin-top:10px">' + esc(x.summary) + '</p>' : '') +
+      (x.summary ? '<p style="margin-top:10px">' + escLines(x.summary) + '</p>' : '') +
       (tags ? '<div class="tags">' + tags + '</div>' : '') + pill + '</article>';
   }
   function sponsorItem(x) {
     return '<div class="panel" style="text-align:center">' +
       '<b style="font-size:1.1rem;letter-spacing:-.01em">' + esc(x.name) + '</b>' +
       (x.kind ? '<span class="muted" style="display:block;font-size:.8rem;margin-top:5px">' + esc(x.kind) + '</span>' : '') + '</div>';
+  }
+  /* 조직도 회장단 노드 — 회장단(contacts) 데이터를 그대로 씀 */
+  function orgNode(x) {
+    return '<div class="node lead"><span class="role">' + esc(x.role || '회장단') + '</span>' +
+      '<div class="who">' + esc(x.name || '') + '</div></div>';
   }
   function contactCard(x) {
     var links = '';
@@ -192,7 +199,14 @@
     Array.prototype.forEach.call(els, function (el) {
       if (el.hasAttribute('data-cms-text')) {
         var v = content[el.getAttribute('data-cms-text')];
-        if (typeof v === 'string' && v.trim() !== '') el.textContent = v;
+        /* 값이 채워지면 '입력하세요' 플레이스홀더 서식(.ph)을 벗김 — 실제 내용이
+           점선 박스로 보이지 않게. 다시 비우면 원래 서식 복구(미리보기 반복 적용 대비). */
+        if (el.classList.contains('ph') && !el.hasAttribute('data-ph')) el.setAttribute('data-ph', '1');
+        if (typeof v === 'string' && v.trim() !== '') {
+          /* 줄바꿈을 입력했으면 그대로 보이게(<br>). escLines가 항상 이스케이프 → XSS 안전 */
+          if (/\n/.test(v)) el.innerHTML = escLines(v); else el.textContent = v;
+          if (el.hasAttribute('data-ph')) el.classList.remove('ph');
+        } else if (el.hasAttribute('data-ph')) el.classList.add('ph');
       } else if (el.hasAttribute('data-cms-rich')) {
         var rv = content[el.getAttribute('data-cms-rich')];
         if (typeof rv === 'string' && rv.trim() !== '') el.innerHTML = markupToHtml(rv);
@@ -278,6 +292,12 @@
     fill('#cms-awards', data.awards, awardRow, '등록된 수상 내역이 없습니다.');
     fill('#cms-sponsors', data.sponsors, sponsorItem, '등록된 후원사가 없습니다.');
     fill('#cms-contacts', data.contacts, contactCard, '등록된 연락처가 없습니다.');
+    /* 팀 페이지 조직도 회장단 줄 — 회장단(contacts)을 그대로 반영.
+       비어 있으면 HTML의 기본 플레이스홀더 노드를 그대로 둠. */
+    var orgLeads = qs('#cms-org-leads');
+    if (orgLeads && data.contacts && data.contacts.length) {
+      orgLeads.innerHTML = data.contacts.map(orgNode).join('');
+    }
     fillProjects(data.projects);
     // featured projects on the home page
     var featured = (data.projects || []).filter(function (p) { return p.featured; });

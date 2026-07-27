@@ -51,6 +51,7 @@
     projects: {
       type: 'array', label: '프로젝트', empty: '등록된 프로젝트가 없습니다.',
       preview: function (a) { return '<div class="grid g2">' + a.map(CMS.projectCard).join('') + '</div>'; },
+      hint: '설명 칸은 Enter로 줄을 바꾸면 사이트에도 그대로 줄바꿈되어 보입니다. ★ 표시는 홈에 노출되는 프로젝트예요.',
       fields: [
         { k: 'name', t: 'text', ph: '로켓 이름' }, { k: 'ko', t: 'text', ph: '한글 이름(선택)' },
         { k: 'year', t: 'text', ph: '연도 (예: 2025)' }, { k: 'event', t: 'text', ph: '대회/라벨' },
@@ -89,6 +90,7 @@
     },
     contacts: {
       type: 'array', label: '회장단', empty: '등록된 연락처가 없습니다.',
+      hint: '여기 입력한 회장단은 연락처 페이지와 팀 페이지 조직도에 함께 표시됩니다.',
       preview: function (a) { return '<div class="grid">' + a.map(CMS.contactCard).join('') + '</div>'; },
       fields: [
         { k: 'role', t: 'text', ph: '직책 (예: 회장)' }, { k: 'name', t: 'text', ph: '이름' },
@@ -296,14 +298,15 @@
     var sc = SCHEMA[active];
     if (sc.type === 'content') { renderContentEditor(); return; }
     if (sc.type === 'images') { renderImagesEditor(); return; }
+    var hint = sc.hint ? '<p class="note" style="margin-bottom:12px">💡 ' + esc(sc.hint) + '</p>' : '';
     if (sc.type === 'object') {
       var of = sc.fields.map(function (f) { return field(active, null, f); }).join('');
-      $('#editor').innerHTML = '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + sc.label + '</b></div><div class="ed-grid">' + of + '</div></div>';
+      $('#editor').innerHTML = hint + '<div class="panel ed-entry"><div class="ed-head"><b style="font-size:.95rem">' + sc.label + '</b></div><div class="ed-grid">' + of + '</div></div>';
       validateAll();
       return;
     }
     var arr = state[active];
-    var html = arr.length ? '' : '<p class="note" style="margin-bottom:12px">아직 등록된 ' + sc.label + '이(가) 없어요. 아래 [+ ' + sc.label + ' 추가]로 첫 항목을 만들어 보세요.</p>';
+    var html = hint + (arr.length ? '' : '<p class="note" style="margin-bottom:12px">아직 등록된 ' + sc.label + '이(가) 없어요. 아래 [+ ' + sc.label + ' 추가]로 첫 항목을 만들어 보세요.</p>');
     html += arr.map(function (x, i) {
       var fields = sc.fields.map(function (f) { return field(active, i, f); }).join('');
       return '<div class="panel ed-entry" data-i="' + i + '"><div class="ed-head"><span class="idx">#' + (i + 1) + '</span>' +

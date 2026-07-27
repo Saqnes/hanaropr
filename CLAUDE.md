@@ -22,7 +22,7 @@ functions/api/upload.js : 사진을 assets/uploads/ 에 커밋
 
 ### 콘텐츠가 채워지는 두 방식
 1. **구조화 데이터** (목록/객체) → `data.json`의 키를 `cms.js`가 특정 컨테이너에 렌더:
-   - `#cms-projects`,`#cms-filter`(projects.html) · `#cms-launches`,`#cms-awards`(archive.html) · `#cms-sponsors`(archive/index/support) · `#cms-contacts`(contact.html) · `#cms-account`,`#cms-foundation`,`#cms-launch-count`(support.html) · `#cms-address`,`#cms-map`(contact.html) · `#cms-home-projects`,`#home-projects-sec`(index.html, `featured:true`인 프로젝트만)
+   - `#cms-projects`,`#cms-filter`(projects.html) · `#cms-launches`,`#cms-awards`(archive.html) · `#cms-sponsors`(archive/index/support) · `#cms-contacts`(contact.html) · `#cms-org-leads`(teams.html 조직도 회장단 줄 — `contacts`를 그대로 렌더, 비면 HTML 기본 노드 유지) · `#cms-account`,`#cms-foundation`,`#cms-launch-count`(support.html) · `#cms-address`,`#cms-map`(contact.html) · `#cms-home-projects`,`#home-projects-sec`(index.html, `featured:true`인 프로젝트만)
 2. **페이지에 박힌 문구/사진** → HTML 요소의 마커 속성을 `cms.js`가 덮어씀(값 없으면 원문 유지):
    - `data-cms-text="키"` — 단일 텍스트(textContent)
    - `data-cms-rich="키"` — 텍스트+강조/줄바꿈. 마크업: `*금색*`,`~코랄~`, 줄바꿈=`<br>` (`markupToHtml`이 항상 이스케이프 → XSS 안전)
@@ -92,7 +92,9 @@ ADMIN.md             관리자/보안/환경변수 상세 가이드
 ```
 
 ## 흔한 함정
-- `js/cms.js`의 `norm()`이 소스 들여쓰기/줄바꿈을 접어 렌더와 일치시킴 — `readContentDefaults`가 이걸 씀. rich만 `<br>` 줄바꿈 보존.
+- `js/cms.js`의 `norm()`이 소스 들여쓰기/줄바꿈을 접어 렌더와 일치시킴 — `readContentDefaults`가 이걸 씀.
+- 줄바꿈: 관리자가 입력한 값에 `\n`이 있으면 `escLines()`로 `<br>` 보존(프로젝트 summary·발사/수상 desc·`data-cms-text`). 항상 이스케이프 후 `<br>`만 붙이므로 XSS 안전.
+- `.ph`(점선 플레이스홀더 서식)는 값이 채워지면 `applyContent`가 자동으로 벗김(`data-ph`로 원복 가능) — 실제 내용이 "입력하세요" 박스처럼 보이지 않게.
 - 미리보기 iframe은 `fetch`+`document.write`로 `<base href="/">`와 `window.HANARO_DATA` 스냅샷을 주입 → 실제 페이지 그대로 + 즉시 반영. 방금 올린 사진은 재배포 전이라 `pendingImg`로 로컬 dataURL 대체.
 - 새 편집 문구/사진 슬롯을 추가하려면 **HTML에 마커 속성**을 달면 관리자 편집기가 페이지를 읽어 **자동 발견**함(스키마 수정 불필요).
 - 목록 항목 `title()`에 `★`=featured 표시(프로젝트). 긴 무공백 문자열 대비 CSS에 말줄임/`min-width:0`/`overflow-wrap` 방어 있음.

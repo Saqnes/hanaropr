@@ -158,21 +158,22 @@
         <div class="head reveal">
           <p class="eyebrow">Organization · 조직도</p>
           <h2 class="h-lg title-ko" data-cms-rich="teams.org.title">기능으로 짜인 <span class="g">조직</span></h2>
-          <p class="lead" data-cms-text="teams.org.lead">회장단과 행정이 전체를 조율하고, 네 팀이 각자의 서브시스템을 개발·운영합니다. 실제 이름은 임기마다 갱신하세요.</p>
+          <p class="lead" data-cms-text="teams.org.lead">회장단과 행정이 전체를 조율하고, 네 팀이 각자의 서브시스템을 개발·운영합니다.</p>
         </div>
         <div class="org reveal">
-          <div class="org-row">
-            <div class="node lead"><span class="role">회장</span><div class="who"><span class="ph">이름 입력</span></div></div>
-            <div class="node lead"><span class="role">부회장</span><div class="who"><span class="ph">이름 입력</span></div></div>
+          <!-- 회장단 줄: 관리자 '회장단' 탭 데이터가 그대로 반영됨(비어 있으면 아래 기본 노드 유지) -->
+          <div class="org-row" id="cms-org-leads">
+            <div class="node lead"><span class="role">회장</span><div class="who"><span class="ph">회장단 탭에서 입력</span></div></div>
+            <div class="node lead"><span class="role">부회장</span><div class="who"><span class="ph">회장단 탭에서 입력</span></div></div>
           </div>
           <div class="org-line" aria-hidden="true"></div>
-          <div class="node"><span class="role">행정 · 총무</span><div class="who"><span class="ph">이름 입력</span></div></div>
+          <div class="node"><span class="role" data-cms-text="teams.org.admin.role">행정 · 총무</span><div class="who"><span class="ph" data-cms-text="teams.org.admin.name">이름 입력</span></div></div>
           <div class="org-line" aria-hidden="true"></div>
           <div class="org-teams">
-            <div class="node"><span class="role">추진팀장</span><div class="who"><span class="ph">이름</span><small>엔진 · 추진제 · 연소</small></div></div>
-            <div class="node"><span class="role">공력·구조팀장</span><div class="who"><span class="ph">이름</span><small>공력 · 구조 · 복합재</small></div></div>
-            <div class="node"><span class="role">전자팀장</span><div class="who"><span class="ph">이름</span><small>항전 · 통신 · 사출</small></div></div>
-            <div class="node"><span class="role">회수팀장</span><div class="who"><span class="ph">이름</span><small>사출 · 낙하산 · 회수</small></div></div>
+            <div class="node"><span class="role" data-cms-text="teams.org.lead1.role">추진팀장</span><div class="who"><span class="ph" data-cms-text="teams.org.lead1.name">이름 입력</span><small data-cms-text="teams.org.lead1.desc">엔진 · 추진제 · 연소</small></div></div>
+            <div class="node"><span class="role" data-cms-text="teams.org.lead2.role">공력·구조팀장</span><div class="who"><span class="ph" data-cms-text="teams.org.lead2.name">이름 입력</span><small data-cms-text="teams.org.lead2.desc">공력 · 구조 · 복합재</small></div></div>
+            <div class="node"><span class="role" data-cms-text="teams.org.lead3.role">전자팀장</span><div class="who"><span class="ph" data-cms-text="teams.org.lead3.name">이름 입력</span><small data-cms-text="teams.org.lead3.desc">항전 · 통신 · 사출</small></div></div>
+            <div class="node"><span class="role" data-cms-text="teams.org.lead4.role">회수팀장</span><div class="who"><span class="ph" data-cms-text="teams.org.lead4.name">이름 입력</span><small data-cms-text="teams.org.lead4.desc">사출 · 낙하산 · 회수</small></div></div>
           </div>
         </div>
       </div>
