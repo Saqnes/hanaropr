@@ -8,7 +8,7 @@
   <meta name="description" content="요청하신 페이지를 찾을 수 없습니다 — 서울대학교 로켓동아리 하나로(HANARO).">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="stylesheet" href="css/style.css">
-  <script>document.documentElement.classList.add('js');</script>
+  <script>document.documentElement.classList.add('js');try{var _t=localStorage.getItem('hanaro-theme');if(_t==='dark'||_t==='light')document.documentElement.setAttribute('data-theme',_t);}catch(e){}</script>
   <script defer src="js/cms.js"></script>
   <script defer src="js/main.js"></script>
 </head>
@@ -31,6 +31,7 @@
         <a href="contact.html">Contact</a>
       </nav>
       <a class="nav-cta" href="support.html">후원</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="어두운 화면으로 전환" title="화면 테마 전환"><svg class="ic-moon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 13.4A8.2 8.2 0 1 1 10.6 4a6.6 6.6 0 0 0 9.4 9.4Z"/></svg><svg class="ic-sun" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.6v2.2M12 19.2v2.2M4.3 4.3l1.6 1.6M18.1 18.1l1.6 1.6M2.6 12h2.2M19.2 12h2.2M4.3 19.7l1.6-1.6M18.1 5.9l1.6-1.6"/></svg></button>
       <button class="nav-toggle" aria-label="메뉴 열기" aria-expanded="false" aria-controls="m"><span></span><span></span><span></span></button>
     </div>
   </header>

@@ -7,7 +7,10 @@ Cloudflare Pages로 배포됩니다.
 ## 황금률 (먼저 읽기)
 - **빌드 스텝·프레임워크·번들러·npm 의존성 없음.** HTML/CSS/바닐라 JS만. 이 원칙을 깨지 말 것.
 - **외부 CDN·웹폰트·원격 리소스 금지.** 시스템 폰트만(Helvetica/Arial + Apple SD Gothic Neo/맑은 고딕 + system mono). 모든 자산은 `assets/`에 로컬로.
-- **디자인 = 블루프린트/미션터미널 미학.** 그리드 배경, 코너틱 패널, mono 텔레메트리. 색 토큰: `--navy #0a1a3f/#0e1116`, `--gold #f5a623`, `--coral #f98a80`, `--paper #0e1116` (css/style.css `:root`).
+- **디자인 = 블루프린트/미션터미널 미학.** 그리드 배경, 코너틱 패널, mono 텔레메트리. 브랜드색: `--navy #0a1a3f`, `--gold #f5a623`, `--coral #f98a80`.
+- **테마 2종 (기본=밝은 화면).** `css/style.css`의 `:root`=라이트(청사진 용지 `--paper #f6f5f1`), `:root[data-theme="dark"]`=다크(미션 터미널 `--paper #0e1116`).
+  **색은 반드시 토큰으로만** 쓸 것 — 하드코딩하면 한쪽 테마가 깨진다. 특히 글자색은 `--gold-ink`/`--gold-hi`/`--coral-ink`(테마별로 읽히는 값), 골드 *면* 위 글자는 `--on-gold`, 면 hover는 `--gold-fill-hi`. 표면은 `--surface`/`--surface-in`/`--surface-hi`/`--panel-grad`, 바 배경은 `--nav-bg`/`--menu-bg`/`--bar-bg`.
+  전환: nav의 `#themeToggle`(js/main.js) → `localStorage['hanaro-theme']`. 깜빡임 방지로 각 페이지 `<head>` 인라인 스크립트가 첫 페인트 전에 `data-theme`을 세팅한다(새 페이지 추가 시 이 스크립트와 토글 버튼도 같이 넣을 것). `admin.html`은 인라인 CSS가 어두운 표면 전제라 `data-theme="dark"` 고정.
 - **바꾸면 브라우저로 검증 후 커밋.** 로컬 서버 + Playwright(아래). 추측 커밋 금지.
 - 로켓 도면 `assets/rocket.svg`는 3D 도색모델 실측 기하(Von Kármán 노즈, 전장 2329mm 등)에서 도출한 것 — 함부로 대충 고치지 말 것.
 

@@ -7,6 +7,25 @@
   var $ = function (s, c) { return (c || document).querySelector(s); };
   var $$ = function (s, c) { return Array.prototype.slice.call((c || document).querySelectorAll(s)); };
 
+  /* ---- theme (기본 = 밝은 화면, 선택은 localStorage에 기억) ----
+     첫 페인트 전 적용은 각 페이지 <head>의 인라인 스크립트가 담당(깜빡임 방지). */
+  var themeBtn = $('#themeToggle');
+  var setThemeLabel = function (dark) {
+    if (!themeBtn) return;
+    themeBtn.setAttribute('aria-label', dark ? '밝은 화면으로 전환' : '어두운 화면으로 전환');
+    themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+  };
+  setThemeLabel(document.documentElement.getAttribute('data-theme') === 'dark');
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var dark = document.documentElement.getAttribute('data-theme') !== 'dark';
+      if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      else document.documentElement.removeAttribute('data-theme');
+      try { localStorage.setItem('hanaro-theme', dark ? 'dark' : 'light'); } catch (e) { /* private mode */ }
+      setThemeLabel(dark);
+    });
+  }
+
   /* ---- nav scrolled state ---- */
   var nav = $('.nav');
   if (nav) {
