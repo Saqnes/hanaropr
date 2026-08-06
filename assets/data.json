@@ -27,7 +27,7 @@
     {
       "name": "Identity^2",
       "ko": "아덴스퀘어드",
-      "year": "20262026",
+      "year": "2026",
       "team": "",
       "event": "NURA 2026"
     },
@@ -71,5 +71,6 @@
     "index.support.lead": "로켓 한 대의 발사에는 많은 지원이 필요합니다. 학생들의 도전에 연료가 되어 주세요.",
     "index.cta.title": "역경을 헤치고, *별*을 향하여"
   },
-  "images": {}
+  "images": {},
+  "imagePos": {}
 }
